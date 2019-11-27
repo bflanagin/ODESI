@@ -1,5 +1,5 @@
 # OpenSeed
-General Server and back-end 
+General server and back-end services to create blockchain integrated games and applications through a sensible easy to use functions. Please check out the wiki pages on github for a more detailed discription of each service.  
 
 # **NOTE:** 
 
