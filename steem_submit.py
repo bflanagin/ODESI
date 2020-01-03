@@ -1,21 +1,24 @@
 #!/usr/bin/python
-
+import sys
 import mysql.connector
 import hashlib
 from steem import Steem
+sys.path.append("..")
+import openseed_setup as Settings
+
+settings = Settings.get_settings()
 
 s = Steem()
-who = ''
-s.wallet.unlock(user_passphrase='')
-postingKey = s.wallet.getPostingKeyForAccount(who)
+s.wallet.unlock(user_passphrase=settings["passphrase"])
+postingKey = s.wallet.getPostingKeyForAccount(settings["steemaccount"])
 s.keys = postingKey
 
 def memo(username,steemname,code):
 	openseed = mysql.connector.connect(
 	host = "localhost",
-	user = "",
-	password = "",
-	database = ""
+	user = settings["dbuser"],
+	password = settings["dbpassword"],
+	database = "openseed"
 	)
 	service_type = "steem"
 	codesearch = openseed.cursor()
@@ -33,9 +36,44 @@ def create_json(devID,appID,user,theid,data):
 	post = '{"appId":"'+str(appId)+'","devId":"'+str(devId)+'","userId":"'+str(userId)+'","score":"'+str(score)+'"}'
 	s.commit.custom_json(id=theid, json=post)
 
-#def create_post(devID,appID,publicID,title,data):
+def create_post(devID,appID,publicID,title,data):
+	
+	return
+
+def like_post(name,post):
+	upvote_pct = 30
+	already_voted = -1
+	# Gets votes on the post
+	result = s.get_active_votes(name, post)
+	if result:
+		# We run through the votes to make sure we haven't already voted on this post
+		for vote in result:
+			if vote['voter'] == who:
+				already_voted = 1
+				break
+			else:
+				already_voted = 0
+
+		if already_voted == 0:
+			identifier = ('@'+name+'/'+post)
+			print("voting on ",identifier)	
+			s.commit.vote(identifier, float(upvote_pct), who)
+			#post_reply(name,post)
+		else:
+			print("Voted already")
 
 
+def openseed_post_reply(author,post,body):
+	reply_identifier = '/'.join([author,post])
+	print(reply_identifier)
+	s.commit.post(title='', body=body, author=who, permlink='',reply_identifier=reply_identifier) 
+	print("Adding reply")
+	return
+
+def openseed_post(author,post,body,title,json):
+	s.commit.post(title=title, body=body, author=who, permlink='') 
+	print("adding post")
+	return
 
 def leaderboard(devID,appID,user,data,steem,postingkey):
 	s.wallet.addPrivateKey(postingkey)

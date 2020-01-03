@@ -2,11 +2,17 @@
 
 import subprocess
 import sys
+import time
 sys.path.append("..")
 import mysql.connector
 import json
 from steem import Steem
 import openseed_music as Music
+import steem_submit as Submit
+import openseed_ipfs as IPFS
+import openseed_setup as Settings
+
+settings = Settings.get_settings()
 
 s = Steem()
 
@@ -45,11 +51,13 @@ def get_connections(account):
  watching = []
  followers = s.get_followers(account,0,"",1000)
  following = s.get_following(account,0,"",1000)
+ if str(followers).find("error") == -1:
+ 	for flwrs in followers:
+  		follows.append(flwrs["follower"])
+ if str(following).find("error") == -1:
+ 	for flws in following:
+  		watching.append(flws["following"])
 
- for flwrs in followers:
-  follows.append(flwrs["follower"])
- for flws in following:
-  watching.append(flws["following"])
  for er in follows:
   for ing in watching:
    if er == ing:
@@ -61,18 +69,18 @@ def get_connections(account):
 ## Music specific functions (should be moved at some point ##
 
 def local_search(author):
- mydb = mysql.connector.connect(
-	host = "localhost",
-	user = "",
-	password = "",
-	database = ""
-	)
- mysearch = mydb.cursor()
+ openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["ipfsuser"],
+		password = settings["ipfspassword"],
+		database = "ipfsstore"
+		)
+ mysearch = openseed.cursor()
  search = "SELECT * FROM `audio` WHERE `author`='"+str(author)+"'"
  mysearch.execute(search)
  result = len(mysearch.fetchall())
  mysearch.close()
- mydb.close()
+ openseed.close()
  if result == 0:
   return("{New Artist}")
  else:
@@ -94,6 +102,7 @@ def search_artist(author,limit) :
      if tags != None:
       if str(tags).find("dsound") != -1:
        if str(metadata.keys()).find("audio") != -1:
+        
         songtype = metadata["audio"]["type"]
         songtags = tags
         duration = metadata["audio"]["duration"]
@@ -101,55 +110,66 @@ def search_artist(author,limit) :
         artist = author
         img = metadata["audio"]["files"]["cover"]
         genre = metadata["audio"]["genre"]
-        pin_and_record(ipfs,artist,title,permlink,img,songtype,genre,songtags,duration)
+        IPFS.pin_and_record(ipfs,artist,title,permlink,img,songtype,genre,songtags,duration)
  return(local)
 
 
 def pin_and_record(ipfs,author,title,post,img,songtype,genre,songtags,duration):
- mydb = mysql.connector.connect(
+ openseed = mysql.connector.connect(
 	host = "localhost",
-	user = "",
-	password = "",
-	database = ""
+	user = "ipfsuser",
+	password = "b3V4ug3",
+	database = "ipfsstore"
 	)
- mysearch = mydb.cursor()
- search = "SELECT title,duration FROM `audio` WHERE `ipfs`='"+str(ipfs)+"'"
+ mysearch = openseed.cursor()
+ search = "SELECT title,duration,genre,date,curation FROM `audio` WHERE `ipfs`='"+str(ipfs)+"'"
  mysearch.execute(search)
  song = mysearch.fetchall()
  result = len(song)
  sql = ""
  values = ""
- if result != 1:
-  mycursor = mydb.cursor()  
+ 
+ if result > 1:
+  delete = openseed.cursor()
+  sql = "DELETE FROM `audio` WHERE ipfs = %s AND date NOT LIKE %s"
+  val = (str(ipfs),str(song[0][3]))
+  delete.execute(sql,val)
+  delete.close()
+  openseed.commit()
+ if result == None or result == 0:
+  mycursor = openseed.cursor() 
+  print(title)
+  time.sleep(3)
+  Submit.like_post(author,post) 
   sql = "INSERT INTO `audio` (`ipfs`,`author`,`title`,`post`,`img`,`type`,`genre`,`tags`,`duration`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
   values = (str(ipfs),str(author),str(title),str(post),str(img),str(songtype),str(genre),str(songtags),str(duration))
   mycursor.execute(sql,values)
-  mydb.commit()
+  openseed.commit()
   subprocess.Popen(["/usr/bin/ipfs","pin","add",str(img)])
   ipfs = subprocess.Popen(["/usr/bin/ipfs","pin","add",str(ipfs)],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
   #ipfs.wait()
   #stdout, stderr = ipfs.communicate()
   mycursor.close()
   #oggify_and_share(str(stdout).split(" ")[1])
- else:
-  if len(song[0]) == 1:
-   updatecursor = mydb.cursor()
+ elif(result == 1):
+  if song[0][2] == "NULL" or song[0][2] == "" or song[0][2] == None or song[0][2] == "null":
+   updatecursor = openseed.cursor()
    sql = "UPDATE audio SET type = %s, genre = %s, tags = %s, duration = %s WHERE ipfs = %s"
    values = (str(songtype),str(genre),str(songtags),str(duration),str(ipfs))
    updatecursor.execute(sql,values)
-   mydb.commit()
+   openseed.commit()
 
- mydb.close()
+ openseed.close()
 
 
 def oggify_and_share(thehash):
- mydb = mysql.connector.connect(
+ openseed = mysql.connector.connect(
 	host = "localhost",
-	user = "",
-	password = "",
-	database = ""
+	user = "ipfsuser",
+	password = "b3V4ug3",
+	database = "ipfsstore"
 	)
- mysearch = mydb.cursor()
+ mysearch = openseed.cursor()
  search = "SELECT ipfs,img FROM `audio` WHERE ipfs ='"+thehash+"'"
  mysearch.execute(search)
  result = mysearch.fetchall()
@@ -163,8 +183,8 @@ def oggify_and_share(thehash):
   add_to_ipfs = subprocess.Popen(['ipfs', 'add' , '/mnt/volume_sfo2_01/openseed/music/'+thehash+'.ogg'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
   add_to_ipfs.wait()
   stdout, stderr = add_to_ipfs.communicate()
-  updatesql = mydb.cursor()
+  updatesql = openseed.cursor()
   sql = "UPDATE audio SET ogg = '"+str(stdout).split(" ")[1]+"' WHERE ipfs ='"+thehash+"'"
   updatesql.execute(sql)
-  mydb.commit()
-  mydb.close()
+  openseed.commit()
+  openseed.close()

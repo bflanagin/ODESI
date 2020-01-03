@@ -6,24 +6,25 @@ import mysql.connector
 import hashlib
 
 from steem import Steem
+
+import openseed_setup as Settings
+
+settings = Settings.get_settings()
+
 s = Steem()
-who = ''
-s.wallet.unlock(user_passphrase='')
-postingKey = s.wallet.getPostingKeyForAccount(who)
+s.wallet.unlock(user_passphrase=settings["passphrase"])
+postingKey = s.wallet.getPostingKeyForAccount(settings["steemaccount"])
 s.keys = postingKey
 username = ''
 code = ''
 
-
-
-
-
 def get_onetime(service_type):
+
 	openseed = mysql.connector.connect(
 	host = "localhost",
-	user = "",
-	password = "",
-	database = ""
+	user = settings["dbuser"],
+	password = settings["dbpassword"],
+	database = "openseed"
 	)
 	codesearch = openseed.cursor()
 	search = "SELECT * FROM `onetime` WHERE `type` = '"+service_type+"' AND `sent` = FALSE"

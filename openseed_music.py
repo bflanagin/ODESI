@@ -4,13 +4,16 @@ sys.path.append("..")
 import mysql.connector
 import hashlib
 import json
+import openseed_setup as Settings
+
+settings = Settings.get_settings()
 
 def get_curated_music(type):
 	openseed = mysql.connector.connect(
 		host = "localhost",
-		user = "",
-		password = "",
-		database = ""
+		user = settings["ipfsuser"],
+		password = settings["ipfspassword"],
+		database = "ipfsstore"
 		)
 	music = openseed.cursor()
 	output = "{"
@@ -27,9 +30,9 @@ def get_curated_music(type):
 def get_curated_music_json(type):
 	openseed = mysql.connector.connect(
 		host = "localhost",
-		user = "",
-		password = "",
-		database = ""
+		user = settings["ipfsuser"],
+		password = settings["ipfspassword"],
+		database = "ipfsstore"
 		)
 	music = openseed.cursor()
 	output = []
@@ -56,9 +59,9 @@ def get_curated_music_json(type):
 def get_artist_tracks(artist):
 	openseed = mysql.connector.connect(
 		host = "localhost",
-		user = "",
-		password = "",
-		database = ""
+		user = settings["ipfsuser"],
+		password = settings["ipfspassword"],
+		database = "ipfsstore"
 		)
 	music = openseed.cursor()
 	output = "{"
@@ -76,9 +79,9 @@ def get_artist_tracks(artist):
 def get_artist_tracks_json(artist):
 	openseed = mysql.connector.connect(
 		host = "localhost",
-		user = "",
-		password = "",
-		database = ""
+		user = settings["ipfsuser"],
+		password = settings["ipfspassword"],
+		database = "ipfsstore"
 		)
 	music = openseed.cursor()
 	output = []
@@ -106,9 +109,9 @@ def get_artist_tracks_json(artist):
 def get_new_artists():
 	openseed = mysql.connector.connect(
 		host = "localhost",
-		user = "",
-		password = "",
-		database = ""
+		user = settings["ipfsuser"],
+		password = settings["ipfspassword"],
+		database = "ipfsstore"
 		)
 	music = openseed.cursor()
 	output = []
@@ -131,9 +134,9 @@ def get_new_artists():
 def get_new_tracks():
 	openseed = mysql.connector.connect(
 		host = "localhost",
-		user = "",
-		password = "",
-		database = ""
+		user = settings["ipfsuser"],
+		password = settings["ipfspassword"],
+		database = "ipfsstore"
 		)
 	music = openseed.cursor()
 	output = []
@@ -142,7 +145,7 @@ def get_new_tracks():
 	result = music.fetchall()
 	artist_num = 1
 	for artist in result:
-		if artist_num <= 9:
+		if artist_num <= 15:
 			if str(output).find(str(artist)) == -1:
 				output.append(artist) 
 				artist_num +=1
@@ -156,9 +159,9 @@ def get_new_tracks():
 def get_new_tracks_json():
 	openseed = mysql.connector.connect(
 		host = "localhost",
-		user = "",
-		password = "",
-		database = ""
+		user = settings["ipfsuser"],
+		password = settings["ipfspassword"],
+		database = "ipfsstore"
 		)
 	music = openseed.cursor()
 	output = []
@@ -167,7 +170,7 @@ def get_new_tracks_json():
 	result = music.fetchall()
 	artist_num = 1
 	for song in result:
-		if artist_num <= 9:
+		if artist_num <= 15:
 			if str(output).find(str(song)) == -1:
 				output.append({
 					"author":song[0],
@@ -193,9 +196,9 @@ def get_new_tracks_json():
 def get_genres():
 	openseed = mysql.connector.connect(
 		host = "localhost",
-		user = "",
-		password = "",
-		database = ""
+		user = settings["ipfsuser"],
+		password = settings["ipfspassword"],
+		database = "ipfsstore"
 		)
 	music = openseed.cursor()
 	output = []
@@ -214,9 +217,9 @@ def get_genres():
 def get_genre_tracks(genre):
 	openseed = mysql.connector.connect(
 		host = "localhost",
-		user = "",
-		password = "",
-		database = ""
+		user = settings["ipfsuser"],
+		password = settings["ipfspassword"],
+		database = "ipfsstore"
 		)
 	music = openseed.cursor()
 	output = []
@@ -234,9 +237,9 @@ def get_genre_tracks(genre):
 def get_genre_tracks_json(genre):
 	openseed = mysql.connector.connect(
 		host = "localhost",
-		user = "",
-		password = "",
-		database = ""
+		user = settings["ipfsuser"],
+		password = settings["ipfspassword"],
+		database = "ipfsstore"
 		)
 	music = openseed.cursor()
 	output = []

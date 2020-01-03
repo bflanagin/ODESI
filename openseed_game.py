@@ -3,11 +3,8 @@ import sys
 sys.path.append("..")
 import mysql.connector
 import steem_submit as Submit
-
 import openseed_setup as Settings
-
 settings = Settings.get_settings()
-
 
 def update_leaderboard(devID,appID,user,data,steem,postingkey):
 	openseed = mysql.connector.connect(
@@ -46,7 +43,4 @@ def get_leaderboard(devID,appID):
 	scoresearch.close()
 	openseed.close()
 	return str(output)
-
-
-
 
