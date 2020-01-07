@@ -1,5 +1,7 @@
 # OpenSeed
-General server and back-end services to create blockchain integrated games and applications. Please check out the wiki pages on github for a more detailed discription of each service. 
+Merging state-of-the-art decentralized databases (Steem, IPFS, etc.) with "commodity" databases to create turnkey, cross-platform features like a shared user database, encrypted messaging, and more, making it easier than ever to bootstrap games and applications that leverage digital assets to engage users.
+
+Please check out the wiki pages on github for a more detailed description of each service. 
 
 # **NOTE:** 
 
