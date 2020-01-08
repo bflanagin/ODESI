@@ -31,7 +31,8 @@ class TCPHandler(socketserver.BaseRequestHandler):
 		if Account.check_appID(from_client["appID"],from_client["devID"]):
 			app = from_client["appID"]
 			dev = from_client["devID"]
-			
+
+			# Account Functions #
 			if action == "accountcheck":
 				response = Account.accountCheck(from_client["username"],from_client["passphrase"])
 			elif action == "create":
@@ -42,10 +43,13 @@ class TCPHandler(socketserver.BaseRequestHandler):
 					Submit.memo(from_client["username"],from_client["steemname"],response)
 			elif action == "create_developer":
 				response = Account.create_developer(from_client["devName"],from_client["contactName"],from_client["contactEmail"],from_client["steem"])
-
 			elif action == "create_profile":
 				response = Account.create_profile(from_client["theid"],from_client["data1"],from_client["data2"],
 from_client["data3"],from_client["data4"],from_client["data5"],from_client["type"])
+			elif action == "get_status":
+				response = Account.get_status(from_client["account"])
+			elif action == "update_status":
+				response = Account.update_status(from_client["account"],from_client["data"])
 
 			elif action == "payment":
 					response = Submit.payment(from_client["steemaccount"],from_client["to"],from_client["amount"],from_client["for"],from_client["postingkey"])
@@ -65,10 +69,12 @@ from_client["data3"],from_client["data4"],from_client["data5"],from_client["type
 				response = Get.get_post(from_client["author"],from_client["permlink"])
 			elif action == "artist_search":
 				response = Get.search_artist(from_client["author"],10000)
+			
 			elif action == "getaccount":
 				response = Get.get_account(from_client["account"])
 			elif action == "getfullaccount":
 				response = Get.get_full_account(from_client["account"])
+			
 			elif action == "newaccounts":
 				response = Music.get_new_artists()
 			elif action == "newtracks":
@@ -87,6 +93,8 @@ from_client["data3"],from_client["data4"],from_client["data5"],from_client["type
 				response = Connections.get_openseed_connections(from_client["account"])
 			elif action == "openseed_profile":
 				response = Connections.user_profile(from_client["account"])
+
+			# Chat Functions #
 			elif action == "get_chat":
 				response = Chat.get_chat(from_client["uid"],from_client["account"],from_client["room"],from_client["last"])
 			elif action == "send_chat":
@@ -96,7 +104,9 @@ from_client["data3"],from_client["data4"],from_client["data5"],from_client["type
 				response = Chat.check_chat(from_client["account"],from_client["uid"])
 			
 			elif action == "update_key":
-				response = "<::>"+OneTime.update_key(from_client["thetype"],from_client["uid"],from_client["users"])+"<::>"	
+				response = "<::>"+OneTime.update_key(from_client["thetype"],from_client["uid"],from_client["users"])+"<::>"
+
+			# Heart Beat #	
 			elif action == "heartbeat":
 				response = "Online"
 				

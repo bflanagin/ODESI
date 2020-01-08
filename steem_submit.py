@@ -12,6 +12,7 @@ s = Steem()
 s.wallet.unlock(user_passphrase=settings["passphrase"])
 postingKey = s.wallet.getPostingKeyForAccount(settings["steemaccount"])
 s.keys = postingKey
+who = settings["steemaccount"]
 
 def memo(username,steemname,code):
 	openseed = mysql.connector.connect(
