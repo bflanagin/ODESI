@@ -220,13 +220,62 @@ def create_profile(theid,data1,data2,data3,data4,data5,thetype):
 		return theid
 	else:
 		return "exists"
-	
+
+def get_status(username):
+	status = '{"status":"offline"}'
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+	user = openseed.cursor()
+	search = "SELECT * FROM logins WHERE username = %s"
+	val = (username,)
+	user.execute(search,val)
+	result = user.fetchall()
+	if len(result) == 1:
+		status = '{"username":"'+str(result[0][1]).split("'")[1]+'","date":"'+str(result[0][3])+'","data":'+str(result[0][4]).split("'")[1]+'}'
+	user.close()
+	openseed.close()
+
+	return status
+
+def update_status(uid,data):
+	username = user_from_id(uid)
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+	user = openseed.cursor()
+	search = "SELECT * FROM logins WHERE username = %s"
+	val = (username,)
+	user.execute(search,val)
+	result = user.fetchall()
+	newdat = '{"location":"'+data["location"]+'","chat":"'+data["chat"]+'"}'
+	if len(result) == 1:
+		update = "UPDATE logins SET data = %s WHERE username = %s"
+		up = (newdat,username)
+		user.execute(update,up)
+	else:
+		insert = "INSERT INTO logins (username,data) VALUES (%s,%s)"
+		valin = (username,newdat)
+		user.execute(insert,valin)
+
+	update = '{"status":"updated"}'
+
+	openseed.commit()
+	user.close()
+	openseed.close()
+
+	return update	
 
 def get_history(account,apppubIDcount):
 	return
 
 def update_history(account,apppubID,data):
-	
 	return
 
 
