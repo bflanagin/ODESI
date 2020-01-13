@@ -139,8 +139,6 @@ def report_generator(type):
      report.write("["+r[1]+"](https://dsound.audio/#!/@"+r[1]+") | ["+r[2]+"](https://dsound.audio/#!/@"+r[1]+"/"+r[3]+") | "+str(r[5])+" |\n")
  report.close
 
-
-
 if len(sys.argv) > 1 and sys.argv[1]:
   argument = sys.argv[1]
   if argument == "report":
