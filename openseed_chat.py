@@ -54,6 +54,55 @@ def check_onetime(username,othername):
 	else:
 		return 0
 
+def create_chatroom(creator,title,userlist,deniedusers):
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+	openseed.close()
+
+def chat_history(username,othername,roomtype,count):
+	room_exists = false
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+	history_search = openseed.cursor()
+	if roomtype == 0:
+		check = "SELECT Id,record,attendees,date FROM chat WHERE attendees = %s"
+		val1 = (username+","+othername,)
+		val2 = (othername+","+username,)
+		history_search.excute(check,val1)
+		result1 = len(hystory_search.fetchall())
+		history_search.excute(check,val2)
+		restult2 = len(history_seach.fetchall())
+
+		if result1 > 0 or result2 > 0:
+			room_exists = true
+		else:
+			room_exists = false
+
+		if room_exists == true:
+			num = 0
+			while num < count:
+				
+				num += 1
+		
+	if roomtype == 1:
+		check = "SELECT Id,record,attendees,date FROM chat WHERE room = %s"
+		val = (othername,)
+		history_search.execute(check,val,)
+		result = len(history_search.fetchall())
+		if result > 0:
+			print("found room")
+		
+	history_search.close()
+	openseed.close()
+
 def check_chat(username,othername):
 	openseed = mysql.connector.connect(
 		host = "localhost",
@@ -62,7 +111,7 @@ def check_chat(username,othername):
 		database = "openseed"
 		)
 	mysearch = openseed.cursor()
-	check = "SELECT id FROM chat WHERE attendees = %s"
+	check = "SELECT Id FROM chat WHERE attendees = %s"
 	val1 = (username+","+othername,)
 	val2 = (othername+","+username,)
 	mysearch.execute(check,val1)

@@ -11,6 +11,7 @@ import steem_get as Get
 import steem_submit as Submit
 import leaderboard as LeaderBoard
 import openseed_music as Music
+import openseed_utils as Utils
 import json
 import time
 import openseed_setup as Settings
@@ -41,8 +42,17 @@ def update_check(check):
 		result = music.fetchall()
 		for artist in result:
 			if str(artists).find(artist[0]) == -1:
-				Get.search_artist(artist[0],100)
+				Get.search_artist(artist[0],500)
 				artists.append(artist[0])
+		music.close()
+		return(1)
+	if check == "oggs":
+		music = ipfs.cursor()
+		search = "SELECT title,ipfs FROM `audio` WHERE ogg IS NULL OR ogg NOT LIKE '_%'"
+		music.execute(search)
+		result = music.fetchall()
+		for oggless in result:
+			Utils.oggify_and_share(oggless[1])
 		music.close()
 		return(1)
 		
@@ -99,6 +109,7 @@ else:
 	while 1:
 		update_check("users")
 		update_check("music")
+		update_check("oggs")
 		time.sleep(5*60)
 
 

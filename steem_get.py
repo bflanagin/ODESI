@@ -117,8 +117,8 @@ def search_artist(author,limit) :
 def pin_and_record(ipfs,author,title,post,img,songtype,genre,songtags,duration):
  openseed = mysql.connector.connect(
 	host = "localhost",
-	user = "ipfsuser",
-	password = "b3V4ug3",
+	user = settings["ipfsuser"],
+	password = settings["ipfspassword"],
 	database = "ipfsstore"
 	)
  mysearch = openseed.cursor()
@@ -150,7 +150,6 @@ def pin_and_record(ipfs,author,title,post,img,songtype,genre,songtags,duration):
   #ipfs.wait()
   #stdout, stderr = ipfs.communicate()
   mycursor.close()
-  #oggify_and_share(str(stdout).split(" ")[1])
  elif(result == 1):
   if song[0][2] == "NULL" or song[0][2] == "" or song[0][2] == None or song[0][2] == "null":
    updatecursor = openseed.cursor()
@@ -161,30 +160,3 @@ def pin_and_record(ipfs,author,title,post,img,songtype,genre,songtags,duration):
 
  openseed.close()
 
-
-def oggify_and_share(thehash):
- openseed = mysql.connector.connect(
-	host = "localhost",
-	user = "ipfsuser",
-	password = "b3V4ug3",
-	database = "ipfsstore"
-	)
- mysearch = openseed.cursor()
- search = "SELECT ipfs,img FROM `audio` WHERE ipfs ='"+thehash+"'"
- mysearch.execute(search)
- result = mysearch.fetchall()
- process = subprocess.Popen(['ipfs', 'pin', 'ls', '--type', 'recursive', thehash], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
- process.wait()
- stdout, stderr = process.communicate()
- stored = str(stdout)
- if str(stderr) == "b''":
-  reformat = subprocess.Popen(['ffmpeg', '-n','-i', 'http://142.93.27.131:8080/ipfs/'+thehash, '-vn', '-c:a', 'libvorbis', '-q:a', '4', '/mnt/volume_sfo2_01/openseed/music/'+str(r[0])+'.ogg'])
-  reformat.wait()
-  add_to_ipfs = subprocess.Popen(['ipfs', 'add' , '/mnt/volume_sfo2_01/openseed/music/'+thehash+'.ogg'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-  add_to_ipfs.wait()
-  stdout, stderr = add_to_ipfs.communicate()
-  updatesql = openseed.cursor()
-  sql = "UPDATE audio SET ogg = '"+str(stdout).split(" ")[1]+"' WHERE ipfs ='"+thehash+"'"
-  updatesql.execute(sql)
-  openseed.commit()
-  openseed.close()
