@@ -50,6 +50,10 @@ from_client["data3"],from_client["data4"],from_client["data5"],from_client["type
 				response = Account.get_status(from_client["account"])
 			elif action == "update_status":
 				response = Account.update_status(from_client["account"],from_client["data"])
+			elif action == "get_history":
+				response = Account.get_history(from_client["account"],from_client["appID"],from_client["count"])
+			elif action == "update_history":
+				response = Account.update_history(from_client["account"],from_client["type"],from_client["appID"],from_client["data"])
 
 			elif action == "payment":
 					response = Submit.payment(from_client["steemaccount"],from_client["to"],from_client["amount"],from_client["for"],from_client["postingkey"])
@@ -95,6 +99,8 @@ from_client["data3"],from_client["data4"],from_client["data5"],from_client["type
 				response = Connections.user_profile(from_client["account"])
 
 			# Chat Functions #
+			elif action == "get_chat_history":
+				response = Chat.get_chat_history(from_client["uid"],from_client["account"],from_client["room"],from_client["count"],from_client["last"])
 			elif action == "get_chat":
 				response = Chat.get_chat(from_client["uid"],from_client["account"],from_client["room"],from_client["last"])
 			elif action == "send_chat":

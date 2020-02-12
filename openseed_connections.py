@@ -74,20 +74,22 @@ def get_openseed_connections(account):
   for u in exists1:
    cname = str(u).split("'")[1].replace("\\x00","")
    if accounts == "":
-    accounts = '"'+str(cname)+'", '+str(user_profile(str(cname)))
+    accounts = '"'+str(cname)+'":'+str(user_profile(str(cname)))
    else:
-    accounts = accounts+'\n"'+str(cname)+'", '+str(user_profile(str(cname)))
+    accounts = accounts+',"'+str(cname)+'":'+str(user_profile(str(cname)))
 
  if len(exists2) != 0:
   ac += len(exists2)
   for u in exists2:
    cname = str(u).split("'")[1].replace("\\x00","")
    if accounts == "":
-    accounts = '"'+str(cname)+'", '+str(user_profile(str(cname)))
+    accounts = '"'+str(cname)+'":'+str(user_profile(str(cname)))
    else:
-    accounts = accounts+'\n"'+str(cname)+'", '+str(user_profile(str(cname)))
+    accounts = accounts+',"'+str(cname)+'":'+str(user_profile(str(cname)))
 
- connections = str(ac)+'\n'+accounts
+ connections = '{'+accounts+'}'
+ #print(connections)
+ #test = json.loads(connections)
  return urllib.parse.unquote(connections)
 
 def get_account(account):

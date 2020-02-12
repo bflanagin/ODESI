@@ -84,10 +84,6 @@ def generate_publicid(id):
 
 	return mixer3[0:8]
 
-def generate_token(devpub,apppub,baseID,total,data):
-	tokenlist = '{error}'
-	
-	return tokenlist
 
 def to_char(thecode):
 	code = ""

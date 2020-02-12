@@ -4,6 +4,8 @@ import mysql.connector
 import hashlib
 import random
 import sys
+import json
+import subprocess
 sys.path.append("..")
 import openseed_seedgenerator as Seed
 from steem import Steem
@@ -241,6 +243,50 @@ def get_status(username):
 
 	return status
 
+def get_location(userID,appPubID):
+	locale = "0:1"
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+	user = openseed.cursor()
+	search = "SELECT appPubID,location FROM location WHERE userID = %s"
+	val = (userID,)
+	user.execute(search,val)
+	result = user.fetchall()
+	if result >= 0:
+		locale = json.dump(result[0])
+
+	return locale
+
+def update_location(userID,appPubID,location):
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+	user = openseed.cursor()
+	search = "SELECT * FROM location WHERE userID = %s"
+	val = (userID,)
+	user.execute(search,val)
+	result = user.fetchall()
+	if len(result) == 1:
+		update = "UPDATE location SET appPubID = %s location = %s WHERE userID = %s"
+		up = (appPubID,location,userID)
+		user.execute(update,up)
+	else:
+		insert = "INSERT INTO location (userID,appPubID,location) VALUES (%s,%s,%s)"
+		valin = (userID,appPubID,location)
+		user.execute(insert,valin)
+	openseed.commit()
+	user.close()
+	openseed.close()
+		
+	return 1
+
 def update_status(uid,data):
 	username = user_from_id(uid)
 	openseed = mysql.connector.connect(
@@ -272,11 +318,70 @@ def update_status(uid,data):
 
 	return update	
 
-def get_history(account,apppubIDcount):
-	return
+def get_history(account,appPubID,count):
+	search = ""
+	history = ""
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+	hist = openseed.cursor()
+	if appPubID == "all":
+		search = "SELECT data,date FROM `history` WHERE account = %s AND type !=1 ORDER BY date DESC"
+		vals = (id_from_user(account),)
+		hist.execute(search,vals)
+	else:
+		search = "SELECT data,date FROM `history` WHERE account = %s AND appID = %s ORDER BY date DESC"
+		vals = (id_from_user(account),appPubID)
+		hist.execute(search,vals)
 
-def update_history(account,apppubID,data):
-	return
+	result = hist.fetchall()
+	for item in result:
+		history += '{"history":"'+str(item[1])+'","item":'+item[0]+'}\n'
+	hist.close()
+	openseed.close()
+	return str("::h::"+history+"::h::")
+
+def update_history(account,history_type,appId,data):
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+	newdat = data
+	
+	if history_type == "1":
+		newdat = '{"program_start":"'+data["program_start"]+'"}'
+	if history_type == "2":
+		newdat = '{"program_stop":"'+data["program_stop"]+'"}'
+	if history_type == "3":
+		newdat = '{"playing":"'+data["playing"]+'"}'
+	if history_type == "4":
+		newdat = '{"purchase":"'+data["purchase"]+'"}'
+	if history_type == "5":
+		newdat = '{"download":"'+data["download"]+'"}'
+	if history_type == "6":
+		newdat = '{"linked":"'+data["linked"]+'"}'
+
+	hist = openseed.cursor()
+	check = "SELECT data FROM history WHERE account = %s AND data = %s"
+	checked = (account,newdat,)
+	hist.execute(check,checked)
+	result = hist.fetchall()
+	sonj = json.loads(data)
+	if "post" not in sonj or len(result) == 0:
+		insert = "INSERT INTO history (account,appID,type,data) VALUES (%s,%s,%s,%s)"
+		vals = (account,appId,str(history_type),newdat,)
+		hist.execute(insert,vals)
+		openseed.commit()
+		hist.close()
+		openseed.close()
+		
+
+	return "1"
 
 
 
@@ -335,6 +440,24 @@ class Steem:
 		mycursor.close()
 		openseed.close()
 		print("Account Verified")
-
-
+	
+	def from_posting_key(username,key,save):
+		s.wallet.unlock(user_passphrase=settings["passphrase"])
+		user = s.get_account(username)
+		keyArray = s.wallet.getPublicKeys()
+		username_from_steem = user["name"]
+		pubkey_from_steem = user["posting"]["key_auths"][0][0]
+		if pubkey_from_steem in keyArray and username == username_from_steem:
+			print("Accepted")
+			if save == 1:
+				return '{"server":"saved"}'
+			else:
+				s.wallet.removeAccount(username)
+				return '{"server":"accepted"}'
+		elif username == username_from_steem:
+			s.wallet.addPrivateKey(key)
+			print("New User")
+			return '{"server":"added"}'
+		else:
+			return '{"server":"denied"}'
 
