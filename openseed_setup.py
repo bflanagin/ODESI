@@ -74,10 +74,13 @@ def create_openseed_users(admin,adminPassword,username,password):
 			host = "localhost",
 			user = admin,
 			password = adminPassword
-
+			)
 	cursor = db.cursor()
 	command = "CREATE USER '"+username+"'@'localhost' IDENTIFIED BY '"+password
 	cursor.execute(command)
+	flush = "FLUSH PRIVILEGES"
+	cursor.execute(flush)
+	cursor.commit()
 	cursor.close()
 	return 1
 
@@ -87,7 +90,19 @@ def create_ipfs_tables(username,password,db):
 			user = username,
 			password = password,
 			database = db
+			)
 	cursor = db.cursor()
+	tables = [["applications","ipfs text,devID text,appID text,version double,downloads int"],
+		["assets","ipfs text,devID text,appID text,version double,downloads int"],
+		["audio","ipfs text,author text,title text,post text,img text,date timestamp,ogg text,curation text,type text,genre text,tags text,duration text"],
+		["images","ipfs text,source text,originated text,type text ,version double"],
+		["video","ipfs text,author text,title text,post text,img text,date double,webm text,curation text,type text,genre text,tags text,duration text"]
+		]
+	for tab in tables: 
+		command = "CREATE TABLE" + tab[0] +"("+tab[1]+")"
+		cursor.execute(command)
+		cursor.commit()
+
 	cursor.close()
 	return 1
 
@@ -97,11 +112,22 @@ def create_openseed_tables(username,password,db):
 			user = username,
 			password = password,
 			database = db
+			)
 	cursor = db.cursor()
+	tables = [["applications","appNum int,devID text,appID text,publicID text,appName text, date timestamp"],
+		["app_data_priv","count int, devID text, appID text, data text"],
+		["app_data_pub","count int, devID text, appID text, data text"]
+		]
+	for tab in tables: 
+		command = "CREATE TABLE" + tab[0] +"("+tab[1]+")"
+		cursor.execute(command)
+		cursor.commit()
+
+	cursor.commit()
 	cursor.close()
 	return 1
 
 
-if len(sys.argv) > 1 and sys.argv[1] == "new":
-	create_node()
+#if len(sys.argv) > 1 and sys.argv[1] == "new":
+#	create_node()
 	

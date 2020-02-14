@@ -169,18 +169,18 @@ def create_developer(devName,contactName,contactEmail,steem):
 		database = "openseed"
 		)
 	if check_db(devName,"developers") != 1:
-		devid = Seed.generate_userid(devName,contactName,contactEmail)
-		pubid = Seed.generate_publicid(devid)
+		devID = Seed.generate_userid(devName,contactName,contactEmail)
+		pubID = Seed.generate_publicid(devID)
 		mycursor = openseed.cursor()
 		sql = "INSERT INTO `developers` (`devID`,`publicID`,`devName`,`contactName`,`contactEmail`,`steem`) VALUES (%s,%s,%s,%s,%s,%s)"
-		val = (str(devid),str(pubid),str(devName),str(contactName),str(contactEmail),str(steem)) 
+		val = (str(devID),str(pubID),str(devName),str(contactName),str(contactEmail),str(steem)) 
 		mycursor.execute(sql,val)	
 		openseed.commit()
 		mycursor.close()
 		openseed.close()
-		return devid
+		return '{"devID":"'+devID+'","pubID":"'+pubID+'"}'
 	else:
-		return "exists"
+		return '{"devID":"exists","pubID":"exists"}'
 
 def create_app(devID,appName):
 	openseed = mysql.connector.connect(
@@ -194,14 +194,14 @@ def create_app(devID,appName):
 		pubID = Seed.generate_publicid(devID,AppName,devID+AppName+devID)
 		mycursor = openseed.cursor()
 		sql = "INSERT INTO `applications` (`devID`,`appID`,`publicID`,`appName`) VALUES (%s,%s,%s,%s)"
-		val = (str(devID),str(appID),str(publicID),str(appName)) 
+		val = (str(devID),str(appID),str(pubID),str(appName)) 
 		mycursor.execute(sql,val)	
 		openseed.commit()
 		mycursor.close()
 		openseed.close()
-		return appID
+		return '{"appID":"'+appID+'","pubID":"'+pubID+'"}'
 	else:
-		return "exists"
+		return '{"appID":"exists","pubID":"exists"}'
 
 
 def create_profile(theid,data1,data2,data3,data4,data5,thetype):
