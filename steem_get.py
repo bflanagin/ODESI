@@ -11,6 +11,7 @@ import openseed_music as Music
 import steem_submit as Submit
 import openseed_ipfs as IPFS
 import openseed_setup as Settings
+import openseed_account as Account
 
 settings = Settings.get_settings()
 
@@ -87,7 +88,7 @@ def local_search(author):
   return (Music.get_artist_tracks(author))
 
 
-def search_artist(author,limit) :
+def search_music(author,limit) :
  local = local_search(author)
  activity = s.get_account_history(author,index_from = -1,limit = limit)
  for post_info in activity :
@@ -102,7 +103,6 @@ def search_artist(author,limit) :
      if tags != None:
       if str(tags).find("dsound") != -1:
        if str(metadata.keys()).find("audio") != -1:
-        
         songtype = metadata["audio"]["type"]
         songtags = tags
         duration = metadata["audio"]["duration"]
@@ -111,7 +111,43 @@ def search_artist(author,limit) :
         img = metadata["audio"]["files"]["cover"]
         genre = metadata["audio"]["genre"]
         IPFS.pin_and_record(ipfs,artist,title,permlink,img,songtype,genre,songtags,duration)
+       
  return(local)
+
+def search_history(user,limit):
+ openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+ mysearch = openseed.cursor()
+ search = "SELECT userId FROM `users` WHERE steem = %s"
+ mysearch.execute(search,(user,))
+ result = mysearch.fetchall()
+
+ activity = s.get_account_history(user,index_from = -1,limit = limit)
+ tags = ""
+ for post_info in activity :
+  if post_info != None:
+   if post_info[1]["op"][0] == "comment" and post_info[1]['op'][1]['author'] == user:
+    permlink = post_info[1]['op'][1]['permlink']
+    title = post_info[1]['op'][1]['title']
+    if str(post_info[1]["op"][1].keys()).find("json_metadata") != -1:
+     if len(post_info[1]["op"][1]["json_metadata"]) > 4:
+      metadata = json.loads(post_info[1]["op"][1]["json_metadata"])
+      if metadata != '' and str(metadata.keys()).find("tags") != -1:
+       tags = metadata["tags"]
+    if len(title) > 2:
+    	data = '{"post":{"title":"'+title+'","permlink":"'+permlink+'","tags":"'+str(tags)+'"}}'
+    	Account.update_history(str(result[0][0].decode()),9,"steem",str(data))
+    break
+
+
+ mysearch.close()
+ openseed.close()
+
+ return
 
 
 def pin_and_record(ipfs,author,title,post,img,songtype,genre,songtags,duration):

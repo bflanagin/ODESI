@@ -42,10 +42,24 @@ def update_check(check):
 		result = music.fetchall()
 		for artist in result:
 			if str(artists).find(artist[0]) == -1:
-				Get.search_artist(artist[0],500)
+				Get.search_music(artist[0],500)
 				artists.append(artist[0])
 		music.close()
 		return(1)
+	
+	if check == "history":
+		users = openseed.cursor()
+		userList = []
+		search = "SELECT userId,steem FROM `users` WHERE steem IS NOT NULL"
+		users.execute(search)
+		result = users.fetchall()
+		for user in result:
+			if str(userList).find(user[1].decode()) == -1:
+				Get.search_history(user[1].decode(),100)
+				userList.append(user[1].decode())
+		users.close()
+		return(1)
+
 	if check == "oggs":
 		music = ipfs.cursor()
 		search = "SELECT title,ipfs FROM `audio` WHERE ogg IS NULL OR ogg NOT LIKE '_%'"
@@ -110,6 +124,7 @@ else:
 		update_check("users")
 		update_check("music")
 		update_check("oggs")
+		update_check("history")
 		time.sleep(5*60)
 
 
