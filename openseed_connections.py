@@ -1,6 +1,5 @@
 #!/usr/bin/python
-import cgi
-import cgitb
+
 import sys
 import mysql.connector
 import hashlib
@@ -14,22 +13,6 @@ import openseed_setup as Settings
 settings = Settings.get_settings()
 
 s = Steem()
-form = cgi.FieldStorage()
-
-action = form.getvalue("act")
-steem = form.getvalue("steem")
-accountKey = form.getvalue("key")
-devId = form.getvalue('devId')
-appId = form.getvalue('appId')
-username = form.getvalue('username')
-steemname = form.getvalue('steemname')
-email = form.getvalue('email')
-passphrase = form.getvalue('passphrase')
-onetime = form.getvalue('onetime')
-userid = form.getvalue('userid')
-request = form.getvalue('request')
-response = form.getvalue('response')
-
 
 def get_steem_connections(account):
  connection = []
@@ -52,7 +35,7 @@ def get_steem_connections(account):
  return(json.dumps(connection))
 
 def get_openseed_connections(account):
- connections = '{"connections":"0"}'
+ connections = '{"connections":"none"}'
  ac = 0
  accounts = ""
  openseed = mysql.connector.connect(
@@ -62,8 +45,8 @@ def get_openseed_connections(account):
 		database = "openseed"
 		)
  request_search = openseed.cursor()
- search1 = "SELECT userid2 FROM `connections` WHERE userid1 = %s AND response = 2"
- search2 = "SELECT userid1 FROM `connections` WHERE userid2 = %s AND response = 2"
+ search1 = "SELECT userid2,response FROM `connections` WHERE userid1 = %s AND response != 0"
+ search2 = "SELECT userid1,response FROM `connections` WHERE userid2 = %s AND response != 0"
  vals = (account, )
  request_search.execute(search1,vals)
  exists1 = request_search.fetchall()
@@ -72,25 +55,24 @@ def get_openseed_connections(account):
  if len(exists1) != 0:
   ac += len(exists1)
   for u in exists1:
-   cname = str(u).split("'")[1].replace("\\x00","")
+   cname = str(u[0])
    if accounts == "":
-    accounts = '"'+str(cname)+'":'+str(user_profile(str(cname)))
+    accounts = '{"name":"'+str(cname)+'","linked":"'+str(u[1])+'","data":'+str(user_profile(str(cname)))+'}'
    else:
-    accounts = accounts+',"'+str(cname)+'":'+str(user_profile(str(cname)))
+    accounts = accounts+',{"name":"'+str(cname)+'","linked":"'+str(u[1])+'","data":'+str(user_profile(str(cname)))+'}'
 
  if len(exists2) != 0:
   ac += len(exists2)
   for u in exists2:
-   cname = str(u).split("'")[1].replace("\\x00","")
+   cname = str(u[0])
    if accounts == "":
-    accounts = '"'+str(cname)+'":'+str(user_profile(str(cname)))
+    accounts = '{"name":"'+str(cname)+'","linked":"'+str(u[1])+'","data":'+str(user_profile(str(cname)))+'}'
    else:
-    accounts = accounts+',"'+str(cname)+'":'+str(user_profile(str(cname)))
+    accounts = accounts+',{"name":"'+str(cname)+'","linked":"'+str(u[1])+'","data":'+str(user_profile(str(cname)))+'}'
 
- connections = '{'+accounts+'}'
- #print(connections)
- #test = json.loads(connections)
- return urllib.parse.unquote(connections)
+ connections = '{"connections":['+accounts.replace("'","\'")+']}'
+
+ return connections
 
 def get_account(account):
  profile = '{"profile":"Not found"}'
@@ -119,9 +101,11 @@ def profile(theid):
  profile = result[0][0]+"','"+result[0][1]+"','"+result[0][2]+"','"+result[0][3]+"','"+steeminfo
  mysearch.close()
  openseed.close()
+
  return(profile)
 
 def user_profile(username):
+ print(username)
  openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
@@ -136,7 +120,7 @@ def user_profile(username):
  mysearch.execute(user,val)
  
  userid = mysearch.fetchall()
- theid = userid[0][0].decode()
+ theid = userid[0][0]
  search = "SELECT data1,data2,data3,data4,data5 FROM `profiles` WHERE `id` = %s"
  sval = (theid,)
  mysearch.execute(search,sval)
@@ -167,13 +151,13 @@ def user_profile(username):
  else:
   data5 = '{}'
 
- profile = '{"data1":'+data1+',"data2":'+data2+',"data3":'+data3+',"data4":'+data4+',"data5":'+data5+'}'
+ profile = '{"data1":'+data1.replace("\n","")+',"data2":'+data2.replace("\n","")+',"data3":'+data3.replace("\n","")+',"data4":'+data4.replace("\n","")+',"data5":'+data5.replace("\n","")+'}'
  mysearch.close()
  openseed.close()
- 
+ json.loads(profile)
  return(profile)
  
-
+# Requests have three states 1 pending 2 accepted 0 denied. 
 
 def send_request(userid1,userid2,response):
  output = ""
@@ -194,7 +178,7 @@ def send_request(userid1,userid2,response):
   values = (userid1,userid2,response)
   request_search.execute(insert,values)
   openseed.commit()
-  output = "added"
+  output = '{"request":"sent"}'
 
  elif(response != 1):
   
@@ -202,25 +186,64 @@ def send_request(userid1,userid2,response):
   values = (response,userid1,userid2)
   request_search.execute(update,values)
   openseed.commit()
-  output = "updated"
+  output = '{"request":"updated"}'
 	
  request_search.close()
  openseed.close()
  return output 
+
+def get_requests(username,data):
+ requests = []
+ openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+ mysearch = openseed.cursor()
+ search = "SELECT * FROM connections WHERE userid2 = %s AND response = 1"
+ val = (username, )
+ mysearch.execute(search,val)
+ result = mysearch.fetchall()
+ if len(result) > 0:
+  for a in result:
+   if int(a[0]) > int(data): 
+    requests.append('{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","response":"'+str(a[3]).split("'")[1]+'"}')
+ else:
+  requests.append('{"request":"none"}')
  
+ mysearch.close()
+ openseed.close()
 
-print("Content-type:text/html\r\n")
+ return str(requests)
 
-if action == "get_steem":
- print(get_steem_connections(steem))
-if action == "get_openseed":
- print(get_openseed_connections(username))
-if action == "profile_small":
- print(get_account(steem))
-if action == "profile":
- print(profile(userid))
-if action == "user_profile":
- print(urllib.parse.quote(user_profile(username)))
-if action == "send_request":
- print(send_request(username,request,response))
+def request_status(username,data):
+ status = '{"request":"denied"}'
+ jsoned = status
+ openseed = mysql.connector.connect(
+		host = "localhost",
+		user = "openseed",
+		password = "b3V4ug3",
+		database = "openseed"
+		)
+ mysearch = openseed.cursor()
+ search = "SELECT * FROM connections WHERE userid1 = %s AND userid2 = %s"
+ val1 = (username,data)
+ val2 = (data,username)
+ mysearch.execute(search,val1)
+ result1 = mysearch.fetchall()
+ mysearch.execute(search,val2)
+ result2 = mysearch.fetchall()
+ if len(result1) == 1:
+  status = result1[0]
+  #print(status)
+  jsoned = '{"request":"'+str(status).split(",")[3].split("'")[1]+'"}'
+ elif len(result2) == 1:
+  status = result2[0]
+  #print(status)	
+  jsoned = '{"request":"'+str(status).split(",")[3].split("'")[1]+'"}'
 
+ mysearch.close()
+ openseed.close() 
+ return jsoned
+ 

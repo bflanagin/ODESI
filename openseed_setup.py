@@ -43,6 +43,7 @@ def create_node():
 	print("\n\n Creating OpenSeed database using supplied account.")
 	# Create OpenSeed database
 	create_database(LocaladminID,LocaladminPassword,"openseed")
+	create_database(LocaladminID,LocaladminPassword,"openseed_sync")
 	print("\n\n Creating ipfs database using supplied account.")
 	# Create ipfs database
 	create_database(LocaladminID,LocaladminPassword,"ipfs")
@@ -64,7 +65,7 @@ def create_database(username,password,database):
 			password = password
 			)
 	cursor = db.cursor()
-	create = "CREATE DATABASE "+database
+	create = "CREATE DATABASE "+database+"COLLATE utf8_unicode_ci"
 	cursor.execute(create)
 	cursor.close()
 	return 1	
@@ -114,9 +115,42 @@ def create_openseed_tables(username,password,db):
 			database = db
 			)
 	cursor = db.cursor()
-	tables = [["applications","appNum int,devID text,appID text,publicID text,appName text, date timestamp"],
-		["app_data_priv","count int, devID text, appID text, data text"],
-		["app_data_pub","count int, devID text, appID text, data text"]
+	tables = [["applications","appNum int AUTO_INCREMENT,devID text,appID text,publicID text,appName text, date timestamp"],
+		["app_data_priv","count int AUTO_INCREMENT, devID text, appID text, data text"],
+		["app_data_pub","count int AUTO_INCREMENT, devID text, appID text, data text"],
+		["chat","id int AUTO_INCREMENT","room text ","title text","attendees text","record blob","date timestamp","speaker text"]
+		["connections","connect_id int AUTO_INCREMENT","userid1 text","userid2 text ","response int"]
+		["developers","devnum int AUTO_INCREMENT","devID text","publicID text","devName text","contactName text","contactEmail text","steem text","date timestamp"]
+		["ft_ledger","count int AUTO_INCREMENT","token_id text","creator_id text","hash text","owner_id text"]
+		["history","count int AUTO_INCREMENT","account text","appid text","type tinytext","data text","date timestamp"]
+		["location","count int AUTO_INCREMENT","userID text","appPubID text","location text","date timestamp"]
+		["logins","login_index int AUTO_INCREMENT","username text","appid text","lastseen timestamp","data text"]
+		["nft_ledger","count int AUTO_INCREMENT","token_id text","creator_id text","hash text","owner_id text"]
+		["nft_library","count int AUTO_INCREMENT","token_id text","creator_id text","version int","type int","preview text","asset text","unique_data text","description blob","upgradable tinyint","license int","license_file text","hash text","number int"]
+		["nft_schema","count int AUTO_INCREMENT","token_base_id text","creator_id text","version int","type int","preview text","asset text","unique_data text","description blob","upgradable tinyint","license int","license_file text","total_available int"]
+		["onetime","codeNum int AUTO_INCREMENT","type int","code text","registered text","validusers text","room text","date timestamp"]
+		["profiles","id text","data1 text","data2 text","data3 text","data4 text","data5 text","type varchar"]
+		["users",]
+		["temp_data","temp_index int AUTO_INCREMENT","devID text","appID text","data mediumtext","date timestamp"]
+		]
+	for tab in tables: 
+		command = "CREATE TABLE" + tab[0] +"("+tab[1]+")"
+		cursor.execute(command)
+		cursor.commit()
+
+	cursor.commit()
+	cursor.close()
+	return 1
+
+def create_openseed_sync_tables(username,password,db):
+	db = mysql.connector.connect(
+			host = "localhost",
+			user = username,
+			password = password,
+			database = db
+			)
+	cursor = db.cursor()
+	tables = [["servers","count int AUTO_INCREMENT","seed text","account text","address text","updated timestamp CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP","rank int","priority int"]
 		]
 	for tab in tables: 
 		command = "CREATE TABLE" + tab[0] +"("+tab[1]+")"

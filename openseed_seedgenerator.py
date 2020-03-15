@@ -28,7 +28,13 @@ def generate_userid(name,passphrase,email):
 	hash1 = hashlib.md5(mixer1.encode())
 	hash2 = hashlib.md5(mixer2.encode())
 	
-	count3 = 0	
+	count3 = 0
+	stir = ""
+	if len(str(hash1.hexdigest())) >= len(str(hash2.hexdigest())):
+		stir = str(hash1.hexdigest())
+	else:
+		stir = str(hash2.hexdigest())
+	
 	while count3 < len(mixer1):
 		mixer3 = mixer3+str(hash1.hexdigest()[count3])+str(hash2.hexdigest()[count3])
 		count3 += 1
@@ -193,4 +199,92 @@ def update_key(thetype,register,validusers):
 	openseed.close()
 
 	return str(code)
+
+def simp_crypt(key,raw_data):
+	key = key.replace("0","q")\
+			.replace("1","a").replace("2","b")\
+			.replace("3","c").replace("4","d")\
+			.replace("5","F").replace("6","A")\
+			.replace("7","Z").replace("8","Q")\
+			.replace("9","T").replace("#","G")\
+			.replace("!","B").replace(",","C")\
+			.replace(" ","!").replace("/","S")\
+			.replace("=","e").replace(":","c")\
+			.replace("\n","n")
+	secret = ""
+	datanum = 0
+	digits = ""
+	#//lets turn it into integers first//
+	for t in raw_data.replace("%", ":percent:").replace("&", ":ampersand:"):
+		c = t.ord_at(0)
+		digits += str(c)+" "
+		
+	data = digits+str(str(" ").ord_at(0))
+	while datanum < len(data):
+		keynum = 0
+		while keynum < len(key):
+			salt = int(round(randf() * 40))
+			if keynum < len(data) and salt % 3 == 0 and datanum < len(data):
+				if data[datanum] == key[keynum]:
+					num = keynum
+					while num < len(key) -1:
+						secret = secret + key[num]
+						num += 1
+						if data[datanum] != key[num]:
+							keynum = num
+							secret = secret+data[datanum]
+							break
+						else:
+							secret = secret + key[num]
+				else:
+					secret = secret+data[datanum]
+				datanum += 1
+			else:
+				if keynum < len(key) and key[keynum]:
+					secret = secret + key[keynum]
+				else:
+					keynum = 0
+					secret = secret + key[keynum]
+			keynum += 1
+	return secret.replace(" ","zZz")
+
+def simp_decrypt(key,raw_data):
+	key = key.replace("0","q")\
+			.replace("1","a").replace("2","b")\
+			.replace("3","c").replace("4","d")\
+			.replace("5","F").replace("6","A")\
+			.replace("7","Z").replace("8","Q")\
+			.replace("9","T").replace("#","G")\
+			.replace("!","B").replace(",","C")\
+			.replace(" ","!").replace("/","S")\
+			.replace("=","e").replace(":","c")\
+			.replace("\n","n")
+			
+	key_stretch = key
+	message = ""
+	datanum = 0
+	decoded = ""
+
+	data = raw_data.replace("zZz"," ")
+
+	if key_stretch != "":
+		if len(data) > len(key_stretch):
+			while len(key_stretch) < len(data):
+				key_stretch = key_stretch + key
+
+		while datanum < len(data):
+			if key_stretch[datanum] != data[datanum]:
+				if data[datanum]:
+					message = message + data[datanum]
+				else:break
+			datanum = datanum + 1
+			
+		for c in message.split(" "):
+			if len(c) <= 4 and len(c) > 0:
+				if int(c) < 255:
+					decoded += chr(int(c))
+				else:
+					decoded = "Unable to Decrypt"
+
+	return decoded.replace(":percent:","%").replace(":ampersand:","&")
 	
