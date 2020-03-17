@@ -76,6 +76,7 @@ def create_database(username,password,database):
 def create_openseed_users(admin,adminPassword,username,password,database):
 	db = mysql.connector.connect(
 			host = "localhost",
+			user = "root"
 			#user = admin,
 			#password = adminPassword
 			)
