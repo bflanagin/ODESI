@@ -53,6 +53,7 @@ You may leave these blank if you are unsure or if you would rather the main node
 	dbpassword = input("Now enter the password for "+dbuser+" :")
 	print("\nSetting up user and rights to the database")
 	#Setup rights
+	create_openseed_users(LocaladminID,LocaladminPassword,dbuser,dbpassword)
 	print("\nNow enter the desired username for the ipfs centric database \n")
 	ipfsuser = input("IPFS database user: ")
 	ipfspassword = input(ipfsuser+"'s password: ")
@@ -65,7 +66,7 @@ def create_database(username,password,database):
 			password = password
 			)
 	cursor = db.cursor()
-	create = "CREATE DATABASE "+database+"COLLATE utf8_unicode_ci"
+	create = "CREATE DATABASE "+database+" CHARACTER SET utf8 COLLATE utf8_unicode_ci"
 	cursor.execute(create)
 	cursor.close()
 	return 1	
