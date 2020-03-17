@@ -31,7 +31,7 @@ def create_node():
 	print("\n")
 	print("Welcome to the OpenSeed Setup. Please read the next dialogs carefully.\nThese settings will be writen to a openseed_settings.json for reference later.")
 	print("\n(Press any key to continue)")
-	agree = input()
+	input()
 	print("\n These next two options are for if you intend to post to the steem blockchain on your own behalf or on behalf of others.\n\
 		 You may leave these blank if you are unsure or if you would rather the main node to handle chain operations.\n")
 
@@ -150,8 +150,8 @@ def create_openseed_sync_tables(username,password,db):
 			database = db
 			)
 	cursor = db.cursor()
-	tables = [["servers","count int AUTO_INCREMENT","seed text","account text","address text","updated timestamp CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP","rank int","priority int"]
-		  ["currentUsers","count int AUTO_INCREMENT","token text","account text","updated timestamp CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"]
+	tables = [["servers","count int AUTO_INCREMENT,seed text,account text,address text,updated timestamp CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,rank int,priority int"]
+		  ["currentUsers","count int AUTO_INCREMENT,token text,account text,updated timestamp CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"]
 		]
 	for tab in tables: 
 		command = "CREATE TABLE IF NOT EXISTS" + tab[0] +"("+tab[1]+")"
