@@ -32,31 +32,31 @@ def create_node():
 	print("Welcome to the OpenSeed Setup. Please read the next dialogs carefully.\nThese settings will be writen to a openseed_settings.json for reference later.")
 	print("\n(Press any key to continue)")
 	input()
-	print("\n These next two options are for if you intend to post to the steem blockchain on your own behalf or on behalf of others.\n\
+	print("\nThese next two options are for if you intend to post to the steem blockchain on your own behalf or on behalf of others.\n\
 You may leave these blank if you are unsure or if you would rather the main node to handle chain operations.\n")
 
 	steemaccount = input("Please enter steemaccount: ")
 	passphrase = input("Please enter phasphrase to unlock local keychain: ")
-	print("\n Next up we will need to setup databases to store and retrieve information. \n")
+	print("\nNext up we will need to setup databases to store and retrieve information. \n")
 	LocaladminID = input("Enter the account name of the mysql database admin: ")
 	LocaladminPassword = input(LocaladminID+"'s password: ")
-	print("\n\n Creating OpenSeed database using supplied account.")
+	print("\n\nCreating OpenSeed database using supplied account.")
 	# Create OpenSeed database
 	create_database(LocaladminID,LocaladminPassword,"openseed")
 	create_database(LocaladminID,LocaladminPassword,"openseed_sync")
-	print("\n\n Creating ipfs database using supplied account.")
+	print("\n\nCreating ipfs database using supplied account.")
 	# Create ipfs database
 	create_database(LocaladminID,LocaladminPassword,"ipfs")
 
-	print("\n \n Now we will create the users to access the databases \n \n") 
+	print("\n\nNow we will create the users to access the databases \n \n") 
 	dbuser = input("Please enter the username for the openseed database: ")
 	dbpassword = input("Now enter the password for "+dbuser+" :")
-	print("\n Setting up user and rights to the database")
+	print("\nSetting up user and rights to the database")
 	#Setup rights
-	print("\n Now enter the desired username for the ipfs centric database \n")
+	print("\nNow enter the desired username for the ipfs centric database \n")
 	ipfsuser = input("IPFS database user: ")
 	ipfspassword = input(ipfsuser+"'s password: ")
-	print("\n Setting up user and rights to the database")
+	print("\nSetting up user and rights to the database")
 
 def create_database(username,password,database):
 	db = mysql.connector.connect(
