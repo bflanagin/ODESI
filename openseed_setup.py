@@ -78,7 +78,7 @@ def create_openseed_users(admin,adminPassword,username,password):
 			password = adminPassword
 			)
 	cursor = db.cursor()
-	command = "CREATE USER '"+username+"'@'localhost' IDENTIFIED BY '"+password
+	command = "CREATE USER '"+username+"'@'localhost' IDENTIFIED BY '"+password+"'"
 	cursor.execute(command)
 	flush = "FLUSH PRIVILEGES"
 	cursor.execute(flush)
