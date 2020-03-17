@@ -100,7 +100,7 @@ def create_ipfs_tables(username,password,db):
 		["video","ipfs text,author text,title text,post text,img text,date double,webm text,curation text,type text,genre text,tags text,duration text"]
 		]
 	for tab in tables: 
-		command = "CREATE TABLE" + tab[0] +"("+tab[1]+")"
+		command = "CREATE TABLE IF NOT EXISTS" + tab[0] +"("+tab[1]+")"
 		cursor.execute(command)
 		cursor.commit()
 
@@ -115,26 +115,26 @@ def create_openseed_tables(username,password,db):
 			database = db
 			)
 	cursor = db.cursor()
-	tables = [["applications","appNum int AUTO_INCREMENT,devID text,appID text,publicID text,appName text, date timestamp"],
-		["app_data_priv","count int AUTO_INCREMENT, devID text, appID text, data text"],
-		["app_data_pub","count int AUTO_INCREMENT, devID text, appID text, data text"],
-		["chat","id int AUTO_INCREMENT","room text ","title text","attendees text","record blob","date timestamp","speaker text"]
-		["connections","connect_id int AUTO_INCREMENT","userid1 text","userid2 text ","response int"]
-		["developers","devnum int AUTO_INCREMENT","devID text","publicID text","devName text","contactName text","contactEmail text","steem text","date timestamp"]
-		["ft_ledger","count int AUTO_INCREMENT","token_id text","creator_id text","hash text","owner_id text"]
-		["history","count int AUTO_INCREMENT","account text","appid text","type tinytext","data text","date timestamp"]
-		["location","count int AUTO_INCREMENT","userID text","appPubID text","location text","date timestamp"]
-		["logins","login_index int AUTO_INCREMENT","username text","appid text","lastseen timestamp","data text"]
-		["nft_ledger","count int AUTO_INCREMENT","token_id text","creator_id text","hash text","owner_id text"]
-		["nft_library","count int AUTO_INCREMENT","token_id text","creator_id text","version int","type int","preview text","asset text","unique_data text","description blob","upgradable tinyint","license int","license_file text","hash text","number int"]
-		["nft_schema","count int AUTO_INCREMENT","token_base_id text","creator_id text","version int","type int","preview text","asset text","unique_data text","description blob","upgradable tinyint","license int","license_file text","total_available int"]
-		["onetime","codeNum int AUTO_INCREMENT","type int","code text","registered text","validusers text","room text","date timestamp"]
-		["profiles","id text","data1 text","data2 text","data3 text","data4 text","data5 text","type varchar"]
-		["users",]
-		["temp_data","temp_index int AUTO_INCREMENT","devID text","appID text","data mediumtext","date timestamp"]
+	tables = [["applications","appNum int AUTO_INCREMENT,devID text,appID text,publicID text,appName text, date timestamp CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"],
+		["app_data_priv","count int AUTO_INCREMENT, devID text, appID text, data text , date timestamp CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"],
+		["app_data_pub","count int AUTO_INCREMENT, devID text, appID text, data text, date timestamp CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"],
+		["chat","id int AUTO_INCREMENT , room text , title text , attendees text, record blob, date timestamp CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, speaker text"]
+		["connections","connect_id int AUTO_INCREMENT, userid1 text, userid2 text , response int,date timestamp CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"]
+		["developers","devnum int AUTO_INCREMENT,devID text,publicID text,devName text,contactName text,contactEmail text,steem text,date timestamp CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"]
+		["ft_ledger","count int AUTO_INCREMENT,token_id text,creator_id text,hash text,owner_id text,date timestamp CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"]
+		["history","count int AUTO_INCREMENT,account text,appid text,type tinytext,data text,date timestamp CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"]
+		["location","count int AUTO_INCREMENT,userID text,appPubID text,location text,date timestamp CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"]
+		["logins","login_index int AUTO_INCREMENT,username text,appid text,lastseen timestamp CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,data text"]
+		["nft_ledger","count int AUTO_INCREMENT,token_id text,creator_id text,hash text,owner_id text,date timestamp CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"]
+		["nft_library","count int AUTO_INCREMENT,token_id text,creator_id text,version int,type int,preview text,asset text,unique_data text,description blob,upgradable tinyint,license int,license_file text,hash text,number int,date timestamp CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"]
+		["nft_schema","count int AUTO_INCREMENT,token_base_id text,creator_id text,version int,type int,preview text,asset text,unique_data text,description blob,upgradable tinyint,license int,license_file text","total_available int,date timestamp CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"]
+		["onetime","codeNum int AUTO_INCREMENT,type int,code text,registered text,validusers text,room text,date timestamp CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"]
+		["profiles","id text,data1 text,data2 text,data3 text,data4 text,data5 text,type varchar,date timestamp CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"]
+		["users","userNum int AUTO_INCREMENT, userid text,userPub text,username text, email text, steem text, creationdate timestamp CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,verified text"]
+		["temp_data","temp_index int AUTO_INCREMENT,devID text,appID text,data mediumtext,date timestamp CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"]
 		]
 	for tab in tables: 
-		command = "CREATE TABLE" + tab[0] +"("+tab[1]+")"
+		command = "CREATE TABLE IF NOT EXISTS" + tab[0] +"("+tab[1]+")"
 		cursor.execute(command)
 		cursor.commit()
 
@@ -151,9 +151,10 @@ def create_openseed_sync_tables(username,password,db):
 			)
 	cursor = db.cursor()
 	tables = [["servers","count int AUTO_INCREMENT","seed text","account text","address text","updated timestamp CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP","rank int","priority int"]
+		  ["currentUsers","count int AUTO_INCREMENT","token text","account text","updated timestamp CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"]
 		]
 	for tab in tables: 
-		command = "CREATE TABLE" + tab[0] +"("+tab[1]+")"
+		command = "CREATE TABLE IF NOT EXISTS" + tab[0] +"("+tab[1]+")"
 		cursor.execute(command)
 		cursor.commit()
 
@@ -162,6 +163,6 @@ def create_openseed_sync_tables(username,password,db):
 	return 1
 
 
-#if len(sys.argv) > 1 and sys.argv[1] == "new":
-#	create_node()
+if len(sys.argv) > 1 and sys.argv[1] == "new":
+	create_node()
 	
