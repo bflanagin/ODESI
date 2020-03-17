@@ -82,7 +82,7 @@ def create_openseed_users(admin,adminPassword,username,password):
 	cursor.execute(command)
 	flush = "FLUSH PRIVILEGES"
 	cursor.execute(flush)
-	cursor.commit()
+	db.commit()
 	cursor.close()
 	return 1
 
@@ -103,7 +103,7 @@ def create_ipfs_tables(username,password,db):
 	for tab in tables: 
 		command = "CREATE TABLE IF NOT EXISTS" + tab[0] +"("+tab[1]+")"
 		cursor.execute(command)
-		cursor.commit()
+		db.commit()
 
 	cursor.close()
 	return 1
@@ -139,7 +139,7 @@ def create_openseed_tables(username,password,db):
 		cursor.execute(command)
 		cursor.commit()
 
-	cursor.commit()
+	db.commit()
 	cursor.close()
 	return 1
 
@@ -159,7 +159,7 @@ def create_openseed_sync_tables(username,password,db):
 		cursor.execute(command)
 		cursor.commit()
 
-	cursor.commit()
+	db.commit()
 	cursor.close()
 	return 1
 
