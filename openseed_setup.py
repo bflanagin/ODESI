@@ -66,7 +66,7 @@ def create_database(username,password,database):
 			password = password
 			)
 	cursor = db.cursor()
-	create = "CREATE DATABASE "+database+" CHARACTER SET utf8 COLLATE utf8_unicode_ci"
+	create = "CREATE DATABASE IF NOT EXISTS "+database+" CHARACTER SET utf8 COLLATE utf8_unicode_ci "
 	cursor.execute(create)
 	cursor.close()
 	return 1	
