@@ -53,11 +53,13 @@ You may leave these blank if you are unsure or if you would rather the main node
 	dbpassword = input("Now enter the password for "+dbuser+" :")
 	print("\nSetting up user and rights to the database")
 	#Setup rights
-	create_openseed_users(LocaladminID,LocaladminPassword,dbuser,dbpassword)
+	create_openseed_users(LocaladminID,LocaladminPassword,dbuser,dbpassword,"openseed")
+	create_openseed_users(LocaladminID,LocaladminPassword,dbuser,dbpassword,"openseed_sync")
 	print("\nNow enter the desired username for the ipfs centric database \n")
 	ipfsuser = input("IPFS database user: ")
 	ipfspassword = input(ipfsuser+"'s password: ")
 	print("\nSetting up user and rights to the database")
+	create_openseed_users(LocaladminID,LocaladminPassword,dbuser,dbpassword,"ipfs")
 
 def create_database(username,password,database):
 	db = mysql.connector.connect(
@@ -71,15 +73,17 @@ def create_database(username,password,database):
 	cursor.close()
 	return 1	
 
-def create_openseed_users(admin,adminPassword,username,password):
+def create_openseed_users(admin,adminPassword,username,password,database):
 	db = mysql.connector.connect(
 			host = "localhost",
 			user = admin,
 			password = adminPassword
 			)
 	cursor = db.cursor()
-	command = "CREATE USER '"+username+"'@'localhost' IDENTIFIED BY '"+password+"'"
+	command = "CREATE USER IF NOT EXISTS '"+username+"'@'localhost' IDENTIFIED BY '"+password+"'"
 	cursor.execute(command)
+	priv = "GRANT ALL PRIVILEGES "+database+".* TO '"+username+"'@'localhost'
+	cursor.execute(priv)
 	flush = "FLUSH PRIVILEGES"
 	cursor.execute(flush)
 	db.commit()
