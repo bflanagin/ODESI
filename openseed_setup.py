@@ -82,7 +82,7 @@ def create_openseed_users(admin,adminPassword,username,password,database):
 	cursor = db.cursor()
 	command = "CREATE USER IF NOT EXISTS '"+username+"'@'localhost' IDENTIFIED BY '"+password+"'"
 	cursor.execute(command)
-	priv = "GRANT ALL PRIVILEGES "+database+".* TO '"+username+"'@'localhost'"
+	priv = "GRANT ALL PRIVILEGES "+database+" TO '"+username+"'@'localhost'"
 	cursor.execute(priv)
 	flush = "FLUSH PRIVILEGES"
 	cursor.execute(flush)
