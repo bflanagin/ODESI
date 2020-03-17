@@ -33,7 +33,7 @@ def create_node():
 	print("\n(Press any key to continue)")
 	input()
 	print("\n These next two options are for if you intend to post to the steem blockchain on your own behalf or on behalf of others.\n\
-		 You may leave these blank if you are unsure or if you would rather the main node to handle chain operations.\n")
+You may leave these blank if you are unsure or if you would rather the main node to handle chain operations.\n")
 
 	steemaccount = input("Please enter steemaccount: ")
 	passphrase = input("Please enter phasphrase to unlock local keychain: ")
