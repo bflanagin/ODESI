@@ -89,9 +89,9 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 		print(Connections.get_requests(from_client["username"],from_client["data"]))
 	if action == "request_status":
 		print(Connections.request_status(from_client["username"],from_client["data"]))
-	if action == "status":
+	if action == "get_status":
 		print(Account.get_status(from_client["username"]))
-	if action == "set_status":
+	if action == "update_status":
 		print(Account.set_status(from_client["username"],from_client["appPub"],from_client["data"]))
 	if action == "get_chat":
 		print(Chat.get_chat(from_client["uid"],from_client["account"],from_client["room"],from_client["last"]))

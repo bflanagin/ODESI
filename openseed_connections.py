@@ -105,7 +105,6 @@ def profile(theid):
  return(profile)
 
 def user_profile(username):
- print(username)
  openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],

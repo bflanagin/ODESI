@@ -274,7 +274,9 @@ def create_profile(theid,data1,data2,data3,data4,data5,thetype):
 		return '{"profile":"exists"}'
 
 def get_status(username):
+	
 	dat = '{"chat":"offline"}'
+	status = '{"username":"none","date":"none","data":'+dat+'}'
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
@@ -287,9 +289,9 @@ def get_status(username):
 	user.execute(search,val)
 	result = user.fetchall()
 	if len(result) == 1:
-		dat = str(result[0][4]).split("'")[1]
+		dat = str(result[0][4])
+		status = '{"username":"'+str(result[0][1])+'","date":"'+str(result[0][3])+'","data":'+dat+'}'
 	
-	status = '{"username":"'+str(result[0][1]).split("'")[1]+'","date":"'+str(result[0][3])+'","data":'+dat+'}'
 
 	user.close()
 	openseed.close()
@@ -497,10 +499,10 @@ def gps_search(username,cords):
 	no_use_list = ["eee:eee"]
 	if username not in no_use_list:
 		mysearch = openseed.cursor()
-		steemsearch = "SELECT data FROM `logins` WHERE username LIKE %s"
+		steemsearch = "SELECT data FROM `logins` WHERE username = %s"
 		user_lat = 0.00
 		user_log = 0.00
-		val = ("%"+username+"%",)
+		val = (username,)
 		mysearch.execute(steemsearch,val)
 		user = mysearch.fetchall()
 		udat = json.loads(user[0][0])
@@ -513,7 +515,7 @@ def gps_search(username,cords):
 		#others = "SELECT username,data FROM `logins` WHERE username NOT LIKE %s AND data LIKE %s"
 		#val = ("%"+username+"%",'%"chat":"Online"%')
 		others = "SELECT username,data FROM `logins` WHERE username NOT LIKE %s "
-		val = ("%"+username+"%",)
+		val = (username,)
 		mysearch.execute(others,val)
 		theothers = mysearch.fetchall()
 		searchlist = ""
@@ -535,8 +537,12 @@ def gps_search(username,cords):
 					pval = (json.loads(userid)["id"],)
 					mysearch.execute(psearch,pval)
 					profile = mysearch.fetchall()
-					userProfile = profile[0][1]
-					steemProfile = profile[0][2]
+					if len(profile) == 1:
+						userProfile = profile[0][1]
+						steemProfile = profile[0][2]
+					else:
+						userProfile = '{}'
+						steemProfile = '{}'
 					if searchlist == "":
 						searchlist = '{"account":"'+u[0]+'","profile":'+userProfile+',"steem":'+steemProfile+'}'
 					else:
