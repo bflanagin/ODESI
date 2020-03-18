@@ -78,6 +78,7 @@ def create_openseed_users(admin,adminPassword,username,password,database):
 			host = "localhost",
 			user = admin,
 			password = adminPassword
+			database = database
 			)
 	cursor = db.cursor()
 	command = "CREATE USER IF NOT EXISTS '"+username+"'@'localhost' IDENTIFIED BY '"+password+"'"
