@@ -70,6 +70,11 @@ def create_database(username,password,database):
 	cursor = db.cursor()
 	create = "CREATE DATABASE IF NOT EXISTS "+database+" CHARACTER SET utf8 COLLATE utf8_unicode_ci "
 	cursor.execute(create)
+	priv = "GRANT ALL PRIVILEGES ON "+database+".* TO '"+username+"'@'localhost'"
+	cursor.execute(priv)
+	flush = "FLUSH PRIVILEGES"
+	cursor.execute(flush)
+	db.commit()
 	cursor.close()
 	return 1	
 
@@ -83,7 +88,7 @@ def create_openseed_users(admin,adminPassword,username,password,database):
 	cursor = db.cursor()
 	command = "CREATE USER IF NOT EXISTS '"+username+"'@'localhost' IDENTIFIED BY '"+password+"'"
 	cursor.execute(command)
-	priv = "GRANT CREATE,DROP,INSERT,SELECT,UPDATE ON "+database+". * TO '"+username+"'@'localhost'"
+	priv = "GRANT CREATE,DROP,INSERT,SELECT,UPDATE ON "+database+".* TO '"+username+"'@'localhost'"
 	cursor.execute(priv)
 	flush = "FLUSH PRIVILEGES"
 	cursor.execute(flush)
