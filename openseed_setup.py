@@ -81,14 +81,14 @@ def create_database(username,password,database):
 def create_openseed_users(admin,adminPassword,username,password,database):
 	db = mysql.connector.connect(
 			host = "localhost",
-			user = admin,
-			password = adminPassword,
-			database = database
+			user = "root",
+			#password = adminPassword,
+			#database = database
 			)
 	cursor = db.cursor()
 	command = "CREATE USER IF NOT EXISTS '"+username+"'@'localhost' IDENTIFIED BY '"+password+"'"
 	cursor.execute(command)
-	priv = "GRANT CREATE,DROP,INSERT,SELECT,UPDATE ON *.* TO '"+username+"'@'localhost'"
+	priv = "GRANT ALL PRIVILEGES ON '"+database+"'.* TO '"+username+"'@'localhost'"
 	cursor.execute(priv)
 	flush = "FLUSH PRIVILEGES"
 	cursor.execute(flush)
