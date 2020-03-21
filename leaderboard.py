@@ -2,7 +2,7 @@
 import sys
 sys.path.append("..")
 import mysql.connector
-import steem_submit as Submit
+import hive_submit as Submit
 
 import openseed_setup as Settings
 

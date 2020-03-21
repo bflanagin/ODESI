@@ -35,8 +35,8 @@ def create_node():
 	print("\nThese next two options are for if you intend to post to the steem blockchain on your own behalf or on behalf of others.\n\
 You may leave these blank if you are unsure or if you would rather the main node to handle chain operations.\n")
 
-	steemaccount = input("Please enter steemaccount: ")
-	passphrase = input("Please enter phasphrase to unlock local keychain: ")
+	osaccount = input("Please enter Open Seed account: ")
+	passphrase = input("Please enter phasphrase to authentic: ")
 	print("\nNext up we will need to setup databases to store and retrieve information. \n")
 	LocaladminID = input("Enter the account name of the mysql database admin: ")
 	LocaladminPassword = input(LocaladminID+"'s password: ")
@@ -48,18 +48,6 @@ You may leave these blank if you are unsure or if you would rather the main node
 	# Create ipfs database
 	create_database(LocaladminID,LocaladminPassword,"ipfs")
 
-	print("\n\nNow we will create the users to access the databases \n \n") 
-	dbuser = input("Please enter the username for the openseed database: ")
-	dbpassword = input("Now enter the password for "+dbuser+" :")
-	print("\nSetting up user and rights to the database")
-	#Setup rights
-	create_openseed_users(LocaladminID,LocaladminPassword,dbuser,dbpassword,"openseed")
-	create_openseed_users(LocaladminID,LocaladminPassword,dbuser,dbpassword,"openseed_sync")
-	print("\nNow enter the desired username for the ipfs centric database \n")
-	ipfsuser = input("IPFS database user: ")
-	ipfspassword = input(ipfsuser+"'s password: ")
-	print("\nSetting up user and rights to the database")
-	create_openseed_users(LocaladminID,LocaladminPassword,dbuser,dbpassword,"ipfs")
 
 def create_database(username,password,database):
 	db = mysql.connector.connect(

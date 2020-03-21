@@ -13,7 +13,8 @@ import openseed_setup as Settings
 
 settings = Settings.get_settings()
 
-s = Steem()
+thenodes = ['anyx.io','api.steem.house','hive.anyx.io','steemd.minnowsupportproject.org','steemd.privex.io']
+s = Steem(nodes=thenodes)
 
 def check_onetime(username,room):
 	openseed = mysql.connector.connect(
