@@ -6,7 +6,7 @@ import time
 sys.path.append("..")
 import mysql.connector
 import json
-from steem import Steem()
+from steem import Steem
 import openseed_music as Music
 import hive_submit as Submit
 import openseed_ipfs as IPFS
