@@ -8,9 +8,9 @@ import json
 import subprocess
 sys.path.append("..")
 import openseed_seedgenerator as Seed
-from steem import Steem
+from hive import Hive
 thenodes = ['anyx.io','api.steem.house','hive.anyx.io','steemd.minnowsupportproject.org','steemd.privex.io']
-s = Steem()
+s = Hive()
 
 import openseed_setup as Settings
 

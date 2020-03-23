@@ -2,13 +2,13 @@
 import sys
 import mysql.connector
 import hashlib
-from steem import Steem
+from hive import Hive
 sys.path.append("..")
 import openseed_setup as Settings
 
 settings = Settings.get_settings()
 thenodes = ['anyx.io','api.steem.house','hive.anyx.io','steemd.minnowsupportproject.org','steemd.privex.io']
-s = Steem()
+s = Hive()
 
 s.wallet.unlock(user_passphrase=settings["passphrase"])
 postingKey = s.wallet.getPostingKeyForAccount(settings["steemaccount"])
