@@ -159,7 +159,7 @@ def user_profile(username):
  
 # Requests have three states 1 pending 2 accepted 0 denied. 
 
-def send_request(userid1,userid2,response):
+def send_request(userid1,userid2,response = 1):
  output = ""
  openseed = mysql.connector.connect(
 		host = "localhost",

@@ -114,7 +114,6 @@ def png_and_pin(url):
 	result = image.fetchall()
 	
 	if len(result) <= 0:
-		print("Getting Image")
 		get = subprocess.Popen(['wget','-T 3','-t 1','-P',baseDIR+"/source",'-nc',url],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 		get.wait()
 		stdout, stderr = get.communicate()
