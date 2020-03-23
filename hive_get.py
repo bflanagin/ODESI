@@ -6,7 +6,7 @@ import time
 sys.path.append("..")
 import mysql.connector
 import json
-from hive import Hive
+from steem import Steem()
 import openseed_music as Music
 import hive_submit as Submit
 import openseed_ipfs as IPFS
@@ -15,7 +15,7 @@ import openseed_account as Account
 
 settings = Settings.get_settings()
 thenodes = ['anyx.io','api.steem.house','hive.anyx.io','steemd.minnowsupportproject.org','steemd.privex.io']
-s = Hive()
+s = Steem()
 
 songtype = "NA"
 genre = "NA"
