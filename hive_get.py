@@ -15,7 +15,7 @@ import openseed_account as Account
 
 settings = Settings.get_settings()
 thenodes = ['anyx.io','api.steem.house','hive.anyx.io','steemd.minnowsupportproject.org','steemd.privex.io']
-s = Steem(nodes=thenodes)
+s = Steem()
 
 songtype = "NA"
 genre = "NA"

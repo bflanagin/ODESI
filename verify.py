@@ -12,7 +12,7 @@ import openseed_setup as Settings
 settings = Settings.get_settings()
 
 thenodes = ['anyx.io','api.steem.house','hive.anyx.io','steemd.minnowsupportproject.org','steemd.privex.io']
-s = Steem(nodes=thenodes)
+s = Steem()
 s.wallet.unlock(user_passphrase=settings["passphrase"])
 postingKey = s.wallet.getPostingKeyForAccount(settings["steemaccount"])
 s.keys = postingKey

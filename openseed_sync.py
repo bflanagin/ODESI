@@ -10,7 +10,7 @@ sys.path.append("..")
 import openseed_seedgenerator as Seed
 from steem import Steem
 thenodes = ['anyx.io','api.steem.house','hive.anyx.io','steemd.minnowsupportproject.org','steemd.privex.io']
-s = Steem(nodes=thenodes)
+s = Steem()
 
 import openseed_setup as Settings
 
@@ -44,6 +44,14 @@ class TCPHandler(socketserver.BaseRequestHandler):
 
 #server level userdabase that stores only tokens. Refreshed daily. Used to decrease sync load. If user isn't on the server no data is synced for the user.
 	def gather_users():
+		openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+		apps = []
+		gather = "SELECT * FROM `applications` WHERE 1"
 
 		return
 
