@@ -10,7 +10,7 @@ sys.path.append("..")
 import openseed_seedgenerator as Seed
 from hive import hive
 thenodes = ['anyx.io','api.steem.house','hive.anyx.io','steemd.minnowsupportproject.org','steemd.privex.io']
-s = hive()
+s = hive.Hive(nodes=thenodes)
 
 import openseed_setup as Settings
 
