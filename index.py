@@ -94,17 +94,17 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 	if action == "update_status":
 		print(Account.set_status(from_client["username"],from_client["appPub"],from_client["data"]))
 	if action == "get_chat":
-		print(Chat.get_chat(from_client["uid"],from_client["account"],from_client["room"],from_client["last"]))
+		print(Chat.get_chat(from_client["token"],from_client["account"],from_client["room"],from_client["last"]))
 	if action == "get_chat_history":
-		print(Chat.get_chat_history(from_client["uid"],from_client["account"],from_client["room"],from_client["count"],from_client["last"]))
+		print(Chat.get_chat_history(from_client["token"],from_client["account"],from_client["room"],from_client["count"],from_client["last"]))
 	if action == "conversations":
 		print(Chat.chats(from_client["username"]))
 	if action == "send_chat":
-		print(Chat.send_chat(from_client["uid"],from_client["username"],from_client["othername"],from_client["data"]))
+		print(Chat.send_chat(from_client["token"],from_client["username"],from_client["othername"],from_client["data"]))
 	if action == "check_chat":
 		print(Chat.check_chat(from_client["username"],from_client["othername"]))
 	if action == "chat":
- 		print(Chat.get_chat(from_client["uid"],from_client["username"],from_client["chatroom"],from_client["data"]))
+ 		print(Chat.get_chat(from_client["token"],from_client["username"],from_client["chatroom"],from_client["data"]))
 
 # Key Actions
 
@@ -126,7 +126,7 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 	if action == "user_profile":
 		print(urllib.parse.quote(Connections.user_profile(from_client["username"])))
 	if action == "send_request":
-		print(Connections.send_request(from_client["username"],from_client["request"],from_client["response"]))
+		print(Connections.send_request(from_client["token"],from_client["account"],from_client["response"]))
 
 else:
 	print("App rejected")

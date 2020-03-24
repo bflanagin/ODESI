@@ -135,9 +135,9 @@ class TCPHandler(socketserver.BaseRequestHandler):
 			elif action == "openseed_profile":
 				response = Connections.user_profile(from_client["account"])
 			elif action == "get_requests":
-				response = Connections.user_profile(from_client["uid"])
+				response = Connections.user_profile(from_client["token"])
 			elif action == "send_request":
-				response = Connections.user_profile(from_client["uid"],from_client["account"],from_client["response"])
+				response = Connections.user_profile(from_client["token"],from_client["account"],from_client["response"])
 
 			#####################################################
 			#
@@ -146,16 +146,15 @@ class TCPHandler(socketserver.BaseRequestHandler):
 			#####################################################
 
 			elif action == "get_chat_history":
-				response = Chat.get_chat_history(from_client["uid"],from_client["room"],from_client["count"],from_client["last"])
+				response = Chat.get_chat_history(from_client["token"],from_client["room"],from_client["count"],from_client["last"])
 			elif action == "get_chat":
-				response = Chat.get_chat(from_client["uid"],from_client["room"],from_client["last"])
+				response = Chat.get_chat(from_client["token"],from_client["room"],from_client["last"])
 			elif action == "send_chat":
-				response = Chat.send_chat(from_client["uid"],from_client["room"],from_client["data"])
+				response = Chat.send_chat(from_client["token"],from_client["room"],from_client["data"])
 			elif action == "chat_key":
-				response = Chat.check_chat(from_client["room"],from_client["uid"])
-			
+				response = Chat.check_chat(from_client["room"],from_client["token"])
 			elif action == "update_key":
-				response = OneTime.update_key(from_client["thetype"],from_client["uid"],from_client["room"])
+				response = OneTime.update_key(from_client["thetype"],from_client["token"],from_client["room"])
 
 			# Heart Beat #	
 			elif action == "heartbeat":
