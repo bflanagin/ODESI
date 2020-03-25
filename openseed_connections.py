@@ -146,7 +146,7 @@ def user_profile(username):
  
   if(result[0][4] != "None"):
    if(len(result[0][4]) > 1):
-  	data5 = str(result[0][4]).replace(',"is_public":true',"").replace(',"redirect_uris":["http://142.93.27.131:8675/steemconnect/verify.py"]',"")
+    data5 = str(result[0][4]).replace(',"is_public":true',"").replace(',"redirect_uris":["http://142.93.27.131:8675/steemconnect/verify.py"]',"")
    else:
     data5 = '{}'
   else:
