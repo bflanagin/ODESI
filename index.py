@@ -7,7 +7,7 @@ sys.path.append("..")
 import openseed_account as Account
 import openseed_setup as Settings
 import openseed_utils as Utils
-#import steem_get as Get
+import hive_get as Get
 #import steem_submit as Submit
 #import leaderboard as LeaderBoard
 import openseed_seedgenerator as Seeds
@@ -70,8 +70,7 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 	if action == "create_profile":
 		print(Account.create_profile(from_client["theid"],from_client["data1"],
 			from_client["data2"],from_client["data3"],from_client["data4"],
-			from_client["data5"],from_client["type"])
-		)
+			from_client["data5"],from_client["type"]))
 	if action == "link":
 		print(Account.steem_link(from_client["username"]))
 	if action == "verify":
@@ -86,6 +85,37 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 		print(Account.get_history(from_client["account"],from_client["apprange"],from_client["count"]))
 	if action == "update_history":
 		print(Account.update_history(from_client["account"],from_client["type"],from_client["appPub"],from_client["data"]))
+
+#  Media Actions
+			
+	if action == "music":
+		print(Music.get_curated_music(from_client["curator"]))
+	if action == "music_json":
+		print(Music.get_curated_music_json(from_client["curator"]))
+	if action == "post":
+		print(Get.get_post(from_client["author"],from_client["permlink"]))
+	if action == "artist_search":
+		print(Get.search_music(from_client["author"],10000))
+	if action == "getaccount":
+		print(Get.get_account(from_client["account"]))
+	if action == "getfullaccount":
+		print(Get.get_full_account(from_client["account"]))
+	if action == "newaccounts":
+		print(Music.get_new_artists())
+	if action == "newtracks":
+		print(Music.get_new_tracks())
+	if action == "newtracks_json":
+		print(Music.get_new_tracks_json())
+	if action == "genres":
+		print(Music.get_genres())
+	if action == "genre":
+		print(Music.get_genre_tracks(from_client["genre"]))
+	if action == "genre_json":
+		print(Music.get_genre_tracks_json(from_client["genre"],from_client["count"]))
+	if action == "getArtistTracks":
+		print(Music.get_artist_tracks_json(from_client["author"],from_client["count"]))
+	if action == "getAllTracks":
+		print(Music.get_all_tracks_json(from_client["count"]))
 
 # Chat Actions
  
