@@ -120,38 +120,40 @@ def user_profile(username):
  mysearch.execute(user,val)
  
  userid = mysearch.fetchall()
- theid = userid[0][0]
- search = "SELECT data1,data2,data3,data4,data5 FROM `profiles` WHERE `id` = %s"
- sval = (theid,)
- mysearch.execute(search,sval)
- result = mysearch.fetchall()
- data1 = '"None"'
- data2 = '"None"'
- data3 = '"None"'
- data4 = '"None"'
- data5 = '"None"'
+ if userid.length == 0:
+  theid = userid[0][0]
+  search = "SELECT data1,data2,data3,data4,data5 FROM `profiles` WHERE `id` = %s"
+  sval = (theid,)
+  mysearch.execute(search,sval)
+  result = mysearch.fetchall()
+  data1 = '"None"'
+  data2 = '"None"'
+  data3 = '"None"'
+  data4 = '"None"'
+  data5 = '"None"'
 
- if(result[0][0] != "None"):
-  data1 = result[0][0]
+  if(result[0][0] != "None"):
+   data1 = result[0][0]
  
- if(result[0][1] != "None"):
-  data2 = result[0][1]
+  if(result[0][1] != "None"):
+   data2 = result[0][1]
  
- if(result[0][2] != "None"):
-  data3 = result[0][2]
+  if(result[0][2] != "None"):
+   data3 = result[0][2]
  
- if(result[0][3] != "None"):
-  data4 = result[0][3]
+  if(result[0][3] != "None"):
+   data4 = result[0][3]
  
- if(result[0][4] != "None"):
-  if(len(result[0][4]) > 1):
+  if(result[0][4] != "None"):
+   if(len(result[0][4]) > 1):
   	data5 = str(result[0][4]).replace(',"is_public":true',"").replace(',"redirect_uris":["http://142.93.27.131:8675/steemconnect/verify.py"]',"")
+   else:
+    data5 = '{}'
   else:
    data5 = '{}'
- else:
-  data5 = '{}'
 
- profile = '{"data1":'+data1.replace("\n","")+',"data2":'+data2.replace("\n","")+',"data3":'+data3.replace("\n","")+',"data4":'+data4.replace("\n","")+',"data5":'+data5.replace("\n","")+'}'
+  profile = '{"data1":'+data1.replace("\n","")+',"data2":'+data2.replace("\n","")+',"data3":'+data3.replace("\n","")+',"data4":'+data4.replace("\n","")+',"data5":'+data5.replace("\n","")+'}'
+
  mysearch.close()
  openseed.close()
  json.loads(profile)
