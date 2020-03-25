@@ -114,8 +114,8 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 		print(Music.get_genre_tracks_json(from_client["genre"],from_client["count"]))
 	if action == "getArtistTracks":
 		print(Music.get_artist_tracks_json(from_client["author"],from_client["count"]))
-	if action == "getAllTracks":
-		print(Music.get_all_tracks_json(from_client["count"]))
+	if action == "getTracks":
+		print(Music.get_tracks_json(from_client["start"],from_client["count"]))
 
 # Chat Actions
  

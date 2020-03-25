@@ -121,8 +121,8 @@ class TCPHandler(socketserver.BaseRequestHandler):
 				response = Music.get_genre_tracks_json(from_client["genre"],from_client["count"])
 			elif action == "getArtistTracks":
 				response = Music.get_artist_tracks_json(from_client["author"],from_client["count"])
-			elif action == "getAllTracks":
-				response = Music.get_all_tracks_json(from_client["count"])
+			elif action == "getTracks":
+				response = Music.get_tracks_json(from_client["start"],from_client["count"])
 
 			#####################################################
 			#

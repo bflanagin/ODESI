@@ -273,7 +273,7 @@ def get_genre_tracks_json(genre,count):
 	response = '{"total":"'+str(len(result))+'","results":'+json.dumps(output)+'}'
 	return response
 
-def get_tracks_json(count = 0):
+def get_tracks_json(start = 0,count = 0):
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["ipfsuser"],
