@@ -92,13 +92,13 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 		print(Music.get_curated_music(from_client["curator"]))
 	if action == "music_json":
 		print(Music.get_curated_music_json(from_client["curator"]))
-	if action == "post":
+	#if action == "post":
 		#print(Get.get_post(from_client["author"],from_client["permlink"]))
-	if action == "artist_search":
+	#if action == "artist_search":
 		#print(Get.search_music(from_client["author"],10000))
-	if action == "getaccount":
+	#if action == "getaccount":
 		#print(Get.get_account(from_client["account"]))
-	if action == "getfullaccount":
+	#if action == "getfullaccount":
 		#print(Get.get_full_account(from_client["account"]))
 	if action == "newaccounts":
 		print(Music.get_new_artists())
