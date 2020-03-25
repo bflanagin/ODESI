@@ -120,7 +120,7 @@ def user_profile(username):
  mysearch.execute(user,val)
  
  userid = mysearch.fetchall()
- if userid.length == 1:
+ if len(userid) == 1:
   theid = userid[0][0]
   search = "SELECT data1,data2,data3,data4,data5 FROM `profiles` WHERE `id` = %s"
   sval = (theid,)
