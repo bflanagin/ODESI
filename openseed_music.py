@@ -300,8 +300,8 @@ def get_tracks_json(start = 0,count = 0):
 					"tags": genre[8],
 					"duration": genre[9]
 					})
-		if count != 0:
-			if num == count:
+		if int(count) != 0:
+			if num == int(count):
 				break
 		num += 1
 
