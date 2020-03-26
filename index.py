@@ -129,7 +129,7 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 		print(Account.set_status(from_client["username"],from_client["appPub"],from_client["data"]))
 	if action == "get_chat":
 		print(Chat.get_chat(from_client["token"],from_client["account"],from_client["room"],from_client["last"]))
-	if action == "get_chat_history":
+	if action == "chat_history":
 		print(Chat.get_chat_history(from_client["token"],from_client["account"],from_client["room"],from_client["count"],from_client["last"]))
 	if action == "conversations":
 		print(Chat.chats(from_client["username"]))
@@ -152,7 +152,7 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 	if action == "steem_connections":
 		print(Connections.get_steem_connections(from_client["steem"]))
 	if action == "openseed_connections":
-		print(Connections.get_openseed_connections(from_client["username"]))
+		print(Connections.get_openseed_connections(from_client["account"]))
 	if action == "profile_small":
 		print(Connections.get_account(from_client["steem"]))
 	if action == "profile":
