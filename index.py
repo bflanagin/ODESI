@@ -158,7 +158,7 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 	if action == "profile":
 		print(Connections.profile(from_client["userid"]))
 	if action == "user_profile":
-		print(urllib.parse.quote(Connections.user_profile(from_client["username"])))
+		print(Connections.user_profile(from_client["username"]))
 	if action == "send_request":
 		print(Connections.send_request(from_client["token"],from_client["account"],from_client["response"]))
 
