@@ -8,6 +8,7 @@ import base64
 import urllib.parse
 sys.path.append("..")
 from steem import Steem
+import openseed_account as Account
 import openseed_setup as Settings
 
 settings = Settings.get_settings()
@@ -219,7 +220,7 @@ def get_requests(username,data):
 
  return str(requests)
 
-def request_status(username,data):
+def request_status(token,account):
  status = '{"request":"denied"}'
  jsoned = status
  openseed = mysql.connector.connect(
@@ -229,9 +230,10 @@ def request_status(username,data):
 		database = "openseed"
 		)
  mysearch = openseed.cursor()
+ username = Account.user_from_id(token)
  search = "SELECT * FROM connections WHERE userid1 = %s AND userid2 = %s"
- val1 = (username,data)
- val2 = (data,username)
+ val1 = (username,account)
+ val2 = (account,username)
  mysearch.execute(search,val1)
  result1 = mysearch.fetchall()
  mysearch.execute(search,val2)

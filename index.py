@@ -119,10 +119,7 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 
 # Chat Actions
  
-	if action == "requests":
-		print(Connections.get_requests(from_client["username"],from_client["data"]))
-	if action == "request_status":
-		print(Connections.request_status(from_client["username"],from_client["data"]))
+	
 	if action == "get_status":
 		print(Account.get_status(from_client["username"]))
 	if action == "update_status":
@@ -161,6 +158,10 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 		print(Connections.user_profile(from_client["username"]))
 	if action == "send_request":
 		print(Connections.send_request(from_client["token"],from_client["account"],from_client["response"]))
+	if action == "requests":
+		print(Connections.get_requests(from_client["username"],from_client["data"]))
+	if action == "request_status":
+		print(Connections.request_status(from_client["token"],from_client["account"]))
 
 else:
 	print("App rejected")
