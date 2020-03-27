@@ -7,6 +7,7 @@ sys.path.append("..")
 import mysql.connector
 import socketserver
 import openseed_account as Account
+import openseed_seedgenerator as Seed
 #import steem_get as Get
 #import steem_submit as Submit
 #import leaderboard as LeaderBoard
@@ -169,5 +170,41 @@ def to_ipfs(data):
 	stdout, stderr = add_to_ipfs.communicate()
 	return str(stdout).split(" ")[1]
 
+def password_reset(emailaddress,username,passphrase) {
+	
+	newcode = ""
+	oldcode = ""
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["ipfsuser"],
+		password = settings["ipfspassword"],
+		database = "openseed"
+	)
+	u = openseed.cursor()
+	search = "SELECT userid FROM `users` WHERE email =%s AND username = %s"
+	val = (emailaddress,username)
+	u.execute(search,val)
+	result = image.fetchall()
+
+	if len(result) == 1:
+		newcode = Seed.generate_userid_new(name,passphrase,email)
+		oldcode = result[0][0]
+		
+		userupdate = "UPDATE users SET userid = %s WHERE userid = %s"
+		profileupdate = "UPDATE profiles SET id = %s WHERE id = %s"
+		history = "UPDATE history SET account = %s WHERE account = %s"
+		location = "UPDATE location SET userID = %s WHERE userID = %s"
+		val = (newcode,oldcode)
+		u.execute(userupdate,val)
+		u.execute(profileupdate,val)
+		u.execute(history,val)
+		u.execute(location,val)
+		openseed.commit()
+	u.close()
+	openseed.close()
+		
+	
+
+}
 
 

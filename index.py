@@ -68,7 +68,7 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 	if action == "create":
 		print(Account.create_user(from_client["username"],from_client["passphrase"],from_client["email"]))
 	if action == "create_profile":
-		print(Account.create_profile(from_client["theid"],from_client["data1"],
+		print(Account.create_profile(from_client["token"],from_client["data1"],
 			from_client["data2"],from_client["data3"],from_client["data4"],
 			from_client["data5"],from_client["type"]))
 	if action == "link":
@@ -76,7 +76,7 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 	if action == "verify":
 		print(Account.steem_verify(from_client["username"],from_client["onetime"]))
 	if action == "account":
-		print(Account.get_account(from_client["theid"]))
+		print(Account.get_account(from_client["token"]))
 	if action == "search":
 		print(Account.openseed_search(from_client["username"]))
 	if action == "gps":
@@ -153,7 +153,7 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 	if action == "profile_small":
 		print(Connections.get_account(from_client["steem"]))
 	if action == "profile":
-		print(Connections.profile(from_client["userid"]))
+		print(Connections.profile(from_client["token"]))
 	if action == "user_profile":
 		print(Connections.user_profile(from_client["username"]))
 	if action == "send_request":

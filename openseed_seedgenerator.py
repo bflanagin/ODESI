@@ -41,6 +41,36 @@ def generate_userid(name,passphrase,email):
 
 	return mixer3
 
+def generate_userid_new(name,passphrase,email):
+	fullstring = name+passphrase+email
+	count1 = 0
+	count2 = 0
+	mixer1 = ""
+	mixer2 = ""
+	mixer3 = ""
+	for m1 in fullstring:
+		if count1 % 2 == 0:
+			mixer1 = mixer1+m1
+		else:
+		     mixer2 = mixer2+m1.upper()
+		count1 +=1
+	
+	hash1 = hashlib.md5(mixer1.encode())
+	hash2 = hashlib.md5(mixer2.encode())
+	
+	count3 = 0
+	stir = ""
+	if len(str(hash1.hexdigest())) >= len(str(hash2.hexdigest())):
+		stir = str(hash1.hexdigest())
+	else:
+		stir = str(hash2.hexdigest())
+	
+	while count3 < len(stir):
+		mixer3 = mixer3+str(hash1.hexdigest()[count3])+str(hash2.hexdigest()[count3])
+		count3 += 1
+
+	return mixer3
+
 def generate_id(name,account,contactname,contactemail):
 	fullstring = name+passphrase+contactemail+account+contactname
 	count1 = 0
