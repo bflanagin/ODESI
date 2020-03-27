@@ -154,7 +154,7 @@ class TCPHandler(socketserver.BaseRequestHandler):
 			elif action == "send_chat":
 				response = Chat.send_chat(from_client["token"],from_client["room"],from_client["data"])
 			elif action == "set_key":
-				response = OneTime.store_onetime(from_client["type"],from_client["register"],from_client["validusers"]))
+				response = OneTime.store_onetime(from_client["type"],from_client["register"],from_client["validusers"])
 			elif action == "get_key":
 				response = OneTime.get_key(from_client["thetype"],from_client["token"],from_client["room"])
 
