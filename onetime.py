@@ -77,7 +77,7 @@ def store_onetime(thetype,register,validusers,room):
 
 	return code
 
-def update_key(thetype,register,room):
+def get_key(thetype,register,room):
 	result = ""
 	cleanroom = room.split("[")[1].split("]")[0]
 	wharoom = cleanroom.split(",")[0]+', '+cleanroom.split(",")[1]

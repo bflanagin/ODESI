@@ -324,7 +324,7 @@ def get_location(userID,appPubID):
 
 	return locale
 
-def update_location(userID,appPubID,location):
+def set_location(userID,appPubID,location):
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
@@ -350,7 +350,7 @@ def update_location(userID,appPubID,location):
 		
 	return '{"location":"updated"}'
 
-def update_status(appPub,uid,data):
+def set_status(appPub,uid,data):
 	
 	username = json.loads(user_from_id(uid))["user"]
 	openseed = mysql.connector.connect(
@@ -413,7 +413,7 @@ def get_history(account,apprange,count):
 		num += 1
 	hist.close()
 	openseed.close()
-	return str('{"results":['+history+']}')
+	return str('{"history":['+history+']}')
 
 def update_history(account,history_type,appPub,data):
 	openseed = mysql.connector.connect(
@@ -492,7 +492,7 @@ def openseed_search(data):
 		mysearch.close()
 		openseed.close()
 	
-	return '{"results":['+searchlist+']}'
+	return '{"search":['+searchlist+']}'
 
 def gps_search(username,cords):
 	users = ""
@@ -559,7 +559,7 @@ def gps_search(username,cords):
 		mysearch.close()
 		openseed.close()
 	
-	return '{"results":['+searchlist+']}'
+	return '{"gps":['+searchlist+']}'
 
 
 

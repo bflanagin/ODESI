@@ -57,7 +57,7 @@ class TCPHandler(socketserver.BaseRequestHandler):
 
 			elif action == "get_status":
 				response = Account.get_status(from_client["account"])
-			elif action == "update_status":
+			elif action == "set_status":
 				response = Account.update_status(from_client["appPub"],from_client["account"],from_client["data"])
 
 			elif action == "get_history":
@@ -153,10 +153,10 @@ class TCPHandler(socketserver.BaseRequestHandler):
 				response = Chat.get_chat(from_client["token"],from_client["room"],from_client["last"])
 			elif action == "send_chat":
 				response = Chat.send_chat(from_client["token"],from_client["room"],from_client["data"])
-			elif action == "chat_key":
-				response = Chat.check_chat(from_client["room"],from_client["token"])
-			elif action == "update_key":
-				response = OneTime.update_key(from_client["thetype"],from_client["token"],from_client["room"])
+			elif action == "set_key":
+				response = OneTime.store_onetime(from_client["type"],from_client["register"],from_client["validusers"]))
+			elif action == "get_key":
+				response = OneTime.get_key(from_client["thetype"],from_client["token"],from_client["room"])
 
 			# Heart Beat #	
 			elif action == "heartbeat":

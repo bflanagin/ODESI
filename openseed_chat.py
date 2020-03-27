@@ -54,13 +54,14 @@ def create_chatroom(creator,title,room,userlist):
 
 	
 
-def check_chat(username,room):
+def check_chat(userid,room):
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
 		password = settings["dbpassword"],
 		database = "openseed"
 		)
+	username = json.loads(Account.user_from_id(userid))["user"]
 	mysearch = openseed.cursor()
 	check = "SELECT Id FROM chat WHERE room = %s"
 	val1 = (room.split("[")[1].split("]")[0],)
@@ -96,7 +97,7 @@ def check_chat(username,room):
 	
 
 
-def chats(username):
+def chats(userid):
 	chatlist = ""
 	convolist = []
 	openseed = mysql.connector.connect(
@@ -105,6 +106,7 @@ def chats(username):
 		password = settings["dbpassword"],
 		database = "openseed"
 		)
+	username = json.loads(Account.user_from_id(userid))["user"]
 	mysearch = openseed.cursor()
 	chat = "SELECT attendees,record FROM chat WHERE attendees LIKE %s ORDER BY Id DESC"
 	val1 = ("%"+username+"%",)
