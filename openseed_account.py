@@ -255,14 +255,14 @@ def create_app(devID,appName):
 		return '{"appID":"exists","pubID":"exists"}'
 
 
-def create_profile(theid,data1,data2,data3,data4,data5,thetype):
+def set_profile(theid,data1,data2,data3,data4,data5,thetype):
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
 		password = settings["dbpassword"],
 		database = "openseed"
 		)
-	if check_db(theid,"profiles") != 1:
+	if check_db(theid,"profiles") <= 0:
 		mycursor = openseed.cursor()
 		sql = "INSERT INTO `profiles` (`id`,`data1`,`data2`,`data3`,`data4`,`data5`,`type`) VALUES (%s,%s,%s,%s,%s,%s,%s)"
 		val = (str(theid),str(data1),str(data2),str(data3),str(data4),str(data5),str(thetype)) 
@@ -270,9 +270,16 @@ def create_profile(theid,data1,data2,data3,data4,data5,thetype):
 		openseed.commit()
 		mycursor.close()
 		openseed.close()
-		return '{"profile":"'+theid+'"}'
+		return '{"profile":"created"}'
 	else:
-		return '{"profile":"exists"}'
+		mycursor = openseed.cursor()
+		sql = "UPDATE `profiles` SET data1 = %s, data2 = %s, data3 = %s, data4 = %s, data5 = %s WHERE id = %s"
+		val = (str(data1),str(data2),str(data3),str(data4),str(data5),str(theid))
+		mycursor.execute(sql,val)	
+		openseed.commit()
+		mycursor.close()
+		openseed.close() 
+		return '{"profile":"updated"}'
 
 def get_status(username):
 	

@@ -51,8 +51,8 @@ class TCPHandler(socketserver.BaseRequestHandler):
 					Submit.memo(from_client["username"],from_client["steemname"],response)
 			elif action == "create_creator":
 				response = Account.create_creator(from_client["devName"],from_client["contactName"],from_client["contactEmail"],from_client["steem"])
-			elif action == "create_profile":
-				response = Account.create_profile(from_client["token"],from_client["data1"],from_client["data2"],
+			elif action == "set_profile":
+				response = Account.set_profile(from_client["token"],from_client["data1"],from_client["data2"],
 						from_client["data3"],from_client["data4"],from_client["data5"],from_client["type"])
 
 			elif action == "get_status":

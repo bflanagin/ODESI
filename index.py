@@ -67,8 +67,8 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 		print(Account.steem_Check(from_client["steemname"]))
 	if action == "create":
 		print(Account.create_user(from_client["username"],from_client["passphrase"],from_client["email"]))
-	if action == "create_profile":
-		print(Account.create_profile(from_client["token"],from_client["data1"],
+	if action == "set_profile":
+		print(Account.set_profile(from_client["token"],from_client["data1"],
 			from_client["data2"],from_client["data3"],from_client["data4"],
 			from_client["data5"],from_client["type"]))
 	if action == "link":
