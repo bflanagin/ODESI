@@ -170,7 +170,7 @@ def to_ipfs(data):
 	stdout, stderr = add_to_ipfs.communicate()
 	return str(stdout).split(" ")[1]
 
-def password_reset(emailaddress,username,passphrase) {
+def password_reset(emailaddress,username,passphrase):
 	
 	newcode = ""
 	oldcode = ""
@@ -202,9 +202,5 @@ def password_reset(emailaddress,username,passphrase) {
 		openseed.commit()
 	u.close()
 	openseed.close()
-		
-	
-
-}
 
 
