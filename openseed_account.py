@@ -298,7 +298,7 @@ def get_status(username):
 	result = user.fetchall()
 	if len(result) == 1:
 		dat = str(result[0][4])
-		status = '{"username":"'+str(result[0][1])+'","date":"'+str(result[0][3])+'","data":'+dat+'}'
+		status = '{"username":"'+str(result[0][1])+'","date":"'+str(result[0][3])+'","data":'+dat.lower()+'}'
 	
 
 	user.close()
