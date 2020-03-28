@@ -353,32 +353,36 @@ def set_location(userID,appPubID,location):
 def set_status(appPub,uid,data):
 	
 	username = json.loads(user_from_id(uid))["user"]
-	openseed = mysql.connector.connect(
-		host = "localhost",
-		user = settings["dbuser"],
-		password = settings["dbpassword"],
-		database = "openseed"
-		)
-	user = openseed.cursor()
-	search = "SELECT * FROM logins WHERE username = %s"
-	val = (username,)
-	user.execute(search,val)
-	result = user.fetchall()
-	newdat = '{"chat":"'+data["chat"]+'"}'
-	if len(result) == 1:
-		update = "UPDATE logins SET appid = %s , data = %s WHERE username = %s"
-		up = (appPub,newdat,username)
-		user.execute(update,up)
+	if username and username != "none" and username != "None" and username != "None":
+		openseed = mysql.connector.connect(
+			host = "localhost",
+			user = settings["dbuser"],
+			password = settings["dbpassword"],
+			database = "openseed"
+			)
+		user = openseed.cursor()
+		search = "SELECT * FROM logins WHERE username = %s"
+		val = (username,)
+		user.execute(search,val)
+		result = user.fetchall()
+		newdat = '{"chat":"'+data["chat"].lower()+'"}'
+		if len(result) == 1:
+			update = "UPDATE logins SET appid = %s , data = %s WHERE username = %s"
+			up = (appPub,newdat,username)
+			user.execute(update,up)
+		else:
+			insert = "INSERT INTO logins (appid,username,data) VALUES (%s,%s,%s)"
+			valin = (appPub,username,newdat)
+			user.execute(insert,valin)
+
+		update = '{"account":"'+username+'","status":"'+newdat+'"}'
+
+		openseed.commit()
+		user.close()
+		openseed.close()
+
 	else:
-		insert = "INSERT INTO logins (appid,username,data) VALUES (%s,%s,%s)"
-		valin = (appPub,username,newdat)
-		user.execute(insert,valin)
-
-	update = '{"status":"updated"}'
-
-	openseed.commit()
-	user.close()
-	openseed.close()
+		update = '{"account":"'+username+'","status":"error"}'
 
 	return update	
 
