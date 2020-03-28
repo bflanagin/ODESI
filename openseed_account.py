@@ -365,7 +365,7 @@ def set_status(appPub,uid,data):
 		val = (username,)
 		user.execute(search,val)
 		result = user.fetchall()
-		newdat = '{"chat":"'+data["chat"].lower()+'"}'
+		newdat = '{"chat":"'+str(data["chat"]).lower()+'"}'
 		if len(result) == 1:
 			update = "UPDATE logins SET appid = %s , data = %s WHERE username = %s"
 			up = (appPub,newdat,username)
