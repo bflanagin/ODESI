@@ -375,7 +375,7 @@ def set_status(appPub,uid,data):
 			valin = (appPub,username,newdat)
 			user.execute(insert,valin)
 
-		update = '{"account":"'+username+'","status":"'+newdat+'"}'
+		update = '{"account":"'+username+'","status":'+newdat+'}'
 
 		openseed.commit()
 		user.close()
