@@ -123,7 +123,7 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 	if action == "get_status":
 		print(Account.get_status(from_client["account"]))
 	if action == "set_status":
-		print(Account.set_status(from_client["token"],from_client["appPub"],from_client["status"]))
+		print(Account.set_status(from_client["appPub"],from_client["token"],from_client["status"]))
 	if action == "get_chat":
 		print(Chat.get_chat(from_client["token"],from_client["account"],from_client["room"],from_client["last"]))
 	if action == "get_chat_history":
