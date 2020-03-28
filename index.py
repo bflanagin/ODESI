@@ -121,14 +121,14 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
  
 	
 	if action == "get_status":
-		print(Account.get_status(from_client["username"]))
+		print(Account.get_status(from_client["account"]))
 	if action == "set_status":
 		print(Account.set_status(from_client["token"],from_client["appPub"],from_client["data"]))
 	if action == "get_chat":
 		print(Chat.get_chat(from_client["token"],from_client["account"],from_client["room"],from_client["last"]))
-	if action == "chat_history":
+	if action == "get_chat_history":
 		print(Chat.get_chat_history(from_client["token"],from_client["account"],from_client["room"],from_client["count"],from_client["last"]))
-	if action == "conversations":
+	if action == "get_conversations":
 		print(Chat.chats(from_client["token"]))
 	if action == "send_chat":
 		print(Chat.send_chat(from_client["token"],from_client["username"],from_client["othername"],from_client["data"]))
