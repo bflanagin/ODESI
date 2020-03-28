@@ -49,7 +49,7 @@ def create_chatroom(creator,title,room,userlist):
 	chatcreator.close()	
 	openseed.close()
 	newkey = OneTime.store_onetime(1,creator,userlist.split("[")[1].split("]")[0],room.split("[")[1].split("]")[0])
-	return '{"type":"server","key":"'+newkey+'"}'
+	return '{"type":"server","room":"'+room.split("[")[1].split("]")[0]+'","key":"'+newkey+'"}'
 
 
 	
