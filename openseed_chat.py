@@ -132,7 +132,7 @@ def get_chat_history(userid,room,count,last):
 	response = '{"chat":"none"}'
 	username = json.loads(Account.user_from_id(userid))["user"]
 	theRoom = find_chatroom(room)[0]
-
+	print(theRoom)
 	if check_chat(username,room) != 0:
 		#while len(history) < int(count):
 		#	from_chat = get_chat(userid,room,last)
