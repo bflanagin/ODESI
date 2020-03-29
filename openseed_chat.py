@@ -46,7 +46,7 @@ def create_chatroom(creator,title,userlist):
 			password = settings["dbpassword"],
 			database = "openseed"
 			)
-		
+		room = Seed.generate_publicid(userlist+creator+title)
 		chatcreator = openseed.cursor()
 		newchat = "INSERT INTO chat (room,title,attendees,record,speaker) VALUES (%s,%s,%s,%s,'server')"
 		vals = (room,title,userlist,'new')
