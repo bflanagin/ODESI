@@ -10,6 +10,7 @@ from steem import Steem
 import openseed_account as Account
 import onetime as OneTime
 import openseed_setup as Settings
+import openseed_seedgenerator as Seed
 
 settings = Settings.get_settings()
 
@@ -157,7 +158,8 @@ def get_chat_history(userid,room,count,last):
 		response = '{"chat_history":['+jsoned+"]}"
 
 	else:
-		response = create_chatroom(username,"chat",room,room)
+		theRoom = Seed.generate_publicid(room
+		response = create_chatroom(username,"chat",theRoom,room)
 
 	return response
 
