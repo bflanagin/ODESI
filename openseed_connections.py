@@ -162,7 +162,7 @@ def user_profile(username):
  
 # Requests have three states 1 pending 2 accepted 0 denied. 
 
-def send_request(token,userid2,response = 1):
+def send_request(token,userid2,response = "1"):
  output = ""
  openseed = mysql.connector.connect(
 		host = "localhost",
@@ -184,7 +184,7 @@ def send_request(token,userid2,response = 1):
   openseed.commit()
   output = '{"request":"sent"}'
 
- elif(response != 1):
+ elif(response != "1"):
   
   update = "UPDATE `connections` SET `response` = %s WHERE userid1 LIKE %s AND userid2 LIKE %s"
   values = (response,userid1,userid2)
