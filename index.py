@@ -126,9 +126,11 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 		print(Account.set_status(from_client["appPub"],from_client["token"],from_client["status"]))
 
 	if action == "get_conversations":
-		print(Chat.chats(from_client["token"]))
+		print(Chat.get_conversations(from_client["token"]))
 
-	
+	if action == "create_chatroom":
+		print(create_chatroom(from_client["token"],from_client["title"],from_client["attendees"]))
+
 	if action == "get_chat_history":
 		print(Chat.get_chat_history(from_client["token"],from_client["room"],from_client["count"],from_client["last"]))	
 	if action == "get_chat":

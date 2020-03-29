@@ -146,6 +146,10 @@ class TCPHandler(socketserver.BaseRequestHandler):
 			#  Chat Section
 			#
 			#####################################################
+			elif action == "get_conversations":
+				response = Chat.get_conversations(from_client["token"])
+			elif action == "create_chatroom":
+				response = Chat.create_chatroom(from_client["token"],from_client["title"],from_client["attendees"])
 
 			elif action == "get_chat_history":
 				response = Chat.get_chat_history(from_client["token"],from_client["room"],from_client["count"],from_client["last"])

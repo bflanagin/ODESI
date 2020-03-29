@@ -35,22 +35,34 @@ def check_onetime(username,room):
 	else:
 		return 0
 
-def create_chatroom(creator,title,room,userlist):
-	openseed = mysql.connector.connect(
-		host = "localhost",
-		user = settings["dbuser"],
-		password = settings["dbpassword"],
-		database = "openseed"
-		)
-	chatcreator = openseed.cursor()
-	newchat = "INSERT INTO chat (room,title,attendees,record,speaker) VALUES (%s,%s,%s,%s,'server')"
-	vals = (room.split("[")[1].split("]")[0],title,userlist.split("[")[1].split("]")[0],'new')
-	chatcreator.execute(newchat,vals)
-	openseed.commit()
-	chatcreator.close()	
-	openseed.close()
-	newkey = OneTime.store_onetime(1,creator,userlist.split("[")[1].split("]")[0],room.split("[")[1].split("]")[0])
-	return '{"type":"server","room":"'+room.split("[")[1].split("]")[0]+'","key":"'+newkey+'"}'
+def create_chatroom(creator,title,userlist):
+	check = find_attendees(userlist)
+	if !check:
+		openseed = mysql.connector.connect(
+			host = "localhost",
+			user = settings["dbuser"],
+			password = settings["dbpassword"],
+			database = "openseed"
+			)
+		
+		chatcreator = openseed.cursor()
+		newchat = "INSERT INTO chat (room,title,attendees,record,speaker) VALUES (%s,%s,%s,%s,'server')"
+		vals = (room,title,userlist,'new')
+		chatcreator.execute(newchat,vals)
+		newroom = "INSERT INTO chatrooms (creator,title,attendees,room) VALUES (%s,%s,%s,%s)"
+		room_vals = (creator,title,userlist,room)
+		chatcreator.execute(newroom,room_vals)
+		openseed.commit()
+		chatcreator.close()	
+		openseed.close()
+		newkey = OneTime.store_onetime(1,creator,userlist,room)
+	
+
+		return '{"type":"server","room":"'+room+'","key":"'+newkey+'"}'
+	else:
+
+
+		return '{"type":"server"}'
 
 
 	
@@ -98,7 +110,7 @@ def check_chat(userid,room):
 	
 
 
-def chats(userid):
+def get_conversations(token):
 	chatlist = ""
 	convolist = []
 	openseed = mysql.connector.connect(
@@ -107,7 +119,7 @@ def chats(userid):
 		password = settings["dbpassword"],
 		database = "openseed"
 		)
-	username = json.loads(Account.user_from_id(userid))["user"]
+	username = json.loads(Account.user_from_id(token))["user"]
 	mysearch = openseed.cursor()
 	chat = "SELECT attendees,record FROM chat WHERE attendees LIKE %s ORDER BY Id DESC"
 	val1 = ("%"+username+"%",)
@@ -126,6 +138,7 @@ def chats(userid):
 
 	mysearch.close()
 	openseed.close()
+
 	return chatlist
 
 def get_chat_history(userid,room,count,last):
@@ -156,11 +169,7 @@ def get_chat_history(userid,room,count,last):
 				jsoned = '{"speaker":"'+str(message[4])+'","room":"'+theRoom+'","message":"'+status1.decode()+'","index":"'+str(index1)+'","date":"'+str(message[3])+'"},'+jsoned
 
 		response = '{"chat_history":['+jsoned+"]}"
-
-	else:
-		roomName = Seed.generate_publicid(room)
-		response = create_chatroom(username,"chat",roomName,room)
-
+		
 	return response
 
 def get_chat(userid,chatroom,last):
@@ -209,7 +218,7 @@ def find_chatroom(chatroom):
 		database = "openseed"
 		)
 	mysearch = openseed.cursor()
-	search = "SELECT Id,record,title,attendees,date,speaker FROM chat WHERE room = %s"
+	search = "SELECT Id,record,title,attendees,date,speaker FROM chatrooms WHERE room = %s"
 	val1 = (wharoom,)
 	val2 = (reverseroom,)
 	mysearch.execute(search,val1)
@@ -230,6 +239,31 @@ def find_chatroom(chatroom):
 		attendees = result2[0][3]
 	return [room,title,attendees]	
 
+
+def find_attendees(userlist):
+	room = ""
+	title = ""
+	attendees = ""
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+	mysearch = openseed.cursor()
+	search = "SELECT Id,record,title,attendees,date,speaker FROM chatrooms WHERE 1"
+	mysearch.close()
+	openseed.close() 
+
+	if len(result1) != 0:
+		room = wharoom
+		title = result1[0][2]
+		attendees = result1[0][3]
+	if len(result2) != 0:
+		room = reverseroom
+		title = result2[0][2]
+		attendees = result2[0][3]
+	return [room,title,attendees]	
 
 
 def send_chat(userid,chatroom,data):
