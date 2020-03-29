@@ -245,19 +245,15 @@ def find_attendees(userlist):
 		database = "openseed"
 		)
 	mysearch = openseed.cursor()
-	search = "SELECT Id,record,title,attendees,date,speaker FROM chatrooms WHERE 1"
+	search = "SELECT Id,record,title,attendees,date,speaker FROM chatrooms WHERE attendees LIKE %s"
+	vals = (userlist,)
+	mysearch.execute(search,vals)
+	result = mysearch.fetchall()
 	mysearch.close()
 	openseed.close() 
 
-	if len(result1) != 0:
-		room = wharoom
-		title = result1[0][2]
-		attendees = result1[0][3]
-	if len(result2) != 0:
-		room = reverseroom
-		title = result2[0][2]
-		attendees = result2[0][3]
-	return [room,title,attendees]	
+	if result == 1:
+		return [room,title,attendees]	
 
 
 def send_chat(userid,chatroom,data):
