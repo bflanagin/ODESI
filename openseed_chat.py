@@ -235,9 +235,10 @@ def find_chatroom(chatroom):
 	return [room,title,attendees]	
 
 
-def find_attendees(userlist):
+def find_attendees(token,userlist):
 	room = ""
 	title = ""
+	username = json.loads(Account.user_from_id(userid))["user"]
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
@@ -245,8 +246,8 @@ def find_attendees(userlist):
 		database = "openseed"
 		)
 	mysearch = openseed.cursor()
-	search = "SELECT title,room FROM chatrooms WHERE attendees = %s"
-	vals = (userlist,)
+	search = "SELECT title,room FROM chatrooms WHERE attendees LIKE %s"
+	vals = ("%"+username+"%",)
 	mysearch.execute(search,vals)
 	result = mysearch.fetchall()
 	mysearch.close()
