@@ -238,7 +238,7 @@ def find_chatroom(chatroom):
 def find_attendees(token,userlist):
 	room = ""
 	title = ""
-	username = json.loads(Account.user_from_id(userid))["user"]
+	username = json.loads(Account.user_from_id(token))["user"]
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
