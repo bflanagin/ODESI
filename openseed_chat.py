@@ -131,19 +131,36 @@ def get_chat_history(userid,room,count,last):
 	history = []
 	response = '{"chat":"none"}'
 	username = json.loads(Account.user_from_id(userid))["user"]
+	theRoom = find_chatroom(room)[0]
+
 	if check_chat(username,room) != 0:
-		while len(history) < int(count):
-			from_chat = get_chat(userid,room,last)
-			check = json.loads(from_chat)
-			if "type" in check:
-				if check["index"] != "-1":
-					history.append(from_chat)
+		#while len(history) < int(count):
+		#	from_chat = get_chat(userid,room,last)
+		#	check = json.loads(from_chat)
+		#	if "type" in check:
+		#		if check["index"] != "-1":
+		#			history.append(from_chat)
 					#message = json.loads(history[len(history) -1])
-					last = check["index"]
-				else:
-					break
+		#			last = check["index"]
+		#		else:
+		#			break
+		openseed = mysql.connector.connect(
+			host = "localhost",
+			user = settings["dbuser"],
+			password = settings["dbpassword"],
+			database = "openseed"
+		)
+		mysearch = openseed.cursor()
+		search = "SELECT Id,record,attendees,date,speaker FROM chat WHERE room = %s AND Id > %s ORDER BY Id DESC LIMIT"+int(count)+"OFFSET "+int(last)+"
+		val1 = (room,str(last))
+		mysearch.execute(search,val1)
+		result1 = mysearch.fetchall()
+		for message in result1:
+			print(message)
+		
 		if len(history) > 0:
-			response = '{"chat":'+json.dumps(history)+'}'
+			response = '{"chat":'+history+'}'
+		
 		else:
 			response = '{"chat":[none]}'
 	else:
@@ -153,7 +170,7 @@ def get_chat_history(userid,room,count,last):
 
 def get_chat(userid,chatroom,last):
 	theRoom = find_chatroom(chatroom)[0]
-	chat = '{"type":"server","room":"'+theRoom+'","message":"none","index":"-1"}'
+	chat = '{"speaker":"server","room":"'+theRoom+'","message":"none","index":"-1"}'
 	jsoned = chat
 	room = ""
 	index1 = 0
@@ -173,14 +190,14 @@ def get_chat(userid,chatroom,last):
 	if len(result1) != 0:
 		status1 = result1[0][1]
 		index1 = result1[0][0]
-		jsoned = '{"type":"'+str(result1[0][4])+'","room":"'+theRoom+'","message":"'+status1.decode()+'","index":"'+str(index1)+'","date":"'+str(result1[0][3])+'"}'
+		jsoned = '{"speaker":"'+str(result1[0][4])+'","room":"'+theRoom+'","message":"'+status1.decode()+'","index":"'+str(index1)+'","date":"'+str(result1[0][3])+'"}'
 	mysearch.close()
 	openseed.close() 
 
 	if status1 != None:
 		chat = jsoned 
 	else:
-		chat = '{"type":"server","room":"'+theRoom+'","message":"none","index":"-1"}'
+		chat = '{"speaker":"server","room":"'+theRoom+'","message":"none","index":"-1"}'
 	return chat	
 
 def find_chatroom(chatroom):
