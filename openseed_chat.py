@@ -158,8 +158,8 @@ def get_chat_history(userid,room,count,last):
 		response = '{"chat_history":['+jsoned+"]}"
 
 	else:
-		theRoom = Seed.generate_publicid(room
-		response = create_chatroom(username,"chat",theRoom,room)
+		roomName = Seed.generate_publicid(room)
+		response = create_chatroom(username,"chat",roomName,room)
 
 	return response
 
