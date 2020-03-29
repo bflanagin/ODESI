@@ -234,6 +234,9 @@ def find_chatroom(chatroom):
 		attendees = result2[0][3]
 	return [room,title,attendees]	
 
+# Look for rooms based on attendees.
+# First narrowing the search using a user token
+# Then check provided list against 
 
 def find_attendees(token,userlist):
 	room = ""
@@ -246,15 +249,19 @@ def find_attendees(token,userlist):
 		database = "openseed"
 		)
 	mysearch = openseed.cursor()
-	search = "SELECT title,room FROM chatrooms WHERE attendees LIKE %s"
+	search = "SELECT title,room,attendees FROM chatrooms WHERE attendees LIKE %s"
 	vals = ("%"+username+"%",)
 	mysearch.execute(search,vals)
 	result = mysearch.fetchall()
 	mysearch.close()
 	openseed.close() 
 
-	if len(result) == 1:
-		return result[0]
+	for room in result:
+		members = room[2].split(",")
+		checkfor = userlist.split(",")
+		print(members)
+		 
+	#return result[0][2]
 		
 
 
