@@ -151,7 +151,7 @@ def get_chat_history(userid,room,count,last):
 			database = "openseed"
 		)
 		mysearch = openseed.cursor()
-		search = "SELECT Id,record,attendees,date,speaker FROM chat WHERE room = %s ORDER BY Id DESC LIMIT %s OFFSET %s"
+		search = "SELECT Id,record,attendees,date,speaker FROM chat WHERE room = %s ORDER BY Id DESC LIMIT %s, %s"
 		val1 = (room,str(count),str(last))
 		mysearch.execute(search,val1)
 		result1 = mysearch.fetchall()
