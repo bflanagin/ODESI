@@ -59,16 +59,8 @@ def create_chatroom(creator,title,userlist):
 		openseed.close()
 		newkey = OneTime.store_onetime(1,creator,userlist,room)
 	
-
 		return '{"type":"server","room":"'+room+'","key":"'+newkey+'"}'
 	
-
-
-		
-
-
-	
-
 def check_chat(userid,room):
 	openseed = mysql.connector.connect(
 		host = "localhost",
