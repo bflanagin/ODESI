@@ -170,7 +170,7 @@ def send_request(token,userid2,response = 1):
 		password = settings["dbpassword"],
 		database = "openseed"
 		)
- username = json.loads(Account.user_from_id(userid))["user"]
+ username = json.loads(Account.user_from_id(token))["user"]
  request_search = openseed.cursor()
  search = "SELECT * FROM `connections` WHERE userid1 LIKE %s AND userid2 LIKE %s"
  vals = (username,userid2)
@@ -204,7 +204,7 @@ def get_requests(token,data):
 		password = settings["dbpassword"],
 		database = "openseed"
 		)
- username = Account.user_from_id(token)
+ username = json.loads(Account.user_from_id(token))["user"]
  mysearch = openseed.cursor()
  search = "SELECT * FROM connections WHERE userid2 = %s AND response = 1"
  val = (username, )
@@ -232,7 +232,7 @@ def request_status(token,account):
 		database = "openseed"
 		)
  mysearch = openseed.cursor()
- username = json.loads(Account.user_from_id(userid))["user"]
+ username = json.loads(Account.user_from_id(token))["user"]
  search = "SELECT * FROM connections WHERE userid1 = %s AND userid2 = %s"
  val1 = (username,account)
  val2 = (account,username)
