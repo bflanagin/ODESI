@@ -212,7 +212,7 @@ def find_chatroom(chatroom):
 		database = "openseed"
 		)
 	mysearch = openseed.cursor()
-	search = "SELECT Id,record,title,attendees,date,speaker FROM chatrooms WHERE room = %s"
+	search = "SELECT title,attendees,date,room FROM chatrooms WHERE room = %s"
 	val1 = (wharoom,)
 	val2 = (reverseroom,)
 	mysearch.execute(search,val1)
@@ -245,7 +245,7 @@ def find_attendees(userlist):
 		database = "openseed"
 		)
 	mysearch = openseed.cursor()
-	search = "SELECT Id,record,title,attendees,date,speaker FROM chatrooms WHERE attendees LIKE %s"
+	search = "SELECT title,room FROM chatrooms WHERE attendees LIKE %s"
 	vals = (userlist,)
 	mysearch.execute(search,vals)
 	result = mysearch.fetchall()
