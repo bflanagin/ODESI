@@ -37,7 +37,9 @@ def check_onetime(username,room):
 
 def create_chatroom(creator,title,userlist):
 	check = find_attendees(userlist)
-	if !check:
+	if check:
+		return '{"type":"server"}'
+	else:
 		openseed = mysql.connector.connect(
 			host = "localhost",
 			user = settings["dbuser"],
@@ -59,10 +61,10 @@ def create_chatroom(creator,title,userlist):
 	
 
 		return '{"type":"server","room":"'+room+'","key":"'+newkey+'"}'
-	else:
+	
 
 
-		return '{"type":"server"}'
+		
 
 
 	
