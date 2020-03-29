@@ -147,13 +147,12 @@ def get_chat_history(userid,room,count,last):
 		mysearch.execute(search,val1)
 		result1 = mysearch.fetchall()
 		for message in result1:
-			print(message)
-			status1 = result1[0][1]
-			index1 = result1[0][0]
+			status1 = message[1]
+			index1 = message[0]
 			if jsoned != "":
-				jsoned = '{"speaker":"'+str(result1[0][4])+'","room":"'+theRoom+'","message":"'+status1.decode()+'","index":"'+str(index1)+'","date":"'+str(result1[0][3])+'"}'
+				jsoned = '{"speaker":"'+str(message[4])+'","room":"'+theRoom+'","message":"'+status1.decode()+'","index":"'+str(index1)+'","date":"'+str(message[3])+'"}'
 			else:
-				jsoned = '{"speaker":"'+str(result1[0][4])+'","room":"'+theRoom+'","message":"'+status1.decode()+'","index":"'+str(index1)+'","date":"'+str(result1[0][3])+'"},'+jsoned
+				jsoned = '{"speaker":"'+str(message[4])+'","room":"'+theRoom+'","message":"'+status1.decode()+'","index":"'+str(index1)+'","date":"'+str(message[3])+'"},'+jsoned
 		response = jsoned
 
 	else:
