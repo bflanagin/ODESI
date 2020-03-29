@@ -234,27 +234,29 @@ def send_chat(userid,chatroom,data):
 	
 	roomInfo = find_chatroom(chatroom)
 	theRoom = roomInfo[0]
-	
-	username = json.loads(Account.user_from_id(userid))["user"]
-	response = '{"chat_response":{"speaker":"server","message":"denied"}}'
-	if username:
-		response = '{"chat":{"speaker":"server","message":"No data"}}'
-		openseed = mysql.connector.connect(
-			host = "localhost",
-			user = settings["dbuser"],
-			password = settings["dbpassword"],
-			database = "openseed"
-		)
-		mysearch = openseed.cursor()
-		if len(data) > 0:
-			chat = "INSERT INTO chat (room,title,attendees,record,speaker) VALUES (%s,%s,%s,%s,%s)"
-			val1 = (theRoom,roomInfo[1],roomInfo[2],data,username)
-			mysearch.execute(chat,val1)
-			openseed.commit()
-			mysearch.close()
-			openseed.close()
-			response = '{"chat_response":{"speaker":"'+username+'","room":"['+theRoom+']","message":"'+data+'"}}'
-	else:
+	if len(theRoom) > 3:
+		username = json.loads(Account.user_from_id(userid))["user"]
 		response = '{"chat_response":{"speaker":"server","message":"denied"}}'
+		if username:
+			response = '{"chat_response":{"speaker":"server","message":"No data"}}'
+			openseed = mysql.connector.connect(
+				host = "localhost",
+				user = settings["dbuser"],
+				password = settings["dbpassword"],
+				database = "openseed"
+			)
+			mysearch = openseed.cursor()
+			if len(data) > 0:
+				chat = "INSERT INTO chat (room,title,attendees,record,speaker) VALUES (%s,%s,%s,%s,%s)"
+				val1 = (theRoom,roomInfo[1],roomInfo[2],data,username)
+				mysearch.execute(chat,val1)
+				openseed.commit()
+				mysearch.close()
+				openseed.close()
+				response = '{"chat_response":{"speaker":"'+username+'","room":"['+theRoom+']","message":"'+data+'"}}'
+		else:
+			response = '{"chat_response":{"speaker":"server","message":"denied"}}'
+	else:
+		response = '{"chat_response":{"speaker":"server","message":"no room found at "'+chatroom+'"}}'
 
 	return response
