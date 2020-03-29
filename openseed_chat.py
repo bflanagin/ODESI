@@ -236,7 +236,7 @@ def send_chat(userid,chatroom,data):
 	theRoom = roomInfo[0]
 	
 	username = json.loads(Account.user_from_id(userid))["user"]
-	response = '{"chat":{"speaker":"server","message":"denied"}}'
+	response = '{"chat_response":{"speaker":"server","message":"denied"}}'
 	if username:
 		response = '{"chat":{"speaker":"server","message":"No data"}}'
 		openseed = mysql.connector.connect(
@@ -253,8 +253,8 @@ def send_chat(userid,chatroom,data):
 			openseed.commit()
 			mysearch.close()
 			openseed.close()
-			response = '{"chat":{"speaker":"server","message":"updated"}}'
+			response = '{"chat_response":{"speaker":"'+username+'","room":"['+theRoom+']","message":"'+data+'"}}'
 	else:
-		response = '{"chat":{"type":"server","message":"denied"}}'
+		response = '{"chat_response":{"speaker":"server","message":"denied"}}'
 
 	return response
