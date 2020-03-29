@@ -164,7 +164,7 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 	if action == "send_request":
 		print(Connections.send_request(from_client["token"],from_client["account"],from_client["response"]))
 	if action == "requests":
-		print(Connections.get_requests(from_client["username"],from_client["data"]))
+		print(Connections.get_requests(from_client["token"],from_client["data"]))
 	if action == "request_status":
 		print(Connections.request_status(from_client["token"],from_client["account"]))
 

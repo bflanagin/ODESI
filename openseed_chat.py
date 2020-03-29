@@ -257,6 +257,6 @@ def send_chat(userid,chatroom,data):
 		else:
 			response = '{"chat_response":{"speaker":"server","message":"denied"}}'
 	else:
-		response = '{"chat_response":{"speaker":"server","message":"no room found at "'+chatroom+'"}}'
+		response = '{"chat_response":{"speaker":"server","message":"no room found at '+chatroom+'"}}'
 
 	return response

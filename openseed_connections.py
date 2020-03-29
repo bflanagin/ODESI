@@ -162,7 +162,7 @@ def user_profile(username):
  
 # Requests have three states 1 pending 2 accepted 0 denied. 
 
-def send_request(userid1,userid2,response = 1):
+def send_request(token,userid2,response = 1):
  output = ""
  openseed = mysql.connector.connect(
 		host = "localhost",
@@ -170,15 +170,16 @@ def send_request(userid1,userid2,response = 1):
 		password = settings["dbpassword"],
 		database = "openseed"
 		)
+ username = Account.user_from_id(token)
  request_search = openseed.cursor()
  search = "SELECT * FROM `connections` WHERE userid1 LIKE %s AND userid2 LIKE %s"
- vals = (userid1,userid2)
+ vals = (username,userid2)
  request_search.execute(search,vals)
  exists = len(request_search.fetchall())
  if exists != 1: 
   
   insert = "INSERT INTO `connections` (`userid1`,`userid2`,`response`) VALUES  (%s,%s,%s)"
-  values = (userid1,userid2,response)
+  values = (username,userid2,response)
   request_search.execute(insert,values)
   openseed.commit()
   output = '{"request":"sent"}'
@@ -195,7 +196,7 @@ def send_request(userid1,userid2,response = 1):
  openseed.close()
  return output 
 
-def get_requests(username,data):
+def get_requests(token,data):
  requests = []
  openseed = mysql.connector.connect(
 		host = "localhost",
@@ -203,6 +204,7 @@ def get_requests(username,data):
 		password = settings["dbpassword"],
 		database = "openseed"
 		)
+ username = Account.user_from_id(token)
  mysearch = openseed.cursor()
  search = "SELECT * FROM connections WHERE userid2 = %s AND response = 1"
  val = (username, )
