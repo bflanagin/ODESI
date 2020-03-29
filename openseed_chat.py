@@ -129,7 +129,7 @@ def chats(userid):
 
 def get_chat_history(userid,room,count,last):
 	history = []
-	response = '{"chat":"none"}'
+	response = '{"chat_history":["none"]}'
 	username = json.loads(Account.user_from_id(userid))["user"]
 	theRoom = find_chatroom(room)[0]
 
@@ -154,7 +154,7 @@ def get_chat_history(userid,room,count,last):
 			else:
 				jsoned = '{"speaker":"'+str(message[4])+'","room":"'+theRoom+'","message":"'+status1.decode()+'","index":"'+str(index1)+'","date":"'+str(message[3])+'"},'+jsoned
 
-		response = '{"chat":['+jsoned+"]}"
+		response = '{"chat_history":['+jsoned+"]}"
 
 	else:
 		response = create_chatroom(username,"chat",room,room)
@@ -163,7 +163,7 @@ def get_chat_history(userid,room,count,last):
 
 def get_chat(userid,chatroom,last):
 	theRoom = find_chatroom(chatroom)[0]
-	chat = '{"speaker":"server","room":"'+theRoom+'","message":"none","index":"-1"}'
+	chat = '{"chat":{"speaker":"server","room":"'+theRoom+'","message":"none","index":"-1"}}'
 	jsoned = chat
 	room = ""
 	index1 = 0
@@ -183,14 +183,14 @@ def get_chat(userid,chatroom,last):
 	if len(result1) != 0:
 		status1 = result1[0][1]
 		index1 = result1[0][0]
-		jsoned = '{"speaker":"'+str(result1[0][4])+'","room":"'+theRoom+'","message":"'+status1.decode()+'","index":"'+str(index1)+'","date":"'+str(result1[0][3])+'"}'
+		jsoned = '{"chat":{"speaker":"'+str(result1[0][4])+'","room":"'+theRoom+'","message":"'+status1.decode()+'","index":"'+str(index1)+'","date":"'+str(result1[0][3])+'"}}'
 	mysearch.close()
 	openseed.close() 
 
 	if status1 != None:
 		chat = jsoned 
 	else:
-		chat = '{"speaker":"server","room":"'+theRoom+'","message":"none","index":"-1"}'
+		chat = '{chat:{"speaker":"server","room":"'+theRoom+'","message":"none","index":"-1"}}'
 	return chat	
 
 def find_chatroom(chatroom):
@@ -236,9 +236,9 @@ def send_chat(userid,chatroom,data):
 	theRoom = roomInfo[0]
 	
 	username = json.loads(Account.user_from_id(userid))["user"]
-	response = '{"type":"server","message":"denied"}'
+	response = '{"chat":{"speaker":"server","message":"denied"}}'
 	if username:
-		response = '{"type":"server","message":"No data"}'
+		response = '{"chat":{"speaker":"server","message":"No data"}}'
 		openseed = mysql.connector.connect(
 			host = "localhost",
 			user = settings["dbuser"],
@@ -253,8 +253,8 @@ def send_chat(userid,chatroom,data):
 			openseed.commit()
 			mysearch.close()
 			openseed.close()
-			response = '{"type":"server","message":"updated"}'
+			response = '{"chat":{"speaker":"server","message":"updated"}}'
 	else:
-		response = '{"type":"server","message":"denied"}'
+		response = '{"chat":{"type":"server","message":"denied"}}'
 
 	return response
