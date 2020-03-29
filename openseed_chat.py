@@ -154,7 +154,7 @@ def get_chat_history(userid,room,count,last):
 			else:
 				jsoned = '{"speaker":"'+str(message[4])+'","room":"'+theRoom+'","message":"'+status1.decode()+'","index":"'+str(index1)+'","date":"'+str(message[3])+'"},'+jsoned
 
-		response = '{"chat":'+jsoned+"}"
+		response = '{"chat":['+jsoned+"]}"
 
 	else:
 		response = create_chatroom(username,"chat",room,room)
