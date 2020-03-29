@@ -238,7 +238,6 @@ def find_chatroom(chatroom):
 def find_attendees(userlist):
 	room = ""
 	title = ""
-	attendees = ""
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
@@ -246,7 +245,7 @@ def find_attendees(userlist):
 		database = "openseed"
 		)
 	mysearch = openseed.cursor()
-	search = "SELECT title,room FROM chatrooms WHERE attendees LIKE %s"
+	search = "SELECT title,room FROM chatrooms WHERE attendees = %s"
 	vals = (userlist,)
 	mysearch.execute(search,vals)
 	result = mysearch.fetchall()
@@ -254,7 +253,7 @@ def find_attendees(userlist):
 	openseed.close() 
 
 	if result == 1:
-		return [room,title,attendees]	
+		return [room,title]	
 
 
 def send_chat(userid,chatroom,data):
