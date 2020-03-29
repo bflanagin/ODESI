@@ -132,18 +132,9 @@ def get_chat_history(userid,room,count,last):
 	response = '{"chat":"none"}'
 	username = json.loads(Account.user_from_id(userid))["user"]
 	theRoom = find_chatroom(room)[0]
-	print(theRoom)
+
 	if theRoom:
-		#while len(history) < int(count):
-		#	from_chat = get_chat(userid,room,last)
-		#	check = json.loads(from_chat)
-		#	if "type" in check:
-		#		if check["index"] != "-1":
-		#			history.append(from_chat)
-					#message = json.loads(history[len(history) -1])
-		#			last = check["index"]
-		#		else:
-		#			break
+		jsoned = ""
 		openseed = mysql.connector.connect(
 			host = "localhost",
 			user = settings["dbuser"],
@@ -157,12 +148,14 @@ def get_chat_history(userid,room,count,last):
 		result1 = mysearch.fetchall()
 		for message in result1:
 			print(message)
-		
-		#if len(history) > 0:
-		#	response = '{"chat":'+history+'}'
-		
-		#else:
-		#	response = '{"chat":[none]}'
+			status1 = result1[0][1]
+			index1 = result1[0][0]
+			if jsoned != "":
+				jsoned = '{"speaker":"'+str(result1[0][4])+'","room":"'+theRoom+'","message":"'+status1.decode()+'","index":"'+str(index1)+'","date":"'+str(result1[0][3])+'"}'
+			else:
+				jsoned = '{"speaker":"'+str(result1[0][4])+'","room":"'+theRoom+'","message":"'+status1.decode()+'","index":"'+str(index1)+'","date":"'+str(result1[0][3])+'"},'+jsoned
+		response = jsoned
+
 	else:
 		response = create_chatroom(username,"chat",room,room)
 
