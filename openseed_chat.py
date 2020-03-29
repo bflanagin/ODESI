@@ -241,6 +241,7 @@ def find_chatroom(chatroom):
 def find_attendees(token,userlist):
 	room = ""
 	title = ""
+	found = ""
 	username = json.loads(Account.user_from_id(token))["user"]
 	openseed = mysql.connector.connect(
 		host = "localhost",
@@ -255,13 +256,23 @@ def find_attendees(token,userlist):
 	result = mysearch.fetchall()
 	mysearch.close()
 	openseed.close() 
-
+	
 	for room in result:
 		members = room[2].split(",")
 		checkfor = userlist.split(",")
-		print(members)
+		found = room
+		for m in checkfor:
+			if m in members:
+				members.remove(m)
+
+		if len(members) > 0:
+			print("Not the same chat")
+		else:
+			break
+
+	
 		 
-	#return result[0][2]
+	return room[2]
 		
 
 
