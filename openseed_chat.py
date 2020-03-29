@@ -36,7 +36,7 @@ def check_onetime(username,room):
 		return 0
 
 def create_chatroom(creator,title,userlist):
-	check = find_attendees(userlist)
+	check = find_attendees(creator,userlist)
 	if check:
 		return '{"type":"server"}'
 	else:
