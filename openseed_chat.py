@@ -133,7 +133,7 @@ def get_chat_history(userid,room,count,last):
 	username = json.loads(Account.user_from_id(userid))["user"]
 	theRoom = find_chatroom(room)[0]
 	print(theRoom)
-	if check_chat(username,room) != 0:
+	if theRoom:
 		#while len(history) < int(count):
 		#	from_chat = get_chat(userid,room,last)
 		#	check = json.loads(from_chat)
@@ -158,11 +158,11 @@ def get_chat_history(userid,room,count,last):
 		for message in result1:
 			print(message)
 		
-		if len(history) > 0:
-			response = '{"chat":'+history+'}'
+		#if len(history) > 0:
+		#	response = '{"chat":'+history+'}'
 		
-		else:
-			response = '{"chat":[none]}'
+		#else:
+		#	response = '{"chat":[none]}'
 	else:
 		response = create_chatroom(username,"chat",room,room)
 
