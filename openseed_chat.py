@@ -57,7 +57,8 @@ def create_chatroom(creator,title,userlist):
 		openseed.commit()
 		chatcreator.close()	
 		openseed.close()
-		newkey = OneTime.store_onetime(1,creator,userlist,room)
+		username= json.loads(Account.user_from_id(creator))["user"]
+		newkey = OneTime.store_onetime(1,username,userlist,room)
 	
 		return '{"type":"server","room":"'+room+'","key":"'+newkey+'"}'
 	
