@@ -252,8 +252,9 @@ def find_attendees(userlist):
 	mysearch.close()
 	openseed.close() 
 
-	if result == 1:
-		return [room,title]	
+	if len(result) == 1:
+		return result[0]
+		
 
 
 def send_chat(userid,chatroom,data):
