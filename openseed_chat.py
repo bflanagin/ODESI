@@ -123,10 +123,16 @@ def get_conversations(token):
 				reverse = str(r[0]).split(",")[1]+","+str(r[0]).split(",")[0]
 				if reverse not in convolist:
 					convolist.append(str(r[0]))
-					chatlist = '{"conversation":"'+str(r[0])+'","message":'+json.dumps(r[1].decode())+'},'+chatlist
+				if chatlist != "":
+					chatlist = chatlist+',{"conversation":"'+str(r[0])+'","message":'+json.dumps(r[1].decode())+'}'
+				else:
+					chatlist = '{"conversation":"'+str(r[0])+'","message":'+json.dumps(r[1])+'}'
 		else:
 			convolist.append(str(r[0]))
-			chatlist = '{"conversation":"'+str(r[0])+'","message":'+json.dumps(r[1])+'},'+chatlist
+			if chatlist != "":
+				chatlist = chatlist+',{"conversation":"'+str(r[0])+'","message":'+json.dumps(r[1])+'}'
+			else:
+				chatlist = '{"conversation":"'+str(r[0])+'","message":'+json.dumps(r[1])+'}'
 
 	mysearch.close()
 	openseed.close()
