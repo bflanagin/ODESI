@@ -137,7 +137,7 @@ def get_chat_history(userid,room,count,last):
 	response = '{"chat_history":["none"]}'
 	username = json.loads(Account.user_from_id(userid))["user"]
 
-	if theRoom:
+	if room:
 		jsoned = ""
 		openseed = mysql.connector.connect(
 			host = "localhost",
