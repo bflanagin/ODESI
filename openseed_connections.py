@@ -162,7 +162,7 @@ def user_profile(username):
  
 # Requests have three states 1 pending 2 accepted 0 denied. 
 
-def send_request(token,userid2,response = 1):
+def send_request(token,requestee,response = 1):
  output = ""
  openseed = mysql.connector.connect(
 		host = "localhost",
@@ -173,24 +173,27 @@ def send_request(token,userid2,response = 1):
  username = json.loads(Account.user_from_id(token))["user"]
  request_search = openseed.cursor()
  search = "SELECT * FROM `connections` WHERE userid1 LIKE %s AND userid2 LIKE %s"
- vals = (username,userid2)
- request_search.execute(search,vals)
- exists = len(request_search.fetchall())
- if exists != 1: 
-  
+ vals_1 = (username,requestee)
+ vals_2 = (requestee,username)
+ request_search.execute(search,vals_1)
+ exists_1 = len(request_search.fetchall())
+ request_search.execute(search,vals_2)
+ exists_2 = len(request_search.fetchall())
+
+ if exists_1 != 1 and exists_2 !=1: 
   insert = "INSERT INTO `connections` (`userid1`,`userid2`,`response`) VALUES  (%s,%s,%s)"
-  values = (username,userid2,response)
+  values = (username,requestee,response)
   request_search.execute(insert,values)
   openseed.commit()
-  output = '{"request":"sent"}'
+  output = '{"request":"sent","to":"'+requestee+'","from":"'+username+'"}'
 
- elif(int(response) != 1):
+ elif exists_2 == 1 and int(response) != 1:
   
   update = "UPDATE `connections` SET `response` = %s WHERE userid1 LIKE %s AND userid2 LIKE %s"
-  values = (response,userid1,userid2)
+  values = (response,requestee,username)
   request_search.execute(update,values)
   openseed.commit()
-  output = '{"request":"updated"}'
+  output = '{"request":"updated","to":"'+requestee+'","from":"'+username+'"}'
 	
  request_search.close()
  openseed.close()
