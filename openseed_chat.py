@@ -136,7 +136,6 @@ def get_chat_history(userid,room,count,last):
 	history = []
 	response = '{"chat_history":["none"]}'
 	username = json.loads(Account.user_from_id(userid))["user"]
-	#theRoom = find_chatroom(room)[0]
 
 	if theRoom:
 		jsoned = ""
@@ -148,7 +147,7 @@ def get_chat_history(userid,room,count,last):
 		)
 		mysearch = openseed.cursor()
 		search = "SELECT Id,record,attendees,date,speaker FROM chat WHERE room = %s AND Id > %s ORDER BY Id DESC LIMIT "+count
-		val1 = (theRoom,str(last))
+		val1 = (room,str(last))
 		mysearch.execute(search,val1)
 		result1 = mysearch.fetchall()
 		for message in result1:
