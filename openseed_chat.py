@@ -219,7 +219,7 @@ def find_chatroom(chatroom):
 	openseed.close() 
 
 	if len(result1) != 0:
-		room = wharoom
+		room = chatroom
 		title = result1[0][2]
 		attendees = result1[0][3]
 	#if len(result2) != 0:
