@@ -101,10 +101,6 @@ def check_chat(userid,room):
 			return 1
 		else:
    			return 0
-	
-
-	
-
 
 def get_conversations(token):
 	chatlist = ""
@@ -127,15 +123,15 @@ def get_conversations(token):
 				reverse = str(r[0]).split(",")[1]+","+str(r[0]).split(",")[0]
 				if reverse not in convolist:
 					convolist.append(str(r[0]))
-					chatlist = '{"conversation":"'+str(r[0])+'","message":'+json.dumps(r[1].decode())+'}\n'+chatlist
+					chatlist = '{"conversation":"'+str(r[0])+'","message":'+json.dumps(r[1].decode())+'},'+chatlist
 		else:
 			convolist.append(str(r[0]))
-			chatlist = '{"conversation":"'+str(r[0])+'","message":'+json.dumps(r[1])+'}\n'+chatlist
+			chatlist = '{"conversation":"'+str(r[0])+'","message":'+json.dumps(r[1])+'},'+chatlist
 
 	mysearch.close()
 	openseed.close()
 
-	return chatlist
+	return '{"conversations":['+chatlist+']}
 
 def get_chat_history(userid,room,count,last):
 	history = []
