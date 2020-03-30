@@ -36,11 +36,6 @@ def check_onetime(username,room):
 		return 0
 
 def create_chatroom(creator,title,userlist):
-	check = find_attendees(creator,userlist)
-	if check:
-		return '{"type":"server","message":"exists"}'
-		#return '{"type":"server","room":"'+check[2]+'","key":"'+newkey+'"}'
-	else:
 		openseed = mysql.connector.connect(
 			host = "localhost",
 			user = settings["dbuser"],
@@ -61,7 +56,7 @@ def create_chatroom(creator,title,userlist):
 		username= json.loads(Account.user_from_id(creator))["user"]
 		newkey = OneTime.store_onetime(1,username,userlist,room)
 	
-		return '{"type":"server","room":"'+room+'","key":"'+newkey+'"}'
+		return '{"type":"server","room":"'+room+'","title":"'+title+'","key":"'+newkey+'"}'
 	
 def check_chat(userid,room):
 	openseed = mysql.connector.connect(
@@ -251,7 +246,7 @@ def find_attendees(token,userlist,create = 1):
 		database = "openseed"
 		)
 	mysearch = openseed.cursor()
-	search = "SELECT title,room,attendees FROM chatrooms WHERE attendees LIKE %s"
+	search = "SELECT room,title,attendees FROM chatrooms WHERE attendees LIKE %s"
 	vals = ("%"+username+"%",)
 	mysearch.execute(search,vals)
 	result = mysearch.fetchall()
@@ -273,7 +268,13 @@ def find_attendees(token,userlist,create = 1):
 		if int(create) == 1 and len(userlist.split(",")) == 2:
 			return create_chatroom(token,"chat",userlist)
 	else:
-		return found
+		key = Seed.get_room_key(token,found[0])
+		if key != "":
+			output = '{"type":"server","room":"'+found[0]+'","title":"'+found[1]+'","key":"'+key+'"}'
+		else:
+			output = '{"type":"server","room":"'+found[0]+'","title":"'+found[1]+'","key":"error"}'
+
+		return output
 		
 
 

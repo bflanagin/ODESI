@@ -230,6 +230,31 @@ def update_key(thetype,register,validusers):
 
 	return str(code)
 
+def get_room_key(token,room):
+	reg = ""
+	code = ""
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+	mysearch = openseed.cursor()
+	username = json.loads(Account.user_from_id(token))["user"]
+	check = "SELECT code FROM onetime WHERE validusers LIKE %s AND room = %s"
+	val1 = ("%"+username+"%",room)
+	mysearch.execute(check,val1)
+	result = mysearch.fetchall()
+	if len(result) == 1:
+		code = result[0]
+	
+	openseed.commit()
+	mysearch.close()
+	openseed.close()
+
+return str(code)
+
+
 def simp_crypt(key,raw_data):
 	key = key.replace("0","q")\
 			.replace("1","a").replace("2","b")\
