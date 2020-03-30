@@ -108,7 +108,7 @@ def get_conversations(token):
 		)
 	username = json.loads(Account.user_from_id(token))["user"]
 	mysearch = openseed.cursor()
-	chat = "SELECT room,attendees,record FROM chat WHERE attendees LIKE %s ORDER BY Id DESC"
+	chat = "SELECT room,attendees,id FROM chat WHERE attendees LIKE %s ORDER BY Id DESC"
 	val1 = ("%"+username+"%",)
 	mysearch.execute(chat,val1)
 	result = mysearch.fetchall()
@@ -117,15 +117,15 @@ def get_conversations(token):
 			if str(r[0]) not in convolist:
 				convolist.append(str(r[1]))
 				if chatlist != "":
-					chatlist = chatlist+',{"room":"'+str(r[0])+'","attendees":"'+str(r[1])+'","message":'+json.dumps(r[2].decode())+'}'
+					chatlist = chatlist+',{"room":"'+str(r[0])+'","attendees":"'+str(r[1])+'","index":'+str(r[2])+'}'
 				else:
-					chatlist = '{"room":"'+str(r[0])+'","attendees":"'+str(r[1])+'","message":'+json.dumps(r[2].decode())+'}'
+					chatlist = '{"room":"'+str(r[0])+'","attendees":"'+str(r[1])+'","index":'+str(r[2])+'}'
 		else:
 			convolist.append(str(r[0]))
 			if chatlist != "":
-				chatlist = chatlist+',{"room":"'+str(r[0])+'","attendees":"'+str(r[1])+'","message":'+json.dumps(r[2].decode())+'}'
+				chatlist = chatlist+',{"room":"'+str(r[0])+'","attendees":"'+str(r[1])+'","index":'+str(r[2])+'}'
 			else:
-				chatlist = '{"room":"'+str(r[0])+'","attendees":"'+str(r[1])+'","message":'+json.dumps(r[2].decode())+'}'
+				chatlist = '{"room":"'+str(r[0])+'","attendees":"'+str(r[1])+'","index":'+str(r[2])+'}'
 
 	mysearch.close()
 	openseed.close()
