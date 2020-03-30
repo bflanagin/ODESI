@@ -136,7 +136,7 @@ def get_chat_history(userid,room,count,last):
 	history = []
 	response = '{"chat_history":["none"]}'
 	username = json.loads(Account.user_from_id(userid))["user"]
-	theRoom = find_chatroom(room)[0]
+	#theRoom = find_chatroom(room)[0]
 
 	if theRoom:
 		jsoned = ""
@@ -155,9 +155,9 @@ def get_chat_history(userid,room,count,last):
 			status1 = message[1]
 			index1 = message[0]
 			if jsoned == "":
-				jsoned = '{"speaker":"'+str(message[4])+'","room":"'+theRoom+'","message":"'+status1.decode()+'","index":"'+str(index1)+'","date":"'+str(message[3])+'"}'
+				jsoned = '{"speaker":"'+str(message[4])+'","room":"'+room+'","message":"'+status1.decode()+'","index":"'+str(index1)+'","date":"'+str(message[3])+'"}'
 			else:
-				jsoned = '{"speaker":"'+str(message[4])+'","room":"'+theRoom+'","message":"'+status1.decode()+'","index":"'+str(index1)+'","date":"'+str(message[3])+'"},'+jsoned
+				jsoned = '{"speaker":"'+str(message[4])+'","room":"'+room+'","message":"'+status1.decode()+'","index":"'+str(index1)+'","date":"'+str(message[3])+'"},'+jsoned
 
 		response = '{"chat_history":['+jsoned+"]}"
 		
