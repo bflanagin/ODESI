@@ -252,7 +252,7 @@ def get_room_key(token,room):
 	mysearch.close()
 	openseed.close()
 
-return str(code)
+	return str(code)
 
 
 def simp_crypt(key,raw_data):
