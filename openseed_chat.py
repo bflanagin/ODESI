@@ -162,14 +162,13 @@ def get_chat_history(userid,room,count,last):
 		
 	return response
 
-def get_chat(userid,chatroom,last):
-	theRoom = find_chatroom(chatroom)[0]
-	chat = '{"chat":{"speaker":"server","room":"'+theRoom+'","message":"none","index":"-1"}}'
+def get_chat(token,chatroom,last):
+	chat = '{"chat":{"speaker":"server","room":"'+chatroom+'","message":"none","index":"-1"}}'
 	jsoned = chat
 	room = ""
 	index1 = 0
 	status1 = ""
-	username = json.loads(Account.user_from_id(userid))["user"]
+	username = json.loads(Account.user_from_id(token))["user"]
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
@@ -178,20 +177,20 @@ def get_chat(userid,chatroom,last):
 		)
 	mysearch = openseed.cursor()
 	search = "SELECT Id,record,attendees,date,speaker FROM chat WHERE room = %s AND Id > %s ORDER BY Id ASC"
-	val1 = (theRoom,str(last))
+	val1 = (chatroom,str(last))
 	mysearch.execute(search,val1)
 	result1 = mysearch.fetchall()
 	if len(result1) != 0:
 		status1 = result1[0][1]
 		index1 = result1[0][0]
-		jsoned = '{"chat":{"speaker":"'+str(result1[0][4])+'","room":"'+theRoom+'","message":"'+status1.decode()+'","index":"'+str(index1)+'","date":"'+str(result1[0][3])+'"}}'
+		jsoned = '{"chat":{"speaker":"'+str(result1[0][4])+'","room":"'+chatroom+'","message":"'+status1.decode()+'","index":"'+str(index1)+'","date":"'+str(result1[0][3])+'"}}'
 	mysearch.close()
 	openseed.close() 
 
 	if status1 != None:
 		chat = jsoned 
 	else:
-		chat = '{chat:{"speaker":"server","room":"'+theRoom+'","message":"none","index":"-1"}}'
+		chat = '{chat:{"speaker":"server","room":"'+chatroom+'","message":"none","index":"-1"}}'
 	return chat	
 
 def find_chatroom(chatroom):

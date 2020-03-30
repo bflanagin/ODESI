@@ -79,9 +79,9 @@ def store_onetime(thetype,register,validusers,room):
 
 def get_key(thetype,register,room):
 	result = ""
-	cleanroom = room.split("[")[1].split("]")[0]
-	wharoom = cleanroom.split(",")[0]+', '+cleanroom.split(",")[1]
-	reverseroom = cleanroom.split(",")[1]+', '+cleanroom.split(",")[0]
+	#cleanroom = room.split("[")[1].split("]")[0]
+	#wharoom = cleanroom.split(",")[0]+', '+cleanroom.split(",")[1]
+	#reverseroom = cleanroom.split(",")[1]+', '+cleanroom.split(",")[0]
 	reg = ""
 	code = ""
 	openseed = mysql.connector.connect(
@@ -92,16 +92,16 @@ def get_key(thetype,register,room):
 		)
 	mysearch = openseed.cursor()
 	check = "SELECT registered,code,validusers FROM onetime WHERE room = %s AND type = %s"
-	val1 = (wharoom,thetype)
-	val2 = (reverseroom,thetype)
+	val1 = (room,thetype)
+	#val2 = (reverseroom,thetype)
 	mysearch.execute(check,val1)
 	result1 = mysearch.fetchall()
-	mysearch.execute(check,val2)
-	result2 = mysearch.fetchall()
+	#mysearch.execute(check,val2)
+	#result2 = mysearch.fetchall()
 	if len(result1) == 1:
 		result = result1
-	elif len(result2) == 1:
-		result = result2
+	#elif len(result2) == 1:
+	#	result = result2
 	else:
 		result = 0
 
