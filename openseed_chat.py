@@ -260,7 +260,7 @@ def find_attendees(token,userlist):
 	for room in result:
 		members = room[2].split(",")
 		checkfor = userlist.split(",")
-		found = room
+		
 		for m in checkfor:
 			if m in members:
 				members.remove(m)
@@ -268,6 +268,7 @@ def find_attendees(token,userlist):
 		if len(members) > 0:
 			print("Not the same chat")
 		else:
+			found = room
 			break
 
 	
