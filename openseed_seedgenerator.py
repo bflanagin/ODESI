@@ -247,7 +247,7 @@ def get_room_key(token,room):
 	mysearch.execute(check,val1)
 	result = mysearch.fetchall()
 	if len(result) == 1:
-		code = result[0][0].decode()
+		code = result[0][0]
 	
 	openseed.commit()
 	mysearch.close()
