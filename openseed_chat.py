@@ -38,7 +38,8 @@ def check_onetime(username,room):
 def create_chatroom(creator,title,userlist):
 	check = find_attendees(creator,userlist)
 	if check:
-		return '{"type":"server"}'
+		return '{"type":"server","message":"exists"}'
+		#return '{"type":"server","room":"'+check[2]+'","key":"'+newkey+'"}'
 	else:
 		openseed = mysql.connector.connect(
 			host = "localhost",
@@ -265,14 +266,10 @@ def find_attendees(token,userlist):
 			if m in members:
 				members.remove(m)
 
-		if len(members) > 0:
-			print("Not the same chat")
-		else:
+		if len(members) == 0:
 			found = room
 			break
 
-	
-		 
 	return found
 		
 
