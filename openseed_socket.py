@@ -159,7 +159,7 @@ class TCPHandler(socketserver.BaseRequestHandler):
 				response = Chat.send_chat(from_client["token"],from_client["room"],from_client["data"])
 
 			elif action == "find_room_by_attendees":
-				response = Chat.find_attendees(from_client["token"],from_client["attendees"])
+				response = Chat.find_attendees(from_client["token"],from_client["attendees"],from_client["create"])
 
 
 			elif action == "set_key":

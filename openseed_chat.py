@@ -120,8 +120,6 @@ def get_conversations(token):
 	for r in result:
 		if convolist.count != 0:
 			if str(r[0]) not in convolist:
-				#reverse = str(r[1]).split(",")[1]+","+str(r[1]).split(",")[0]
-				#if reverse not in convolist:
 				convolist.append(str(r[1]))
 				if chatlist != "":
 					chatlist = chatlist+',{"room":"'+str(r[0])+'","attendees":"'+str(r[1])+'","message":'+json.dumps(r[2].decode())+'}'
@@ -241,7 +239,7 @@ def find_chatroom(chatroom):
 # First narrowing the search using a user token
 # Then check provided list against 
 
-def find_attendees(token,userlist):
+def find_attendees(token,userlist,create = 1):
 	room = ""
 	title = ""
 	found = ""
@@ -271,8 +269,11 @@ def find_attendees(token,userlist):
 		if len(members) == 0:
 			found = room
 			break
-
-	return found
+	if found == "":
+		if int(create) == 1 and len(userlist.split(",")) == 2:
+			return create_chatroom(token,"chat",userlist)
+	else:
+		return found
 		
 
 

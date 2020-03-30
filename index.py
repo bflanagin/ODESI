@@ -144,7 +144,7 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
  		print(Chat.get_chat(from_client["token"],from_client["username"],from_client["chatroom"],from_client["data"]))
 
 	if action == "find_room_by_attendees":
-		print(Chat.find_attendees(from_client["token"],from_client["attendees"])
+		print(Chat.find_attendees(from_client["token"],from_client["attendees"],from_client["create"])
 
 # Key Actions
 
