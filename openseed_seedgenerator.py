@@ -7,6 +7,7 @@ import mysql.connector
 import json
 import random
 import openseed_setup as Settings
+import openseed_account as Account
 
 settings = Settings.get_settings()
 
