@@ -123,10 +123,10 @@ def get_conversations(token):
 				reverse = str(r[0]).split(",")[1]+","+str(r[0]).split(",")[0]
 				if reverse not in convolist:
 					convolist.append(str(r[0]))
-				if chatlist != "":
-					chatlist = chatlist+',{"conversation":"'+str(r[0])+'","message":'+json.dumps(r[1].decode())+'}'
-				else:
-					chatlist = '{"conversation":"'+str(r[0])+'","message":'+json.dumps(r[1])+'}'
+					if chatlist != "":
+						chatlist = chatlist+',{"conversation":"'+str(r[0])+'","message":'+json.dumps(r[1].decode())+'}'
+					else:
+						chatlist = '{"conversation":"'+str(r[0])+'","message":'+json.dumps(r[1])+'}'
 		else:
 			convolist.append(str(r[0]))
 			if chatlist != "":
