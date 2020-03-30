@@ -131,7 +131,7 @@ def get_conversations(token):
 	mysearch.close()
 	openseed.close()
 
-	return '{"conversations":['+chatlist+']}
+	return '{"conversations":['+chatlist+']}'
 
 def get_chat_history(userid,room,count,last):
 	history = []
