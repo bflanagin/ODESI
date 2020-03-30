@@ -126,13 +126,13 @@ def get_conversations(token):
 					if chatlist != "":
 						chatlist = chatlist+',{"conversation":"'+str(r[0])+'","message":'+json.dumps(r[1].decode())+'}'
 					else:
-						chatlist = '{"conversation":"'+str(r[0])+'","message":'+json.dumps(r[1])+'}'
+						chatlist = '{"conversation":"'+str(r[0])+'","message":'+json.dumps(r[1].decode())+'}'
 		else:
 			convolist.append(str(r[0]))
 			if chatlist != "":
-				chatlist = chatlist+',{"conversation":"'+str(r[0])+'","message":'+json.dumps(r[1])+'}'
+				chatlist = chatlist+',{"conversation":"'+str(r[0])+'","message":'+json.dumps(r[1].decode())+'}'
 			else:
-				chatlist = '{"conversation":"'+str(r[0])+'","message":'+json.dumps(r[1])+'}'
+				chatlist = '{"conversation":"'+str(r[0])+'","message":'+json.dumps(r[1].decode())+'}'
 
 	mysearch.close()
 	openseed.close()
