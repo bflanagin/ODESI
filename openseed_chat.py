@@ -194,9 +194,9 @@ def get_chat(token,chatroom,last):
 	return chat	
 
 def find_chatroom(chatroom):
-	cleanroom = chatroom.split("[")[1].split("]")[0]
-	wharoom = cleanroom.split(",")[0].strip()+', '+cleanroom.split(",")[1].strip()
-	reverseroom = cleanroom.split(",")[1].strip()+', '+cleanroom.split(",")[0].strip()
+	#cleanroom = chatroom.split("[")[1].split("]")[0]
+	#wharoom = cleanroom.split(",")[0].strip()+', '+cleanroom.split(",")[1].strip()
+	#reverseroom = cleanroom.split(",")[1].strip()+', '+cleanroom.split(",")[0].strip()
 	room = ""
 	title = ""
 	attendees = ""
@@ -208,12 +208,12 @@ def find_chatroom(chatroom):
 		)
 	mysearch = openseed.cursor()
 	search = "SELECT title,attendees,date,room FROM chatrooms WHERE room = %s"
-	val1 = (wharoom,)
-	val2 = (reverseroom,)
+	val1 = (chatroom,)
+	#val2 = (reverseroom,)
 	mysearch.execute(search,val1)
 	result1 = mysearch.fetchall()
-	mysearch.execute(search,val2)
-	result2 = mysearch.fetchall()
+	#mysearch.execute(search,val2)
+	#result2 = mysearch.fetchall()
 
 	mysearch.close()
 	openseed.close() 
@@ -222,10 +222,10 @@ def find_chatroom(chatroom):
 		room = wharoom
 		title = result1[0][2]
 		attendees = result1[0][3]
-	if len(result2) != 0:
-		room = reverseroom
-		title = result2[0][2]
-		attendees = result2[0][3]
+	#if len(result2) != 0:
+	#	room = reverseroom
+	#	title = result2[0][2]
+	#	attendees = result2[0][3]
 	return [room,title,attendees]	
 
 # Look for rooms based on attendees.
