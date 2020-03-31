@@ -217,10 +217,10 @@ def get_requests(token,count):
  result = mysearch.fetchall()
  if len(result) > 0:
   for a in result:
-	if requests == "":
-		requests = '{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","response":"'+str(a[3]).split("'")[1]+'"}'
-   	else:
-		requests = requests+',{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","response":"'+str(a[3]).split("'")[1]+'"}'
+   if requests == "":
+    requests = '{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","response":"'+str(a[3]).split("'")[1]+'"}'
+   else:
+    requests = requests+',{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","response":"'+str(a[3]).split("'")[1]+'"}'
  else:
   requests = '{"requests":[]}'
  
