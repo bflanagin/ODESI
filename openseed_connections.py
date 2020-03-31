@@ -211,7 +211,7 @@ def get_requests(token,count):
 		)
  username = json.loads(Account.user_from_id(token))["user"]
  mysearch = openseed.cursor()
- search = "SELECT * FROM connections WHERE userid2 = %s AND response = 1 LIMIT "+count
+ search = "SELECT * FROM connections WHERE userid2 = %s AND response = 1 LIMIT "+str(count)
  val = (username, )
  mysearch.execute(search,val)
  result = mysearch.fetchall()
