@@ -116,10 +116,9 @@ def user_profile(username):
  profile = '{"profile":"Not found"}'
 
  mysearch = openseed.cursor()
- user = "SELECT userId FROM `users` WHERE `username` = %s"
+ user = "SELECT id FROM `profiles` WHERE `username` = %s"
  val = (username,)
  mysearch.execute(user,val)
- 
  userid = mysearch.fetchall()
  if len(userid) == 1:
   theid = userid[0][0]
@@ -158,6 +157,7 @@ def user_profile(username):
  mysearch.close()
  openseed.close()
  json.loads(profile)
+
  return(profile)
  
 # Requests have three states 1 pending 2 accepted 0 denied. 
