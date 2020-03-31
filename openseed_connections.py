@@ -224,7 +224,7 @@ def get_requests(token,count):
  mysearch.close()
  openseed.close()
 
- return '{"requests":['+requests+']}'
+ return '{"requests":['+str(requests)+']}'
 
 
 def request_status(token,account):
