@@ -209,23 +209,16 @@ def find_chatroom(chatroom):
 	mysearch = openseed.cursor()
 	search = "SELECT title,attendees,date,room FROM chatrooms WHERE room = %s"
 	val1 = (chatroom,)
-	#val2 = (reverseroom,)
 	mysearch.execute(search,val1)
 	result1 = mysearch.fetchall()
-	#mysearch.execute(search,val2)
-	#result2 = mysearch.fetchall()
-
 	mysearch.close()
 	openseed.close() 
 
 	if len(result1) != 0:
 		room = chatroom
-		title = result1[0][2]
-		attendees = result1[0][3]
-	#if len(result2) != 0:
-	#	room = reverseroom
-	#	title = result2[0][2]
-	#	attendees = result2[0][3]
+		title = result1[0][0]
+		attendees = result1[0][1]
+
 	return [room,title,attendees]	
 
 # Look for rooms based on attendees.
