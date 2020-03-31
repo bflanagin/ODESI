@@ -114,10 +114,10 @@ def user_profile(username):
 		database = "openseed"
 		)
  profile = '{"profile":"Not found"}'
-
+ theid = json.loads(Account.id_from_user(username))["id"]
  mysearch = openseed.cursor()
- user = "SELECT id FROM `profiles` WHERE `username` = %s"
- val = (username,)
+ user = "SELECT id FROM `profiles` WHERE `id` = %s"
+ val = (theid,)
  mysearch.execute(user,val)
  userid = mysearch.fetchall()
  if len(userid) == 1:
