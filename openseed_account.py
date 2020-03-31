@@ -159,11 +159,11 @@ def accountCheck(username,passphrase):
 		mysearch.close()
 		openseed.close()
 		if str(testid) == str(result[0][0]):
-			return '{"user":"'+testid+'","steem":"'+str(result[0][2])+'"}' 
+			return '{"token":"'+testid+'"}' 
 		else:
-			return '{"user":"denied"}' 
+			return '{"token":"denied"}' 
 	else:
-		return '{"user":"none"}'
+		return '{"token":"none"}'
 
 
 def create_user(username,passphrase,email):
