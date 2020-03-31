@@ -222,7 +222,7 @@ def get_requests(token,count):
    else:
     requests = requests+',{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","response":"'+str(a[3]).split("'")[1]+'"}'
  else:
-  requests = '{"requests":[]}'
+  requests = '{"request":"none"}'
  
  mysearch.close()
  openseed.close()
