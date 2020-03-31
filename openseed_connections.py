@@ -202,7 +202,7 @@ def send_request(token,requestee,response = 1):
 # gets request based on token and limit. Only returns pending requests
 
 def get_requests(token,count):
- requests = []
+ requests = ""
  openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
@@ -217,9 +217,12 @@ def get_requests(token,count):
  result = mysearch.fetchall()
  if len(result) > 0:
   for a in result:
-    requests.append('{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","response":"'+str(a[3]).split("'")[1]+'"}')
+	if request == "":
+		request = '{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","response":"'+str(a[3]).split("'")[1]+'"}'
+   	else:
+		request = request+',{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","response":"'+str(a[3]).split("'")[1]+'"}'
  else:
-  requests.append('{"request":"none"}')
+  requests.append('{"request":[]}')
  
  mysearch.close()
  openseed.close()
