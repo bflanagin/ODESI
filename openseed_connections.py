@@ -163,7 +163,7 @@ def user_profile(username):
 # Requests have three states 1 pending 2 accepted 0 denied. 
 
 def send_request(token,requestee,response = 1):
- output = ""
+ output = '{"request":"error"}'
  openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
@@ -199,7 +199,9 @@ def send_request(token,requestee,response = 1):
  openseed.close()
  return output 
 
-def get_requests(token,data):
+# gets request based on token and limit. Only returns pending requests
+
+def get_requests(token,count):
  requests = []
  openseed = mysql.connector.connect(
 		host = "localhost",
@@ -209,13 +211,12 @@ def get_requests(token,data):
 		)
  username = json.loads(Account.user_from_id(token))["user"]
  mysearch = openseed.cursor()
- search = "SELECT * FROM connections WHERE userid2 = %s AND response = 1"
+ search = "SELECT * FROM connections WHERE userid2 = %s AND response = 1 LIMIT "+count
  val = (username, )
  mysearch.execute(search,val)
  result = mysearch.fetchall()
  if len(result) > 0:
   for a in result:
-   if int(a[0]) > int(data): 
     requests.append('{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","response":"'+str(a[3]).split("'")[1]+'"}')
  else:
   requests.append('{"request":"none"}')
@@ -223,7 +224,8 @@ def get_requests(token,data):
  mysearch.close()
  openseed.close()
 
- return str(requests)
+ return '{"requests":['+requests+']}'
+
 
 def request_status(token,account):
  status = '{"request":"denied"}'

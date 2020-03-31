@@ -168,8 +168,8 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 		print(Connections.user_profile(from_client["username"]))
 	if action == "send_request":
 		print(Connections.send_request(from_client["token"],from_client["account"],from_client["response"]))
-	if action == "requests":
-		print(Connections.get_requests(from_client["token"],from_client["data"]))
+	if action == "get_requests":
+		print(Connections.get_requests(from_client["token"],from_client["count"]))
 	if action == "request_status":
 		print(Connections.request_status(from_client["token"],from_client["account"]))
 
