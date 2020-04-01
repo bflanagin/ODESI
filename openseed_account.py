@@ -189,7 +189,7 @@ def create_user(username,passphrase,email):
 		return '{"user":"exists"}'
 
 def create_default_profile(token,username,email):
-	data1 = '{"name":"'+username+'","email":"'+email+'","phone":"","profession","company":""}'
+	data1 = '{"name":"'+username+'","email":"'+email+'","phone":"","profession":"","company":""}'
 	data2 = '{"about":"","profile_img":"","banner":""}'
 	data3 = '{"skills":"","interests":""}'
 	data4 = '{}'
