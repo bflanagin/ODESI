@@ -157,7 +157,7 @@ def user_profile(username):
 
  mysearch.close()
  openseed.close()
- json.loads(userfriendly)
+ #json.loads(userfriendly)
 
  return(userfriendly)
  
