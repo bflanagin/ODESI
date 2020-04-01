@@ -195,7 +195,7 @@ def create_default_profile(token,username,email):
 	data4 = '{}'
 	data5 = '{}'
 	userfriendly = '"openseed":'+data1+',"extended":'+data2+',"appdata":'+data3+',"misc":"'+data4+'","imports":'+data5
-	set_profile(token,data1,data2,data3,data4,data5,1):
+	set_profile(token,data1,data2,data3,data4,data5,1)
 
 	return userfriendly
 

@@ -170,8 +170,8 @@ def to_ipfs(data):
 	stdout, stderr = add_to_ipfs.communicate()
 	return str(stdout).split(" ")[1]
 
-def data_check(data):
-	if data.search("{") and data.search("}"):
+#def data_check(data):
+#	if data.search("{") and data.search("}"):
 		
 
 def password_reset_request(emailaddress):
