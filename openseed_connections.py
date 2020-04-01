@@ -7,7 +7,7 @@ import json
 import base64
 import urllib.parse
 sys.path.append("..")
-from hive import hive.hive
+from hive import hive
 import openseed_account as Account
 import openseed_setup as Settings
 
