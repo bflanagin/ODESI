@@ -183,9 +183,22 @@ def create_user(username,passphrase,email):
 		openseed.commit()
 		mycursor.close()
 		openseed.close()
-		return '{"user":"'+userid+'"}'
+		pfile = create_default_profile(userid,email)
+		return '{"user":"'+username+'","token":"'+userid+'","profile":'+pfile+'}'
 	else:
 		return '{"user":"exists"}'
+
+def create_default_profile(token,username,email):
+	data1 = '{"name":"'+username+'","email":"'+email+'","phone":"","profession","company":""}'
+	data2 = '{"about":"","profile_img":"","banner":""}'
+	data3 = '{"skills":"","interests":""}'
+	data4 = '{}'
+	data5 = '{}'
+	userfriendly = '"openseed":'+data1+',"extended":'+data2+',"appdata":'+data3+',"misc":"'+data4+'","imports":'+data5
+	set_profile(token,data1,data2,data3,data4,data5,1):
+
+	return userfriendly
+
 
 def create_creator(devName,contactName,contactEmail,steem):
 	openseed = mysql.connector.connect(
@@ -262,6 +275,7 @@ def set_profile(theid,data1,data2,data3,data4,data5,thetype):
 		password = settings["dbpassword"],
 		database = "openseed"
 		)
+
 	if check_db(theid,"profiles") <= 0:
 		mycursor = openseed.cursor()
 		sql = "INSERT INTO `profiles` (`id`,`data1`,`data2`,`data3`,`data4`,`data5`,`type`) VALUES (%s,%s,%s,%s,%s,%s,%s)"

@@ -7,21 +7,21 @@ import json
 import base64
 import urllib.parse
 sys.path.append("..")
-from steem import Steem
+from hive import hive.hive
 import openseed_account as Account
 import openseed_setup as Settings
 
 settings = Settings.get_settings()
 
 thenodes = ['anyx.io','api.steem.house','hive.anyx.io','steemd.minnowsupportproject.org','steemd.privex.io']
-s = Steem()
+h = hive.Hive(nodes=thenodes)
 
-def get_steem_connections(account):
+def get_hive_connections(account):
  connection = []
  follows = []
  watching = []
- followers = s.get_followers(account,0,"",1000)
- following = s.get_following(account,0,"",1000)
+ followers = h.get_followers(account,0,"",1000)
+ following = h.get_following(account,0,"",1000)
  if str(followers[0].keys()).find("error") == -1:
  	for flwrs in followers:
   		follows.append(flwrs["follower"])
@@ -152,13 +152,14 @@ def user_profile(username):
   else:
    data5 = '{}'
 
-  profile = '{"data1":'+data1.replace("\n","")+',"data2":'+data2.replace("\n","")+',"data3":'+data3.replace("\n","")+',"data4":'+data4.replace("\n","")+',"data5":'+data5.replace("\n","")+'}'
+  #profile = '{"data1":'+data1.replace("\n","")+',"data2":'+data2.replace("\n","")+',"data3":'+data3.replace("\n","")+',"data4":'+data4.replace("\n","")+',"data5":'+data5.replace("\n","")+'}'
+  userfriendly = '{"profile":{"openseed":'+data1.replace("\n","")+',"extended":'+data2.replace("\n","")+',"appdata":'+data3.replace("\n","")+',"misc":"'+data4.replace("\n","")+'","imports":'+data5.replace("\n","")+'}}
 
  mysearch.close()
  openseed.close()
- json.loads(profile)
+ json.loads(userfriendly)
 
- return(profile)
+ return(userfriendly)
  
 # Requests have three states 1 pending 2 accepted 0 denied. 
 
