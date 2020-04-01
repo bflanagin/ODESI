@@ -183,7 +183,7 @@ def create_user(username,passphrase,email):
 		openseed.commit()
 		mycursor.close()
 		openseed.close()
-		pfile = create_default_profile(userid,email)
+		pfile = create_default_profile(userid,username,email)
 		return '{"user":"'+username+'","token":"'+userid+'","profile":'+pfile+'}'
 	else:
 		return '{"user":"exists"}'
