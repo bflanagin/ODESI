@@ -153,7 +153,7 @@ def user_profile(username):
    data5 = '{}'
 
   #profile = '{"data1":'+data1.replace("\n","")+',"data2":'+data2.replace("\n","")+',"data3":'+data3.replace("\n","")+',"data4":'+data4.replace("\n","")+',"data5":'+data5.replace("\n","")+'}'
-  userfriendly = '{"profile":{"openseed":'+data1.replace("\n","")+',"extended":'+data2.replace("\n","")+',"appdata":'+data3.replace("\n","")+',"misc":"'+data4.replace("\n","")+'","imports":'+data5.replace("\n","")+'}}'
+  userfriendly = '{"profile":{"openseed":'+data1.replace("\n","")+',"extended":'+data2.replace("\n","")+',"appdata":'+data3.replace("\n","")+',"misc":'+data4.replace("\n","")+',"imports":'+data5.replace("\n","")+'}}'
 
  mysearch.close()
  openseed.close()
