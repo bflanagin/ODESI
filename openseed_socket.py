@@ -135,7 +135,7 @@ class TCPHandler(socketserver.BaseRequestHandler):
 			elif action == "openseed_connections":
 				response = Connections.get_openseed_connections(from_client["account"])
 			elif action == "get_profile":
-				response = Connections.user_profile(from_client["account"])
+				response = "{"+Connections.user_profile(from_client["account"])+"}"
 			elif action == "get_requests":
 				response = Connections.get_requests(from_client["token"],from_client["count"])
 			elif action == "send_request":
