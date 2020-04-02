@@ -198,7 +198,7 @@ def new_token_switch():
 	tokenupdate.execute(checktokens,val)
 	if len(tokenupdate.fetchall()) <= 0:
 		findlast = "SELECT token FROM `user_tokens` WHERE 1 LIMIT 1"
-	 	tokenupdate.execute(findlast)
+		tokenupdate.execute(findlast)
 		lasttoken = tokenupdate.fetchall()
 		newid =""
 		if len(lasttoken) <= 0:
