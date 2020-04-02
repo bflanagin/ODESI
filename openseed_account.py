@@ -159,7 +159,7 @@ def accountCheck(username,passphrase):
 		mysearch.close()
 		openseed.close()
 		if str(testid) == str(result[0][0]):
-			return '{"token":"'+testid+'"}' 
+			return '{"token":"'+testid+'","username":"'+username+'"}' 
 		else:
 			return '{"token":"denied"}' 
 	else:
