@@ -59,18 +59,18 @@ def get_openseed_connections(account):
   for u in exists1:
    cname = str(u[0])
    if accounts == "":
-    accounts = '{"name":"'+str(cname)+'","linked":"'+str(u[1])+'","data":'+str(user_profile(str(cname)))+'}'
+    accounts = '{"name":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile(str(cname)))+'}'
    else:
-    accounts = accounts+',{"name":"'+str(cname)+'","linked":"'+str(u[1])+'","data":'+str(user_profile(str(cname)))+'}'
+    accounts = accounts+',{"name":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile(str(cname)))+'}'
 
  if len(exists2) != 0:
   ac += len(exists2)
   for u in exists2:
    cname = str(u[0])
    if accounts == "":
-    accounts = '{"name":"'+str(cname)+'","linked":"'+str(u[1])+'","data":'+str(user_profile(str(cname)))+'}'
+    accounts = '{"name":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile(str(cname)))+'}'
    else:
-    accounts = accounts+',{"name":"'+str(cname)+'","linked":"'+str(u[1])+'","data":'+str(user_profile(str(cname)))+'}'
+    accounts = accounts+',{"name":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile(str(cname)))+'}'
 
  connections = '{"connections":['+accounts.replace("'","\'")+']}'
 
@@ -153,7 +153,7 @@ def user_profile(username):
    data5 = '{}'
 
   #profile = '{"data1":'+data1.replace("\n","")+',"data2":'+data2.replace("\n","")+',"data3":'+data3.replace("\n","")+',"data4":'+data4.replace("\n","")+',"data5":'+data5.replace("\n","")+'}'
-  profile = '{"profile":{"openseed":'+data1.replace("\n","")+',"extended":'+data2.replace("\n","")+',"appdata":'+data3.replace("\n","")+',"misc":'+data4.replace("\n","")+',"imports":'+data5.replace("\n","")+'}}'
+  profile = '"profile":{"openseed":'+data1.replace("\n","")+',"extended":'+data2.replace("\n","")+',"appdata":'+data3.replace("\n","")+',"misc":'+data4.replace("\n","")+',"imports":'+data5.replace("\n","")+'}'
 
  mysearch.close()
  openseed.close()
