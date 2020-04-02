@@ -203,7 +203,7 @@ def new_token_switch():
 			newid =""
 			if len(lasttoken) <= 0:
 				print("Creating token")
-				newid = Seed.cryptkey()
+				newid = Seed.crypt_key()
 			else:
 				newid = lasttoken[0][0]
 	
