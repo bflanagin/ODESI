@@ -199,11 +199,11 @@ def create_user(username,passphrase,email):
 		mycursor.execute(sql,val)
 
 		upe = "INSERT INTO `upe` (token,auth) VALUES (%s,%s)"
-		upe_vals(str(uid),str(userid)
+		upe_vals = (str(uid),str(userid)
 		mycursor.execute(upe,upe_vals)
 
 		utokens = "INSERT INTO `user_tokens` (token,username) VALUES (%s,%s)"
-		utoken_vals(str(uid),str(username))
+		utoken_vals = (str(uid),str(username))
 		mycursor.execute(utokens,utoken_vals)
 
 		openseed.commit()
