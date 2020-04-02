@@ -73,7 +73,7 @@ def get_openseed_connections(account):
     accounts = accounts+',{"name":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile(str(cname)))+'}'
 
  connections = '{"connections":['+accounts.replace("'","\'")+']}'
- json.loads(connections)
+ #json.loads(connections)
  return connections
 
 def get_account(account):
