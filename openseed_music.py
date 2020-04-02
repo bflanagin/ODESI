@@ -170,7 +170,7 @@ def get_new_tracks_json():
 	result = music.fetchall()
 	artist_num = 1
 	for song in result:
-		if artist_num <= 5:
+		if artist_num <= 10:
 			if str(output).find(str(song)) == -1:
 				output.append({
 					"author":song[0],
