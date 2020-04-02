@@ -113,7 +113,7 @@ def user_profile(username):
 		password = settings["dbpassword"],
 		database = "openseed"
 		)
- profile = '{"profile":"Not found"}'
+ profile = '"profile":{}'
  theid = json.loads(Account.id_from_user(username))["id"]
  mysearch = openseed.cursor()
  user = "SELECT id FROM `profiles` WHERE `id` = %s"
@@ -152,7 +152,6 @@ def user_profile(username):
   else:
    data5 = '{}'
 
-  #profile = '{"data1":'+data1.replace("\n","")+',"data2":'+data2.replace("\n","")+',"data3":'+data3.replace("\n","")+',"data4":'+data4.replace("\n","")+',"data5":'+data5.replace("\n","")+'}'
   profile = '"profile":{"openseed":'+data1.replace("\n","")+',"extended":'+data2.replace("\n","")+',"appdata":'+data3.replace("\n","")+',"misc":'+data4.replace("\n","")+',"imports":'+data5.replace("\n","")+'}'
 
  mysearch.close()
