@@ -191,7 +191,23 @@ def new_token_switch():
 	tokenupdate.execute(search)
 	usersAndIds = tokenupdate.fetchall()
 	for user in usersAndIds:
-		print(user)
+		auth = user[0]
+		username = username[1].replace("\t","")
+	checktokens = "SELECT token FROM `user_tokens` WHERE username = %s"
+	val = (username,)
+	tokenupdate.execute(checktokens,val)
+	if len(tokenupdate.fetchall()) <= 0:
+		findlast = "SELECT token FROM `user_tokens` WHERE 1 LIMIT 1"
+	 	tokenupdate.execute(findlast)
+		lasttoken = tokenupdate.fetchall()
+		newid =""
+		if len(lasttoken) <= 0:
+			print("Creating token")
+			newid = Seed.cryptkey()
+		else:
+			newid = lasttoken[0][0]
+	
+		print(Seed.generate_usertoken(newid)+","+username)
 
 
 def password_reset_request(emailaddress):
