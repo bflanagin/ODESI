@@ -198,11 +198,11 @@ def create_user(username,passphrase,email):
 		val = (str(uid),str(pubid),str(username),str(email))
 		mycursor.execute(sql,val)
 
-		upe = "INSERT INTO `upe` (token,auth) VALUES (%s,%s)"
+		upe = "INSERT INTO `upe` (`token`,`auth`) VALUES (%s,%s)"
 		upe_vals = (str(uid),str(userid)
 		mycursor.execute(upe,upe_vals)
 
-		utokens = "INSERT INTO `user_tokens` (token,username) VALUES (%s,%s)"
+		utokens = "INSERT INTO `user_tokens` (`token`,`username`) VALUES (%s,%s)"
 		utoken_vals = (str(uid),str(username))
 		mycursor.execute(utokens,utoken_vals)
 
