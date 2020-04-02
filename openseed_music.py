@@ -165,28 +165,24 @@ def get_new_tracks_json():
 		)
 	music = openseed.cursor()
 	output = []
-	search = "SELECT author,title,post,img,ogg,curation,type,genre,tags,duration FROM `audio` WHERE ogg IS NOT NULL AND ogg LIKE '_%' ORDER BY date DESC"
+	search = "SELECT author,title,post,img,ogg,curation,type,genre,tags,duration FROM `audio` WHERE ogg IS NOT NULL AND ogg LIKE '_%' ORDER BY date DESC LIMIT 15"
 	music.execute(search)
 	result = music.fetchall()
-	artist_num = 1
 	for song in result:
-		if artist_num <= 10:
-			if str(output).find(str(song)) == -1:
-				output.append({
-					"author":song[0],
-					"title": song[1],
-					"post": song[2],
-					"img": song[3],
-					"ogg": song[4],
-					"curation": song[5],
-					"type": song[6],
-					"genre": song[7],
-					"tags": song[8],
-					"duration": song[9]
-					})
-				artist_num +=1
-		else:
-			break
+		if str(output).find(str(song)) == -1:
+			output.append({
+				"author":song[0],
+				"title": song[1],
+				"post": song[2],
+				"img": song[3],
+				"ogg": song[4],
+				"curation": song[5],
+				"type": song[6],
+				"genre": song[7],
+				"tags": song[8],
+				"duration": song[9]
+				})
+
 	music.close()
 	openseed.close()
 	return '{"results":'+json.dumps(output)+'}'
