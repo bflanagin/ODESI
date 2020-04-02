@@ -219,7 +219,38 @@ def new_token_switch():
 	
 	openseed.commit()
 	tokenupdate.close()
-	openseed.close()	
+	openseed.close()
+
+def update_everything():
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+	)
+
+	u = openseed.cursor()
+	search = "SELECT * FROM `upe` WHERE 1"
+	u.execute(search)
+	result = u.fetchall()
+
+	for task in result:
+		newcode = task[0]
+		oldcode = task[1]
+		
+		profileupdate = "UPDATE profiles SET id = %s WHERE id = %s"
+		history = "UPDATE history SET account = %s WHERE account = %s"
+		location = "UPDATE location SET userID = %s WHERE userID = %s"
+		chatrooms = "UPDATE chatrooms SET creator = %s WHERE creator = %s"
+		val = (newcode,oldcode)
+		u.execute(profileupdate,val)
+		u.execute(history,val)
+		u.execute(location,val)
+		u.execute(chatrooms,val)
+		openseed.commit()
+
+	u.close()
+	openseed.close()
 
 
 def password_reset_request(emailaddress):
