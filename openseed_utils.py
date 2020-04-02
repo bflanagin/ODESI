@@ -207,7 +207,13 @@ def new_token_switch():
 			else:
 				newid = lasttoken[0][0]
 	
-		print(Seed.generate_usertoken(newid)+","+username)
+		insert = "INSERT INTO user_tokens (token,username) values(%s,%s)"
+		insvals = (Seed.generate_usertoken(newid),username)
+		tokenupdate.execute(insert,insvals)
+	
+	openseed.commit()
+	tokenupdate.close()
+	openseed.close()	
 
 
 def password_reset_request(emailaddress):
