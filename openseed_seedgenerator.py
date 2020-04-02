@@ -121,6 +121,34 @@ def generate_publicid(id):
 
 	return mixer3[0:8]
 
+def generate_usertoken(id):
+	random.seed()
+	fullstring = ""
+	while len(fullstring) < 256:
+		fullstring = fullstring+str(random.random())+id+str(random.random())
+	
+	count1 = 0
+	count2 = 0
+	mixer1 = ""
+	mixer2 = ""
+	mixer3 = ""
+	for m1 in fullstring:
+		if count1 % 2 == 0:
+			mixer1 = mixer1+m1
+		else:
+		     mixer2 = mixer2+m1.upper()
+		count1 +=1
+	
+	hash1 = hashlib.md5(mixer1.encode())
+	hash2 = hashlib.md5(mixer2.encode())
+
+	count3 = 0	
+	while count3 < len(hash1.hexdigest()):
+		mixer3 = mixer3+str(hash1.hexdigest()[count3])+str(hash2.hexdigest()[count3])
+		count3 += 1
+
+	return mixer3
+
 
 def to_char(thecode):
 	code = ""

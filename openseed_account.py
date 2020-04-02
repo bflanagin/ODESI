@@ -188,6 +188,18 @@ def create_user(username,passphrase,email):
 	else:
 		return '{"user":"exists"}'
 
+def external_user(username,appid):
+
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+
+	
+	
+
 def create_default_profile(token,username,email):
 	data1 = '{"name":"'+username+'","email":"'+email+'","phone":"","profession":"","company":""}'
 	data2 = '{"about":"","profile_img":"","banner":""}'

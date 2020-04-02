@@ -172,7 +172,27 @@ def to_ipfs(data):
 
 #def data_check(data):
 #	if data.search("{") and data.search("}"):
-		
+
+# The tasks for this function are as follows
+# 1. Find user in user database
+# 2. Generate and store new token for user along with username
+# 3. Populate upe database with token and authkey 
+# 4. Move users db authkey to new token
+
+def new_token_switch():
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+	)
+	tokenupdate = openseed.cursor()
+	search = "SELECT userid,username FROM `users` WHERE 1"
+	tokenupdate.execute(search)
+	usersAndIds = tokenupdate.fetchall()
+	for user in UsersAndIds:
+		print(user)
+
 
 def password_reset_request(emailaddress):
 
@@ -184,8 +204,8 @@ def password_reset(emailaddress,username,passphrase):
 	oldcode = ""
 	openseed = mysql.connector.connect(
 		host = "localhost",
-		user = settings["ipfsuser"],
-		password = settings["ipfspassword"],
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
 		database = "openseed"
 	)
 	u = openseed.cursor()
