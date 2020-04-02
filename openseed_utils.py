@@ -213,6 +213,9 @@ def new_token_switch():
 		token_share = "INSERT INTO upe (token,auth) values(%s,%s)"
 		tsvals = (tokes,auth)
 		tokenupdate.execute(token_share,tsvals)
+		move_over = "UPDATE users SET userid = %s WHERE userid = %s"
+		movals = (tokes,auth)
+		tokenupdate.execute(move_over,movals)
 	
 	openseed.commit()
 	tokenupdate.close()
