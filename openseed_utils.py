@@ -190,7 +190,7 @@ def new_token_switch():
 	search = "SELECT userid,username FROM `users` WHERE 1"
 	tokenupdate.execute(search)
 	usersAndIds = tokenupdate.fetchall()
-	for user in UsersAndIds:
+	for user in usersAndIds:
 		print(user)
 
 
