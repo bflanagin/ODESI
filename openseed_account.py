@@ -155,11 +155,17 @@ def accountCheck(username,passphrase):
 		val = (str(username),)
 		mysearch.execute(search,val)
 		result = mysearch.fetchall()
+
+		authsearch = "SELECT auth FROM `upe` WHERE `token` = %s"
+		aval = (str(result[0][0]),)
+		mysearch.execute(authsearch,aval)
+		auth_result = mysearch.fetchall()
+
 		testid = Seed.generate_userid(username,passphrase,str(result[0][1]))
 		mysearch.close()
 		openseed.close()
-		if str(testid) == str(result[0][0]):
-			return '{"token":"'+testid+'","username":"'+username+'"}' 
+		if str(testid) == str(auth_result[0][0]):
+			return '{"token":"'+str(result[0][0])+'","username":"'+username+'"}' 
 		else:
 			return '{"token":"denied"}' 
 	else:
