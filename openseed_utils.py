@@ -206,10 +206,13 @@ def new_token_switch():
 				newid = Seed.crypt_key()
 			else:
 				newid = lasttoken[0][0]
-	
+		tokes = Seed.generate_usertoken(newid)
 		insert = "INSERT INTO user_tokens (token,username) values(%s,%s)"
-		insvals = (Seed.generate_usertoken(newid),username)
+		insvals = (tokes,username)
 		tokenupdate.execute(insert,insvals)
+		token_share = "INSERT INTO upe (token,auth) values(%s,%s)"
+		tsvals = (tokes,auth)
+		tokenupdate.execute(token_share,tsvals)
 	
 	openseed.commit()
 	tokenupdate.close()
