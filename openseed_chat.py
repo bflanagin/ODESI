@@ -290,7 +290,7 @@ def send_chat(userid,chatroom,data,appPub):
 				openseed.commit()
 				mysearch.close()
 				openseed.close()
-				response = '{"chat_response":{"speaker":"'+username+'","room":"'+theRoom+'","message":"'+data+'"}}'
+				response = '{"chat_response":{"speaker":"'+username+'","room":"'+theRoom+'","message":"received"}}'
 		else:
 			response = '{"chat_response":{"speaker":"server","message":"denied"}}'
 	else:
