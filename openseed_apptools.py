@@ -67,7 +67,7 @@ def get_webapp_token(token,username,appPub):
 
 	if len(result) == 1:
 		
-		output = '{"appPub":"'++'","token":"'token'"}'
+		output = '{"appPub":"'+appPub+'","token":"'token'"}'
 	
 	
 	

@@ -267,7 +267,7 @@ def find_attendees(token,userlist,create = 1):
 		
 
 
-def send_chat(userid,chatroom,data):
+def send_chat(userid,chatroom,data,appPub):
 	
 	roomInfo = find_chatroom(chatroom)
 	theRoom = roomInfo[0]
@@ -284,8 +284,8 @@ def send_chat(userid,chatroom,data):
 			)
 			mysearch = openseed.cursor()
 			if len(data) > 0:
-				chat = "INSERT INTO chat (room,title,attendees,record,speaker) VALUES (%s,%s,%s,%s,%s)"
-				val1 = (theRoom,roomInfo[1],roomInfo[2],data,username)
+				chat = "INSERT INTO chat (room,title,attendees,record,speaker,appPub) VALUES (%s,%s,%s,%s,%s,%s)"
+				val1 = (theRoom,roomInfo[1],roomInfo[2],data,username,appPub)
 				mysearch.execute(chat,val1)
 				openseed.commit()
 				mysearch.close()
