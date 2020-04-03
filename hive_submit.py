@@ -59,7 +59,7 @@ def like_post(name,post):
 		if already_voted == 0:
 			identifier = ('@'+name+'/'+post)
 			print("voting on ",identifier)	
-			s.commit.vote(identifier, float(upvote_pct), who)
+			#s.commit.vote(identifier, float(upvote_pct), who)
 			#post_reply(name,post)
 		else:
 			print("Voted already")
