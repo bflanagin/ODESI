@@ -99,6 +99,7 @@ def search_music(author,limit) :
     title = post_info[1]['op'][1]['title']
     if str(post_info[1]["op"][1].keys()).find("json_metadata") != -1:
      metadata = json.loads(post_info[1]["op"][1]["json_metadata"])
+     print(metadata)
      if metadata != '{"app":"threespeak/1.0"}' and metadata != '' and str(metadata.keys()).find("tags") != -1:
       tags = metadata["tags"]
       if tags != None:
