@@ -3,6 +3,7 @@ import sys
 sys.path.append("..")
 import mysql.connector
 import openseed_setup as Settings
+import openseed_seedgenerator as Seed
 settings = Settings.get_settings()
 
 def get_appdata(mode,appID,data):
@@ -18,4 +19,13 @@ def get_appdata(mode,appID,data):
 
 	return
 
-def set_appdata(mode,appID,data,update)
+def set_appdata(mode,appID,data,update):
+
+	return
+
+def get_webapp_token(developer_token,app_token):
+
+	temptoken = Seed.generate_usertoken(developer_token+app_token)
+	
+
+	return temptoken
