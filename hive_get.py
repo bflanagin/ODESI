@@ -98,6 +98,7 @@ def search_music(author,limit) :
     permlink = post_info[1]['op'][1]['permlink']
     title = post_info[1]['op'][1]['title']
     if str(post_info[1]["op"][1].keys()).find("json_metadata") != -1:
+     print(post_info[1]["op"][1]["json_metadata"])
      metadata = json.loads(post_info[1]["op"][1]["json_metadata"])
     if metadata != '{"app":"threespeak/1.0"}' and metadata != '' and str(metadata.keys()).find("tags") != -1:
      tags = metadata["tags"]
