@@ -97,24 +97,23 @@ def search_music(author,limit) :
    if post_info[1]["op"][0] == "comment" and post_info[1]['op'][1]['author'] == author:
     permlink = post_info[1]['op'][1]['permlink']
     title = post_info[1]['op'][1]['title']
-    
     if str(post_info[1]["op"][1].keys()).find("json_metadata") != -1:
-     print("metadata = "+post_info[1]["op"][1]["json_metadata"])
-     metadata = json.loads(post_info[1]["op"][1]["json_metadata"])
-     if metadata != '{"app":"threespeak/1.0"}' and metadata != '' and str(metadata.keys()).find("tags") != -1:
-      tags = metadata["tags"]
-      if tags != None:
-       if str(tags).find("dsound") != -1:
-        if str(metadata.keys()).find("audio") != -1:
-         songtype = metadata["audio"]["type"]
-         songtags = tags
-         duration = metadata["audio"]["duration"]
-         ipfs = metadata["audio"]["files"]["sound"]
-         artist = author
-         img = metadata["audio"]["files"]["cover"]
-         genre = metadata["audio"]["genre"]
-         IPFS.pin_and_record(ipfs,artist,title,permlink,img,songtype,genre,songtags,duration)
-         print("found audio "+title)
+     if len(post_info[1]["op"][1]["json_metadata"]) > 5:
+      metadata = json.loads(post_info[1]["op"][1]["json_metadata"])
+      if metadata != '{"app":"threespeak/1.0"}' and metadata != '' and str(metadata.keys()).find("tags") != -1:
+       tags = metadata["tags"]
+       if tags != None:
+        if str(tags).find("dsound") != -1:
+         if str(metadata.keys()).find("audio") != -1:
+          songtype = metadata["audio"]["type"]
+          songtags = tags
+          duration = metadata["audio"]["duration"]
+          ipfs = metadata["audio"]["files"]["sound"]
+          artist = author
+          img = metadata["audio"]["files"]["cover"]
+          genre = metadata["audio"]["genre"]
+          IPFS.pin_and_record(ipfs,artist,title,permlink,img,songtype,genre,songtags,duration)
+          print("found audio "+title)
  return(local)
 
 def search_history(user,limit):
