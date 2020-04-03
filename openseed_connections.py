@@ -217,9 +217,9 @@ def get_requests(token,count):
  if len(result) > 0:
   for a in result:
    if requests == "":
-    requests = '{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","response":"'+str(a[3]).split("'")[1]+'"}'
+    requests = '{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","response":"'+str(a[3])+'"}'
    else:
-    requests = requests+',{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","response":"'+str(a[3]).split("'")[1]+'"}'
+    requests = requests+',{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","response":"'+str(a[3])+'"}'
  else:
   requests = '{"request":"none"}'
  

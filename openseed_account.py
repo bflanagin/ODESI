@@ -42,7 +42,7 @@ def check_db(name,db):
 	if db == "users":
 		search = "SELECT * FROM `users` WHERE `username` LIKE '"+str(name)+"'"
 	if db == "developers":
-		search = "SELECT * FROM `developers` WHERE `devName` LIKE '"+str(name)+"' OR `steem` LIKE '"+str(name)+"'"
+		search = "SELECT * FROM `developers` WHERE `devName` LIKE '"+str(name)+"'"
 	if db == "applications":
 		search = "SELECT * FROM `applications` WHERE `appName` LIKE '"+str(name)+"'"
 	if db == "profiles":
@@ -96,6 +96,22 @@ def get_priv_from_pub(name):
 		)
 	mysearch = openseed.cursor()
 	search = "SELECT devID FROM `developers` WHERE `publicID`= %s"
+	val = (str(name),)
+	mysearch.execute(search,val)
+	result = mysearch.fetchall()
+	mysearch.close()
+	openseed.close()
+	return result[0][0]
+
+def get_pub_from_priv(name):
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+	mysearch = openseed.cursor()
+	search = "SELECT publicID FROM `developers` WHERE `devID`= %s"
 	val = (str(name),)
 	mysearch.execute(search,val)
 	result = mysearch.fetchall()
@@ -223,9 +239,6 @@ def external_user(username,appid):
 		database = "openseed"
 		)
 
-	
-	
-
 def create_default_profile(token,username,email):
 	data1 = '{"name":"'+username+'","email":"'+email+'","phone":"","profession":"","company":""}'
 	data2 = '{"about":"","profile_img":"","banner":""}'
@@ -283,6 +296,7 @@ def creator_check(account):
 	else:
 		return '{"devID":"none","pubID":"none"}'
 		
+# Needs developer private ID and a "namespaced" app name something like com.openorchard.testapp#
 
 def create_app(devID,appName):
 	openseed = mysql.connector.connect(
@@ -291,12 +305,13 @@ def create_app(devID,appName):
 		password = settings["dbpassword"],
 		database = "openseed"
 		)
+	pubID = pub_from_priv(devID)
 	if check_db(appName,"applications") != 1:
 		appID = Seed.generate_userid(devID,devID+appName,appName)
 		pubID = Seed.generate_publicid(appID)
 		mycursor = openseed.cursor()
 		sql = "INSERT INTO `applications` (`devID`,`appID`,`publicID`,`appName`) VALUES (%s,%s,%s,%s)"
-		val = (str(devID),str(appID),str(pubID),str(appName)) 
+		val = (str(pubID),str(appID),str(pubID),str(appName)) 
 		mycursor.execute(sql,val)	
 		openseed.commit()
 		mycursor.close()

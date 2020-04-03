@@ -176,14 +176,14 @@ def get_chat(token,chatroom,last):
 		database = "openseed"
 		)
 	mysearch = openseed.cursor()
-	search = "SELECT Id,record,attendees,date,speaker FROM chat WHERE room = %s AND Id > %s ORDER BY Id ASC"
+	search = "SELECT Id,record,attendees,date,speaker,appPub FROM chat WHERE room = %s AND Id > %s ORDER BY Id ASC"
 	val1 = (chatroom,str(last))
 	mysearch.execute(search,val1)
 	result1 = mysearch.fetchall()
 	if len(result1) != 0:
 		status1 = result1[0][1]
 		index1 = result1[0][0]
-		jsoned = '{"chat":{"speaker":"'+str(result1[0][4])+'","room":"'+chatroom+'","message":"'+status1.decode()+'","index":"'+str(index1)+'","date":"'+str(result1[0][3])+'"}}'
+		jsoned = '{"chat":{"speaker":"'+str(result1[0][4])+'","room":"'+chatroom+'","message":"'+status1.decode()+'","index":"'+str(index1)+'","appPub":"'+str(result1[0][5])+'","date":"'+str(result1[0][3])+'"}}'
 	mysearch.close()
 	openseed.close() 
 
@@ -194,9 +194,7 @@ def get_chat(token,chatroom,last):
 	return chat	
 
 def find_chatroom(chatroom):
-	#cleanroom = chatroom.split("[")[1].split("]")[0]
-	#wharoom = cleanroom.split(",")[0].strip()+', '+cleanroom.split(",")[1].strip()
-	#reverseroom = cleanroom.split(",")[1].strip()+', '+cleanroom.split(",")[0].strip()
+	
 	room = ""
 	title = ""
 	attendees = ""
