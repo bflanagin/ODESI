@@ -35,7 +35,7 @@ def check_onetime(username,room):
 	else:
 		return 0
 
-def create_chatroom(creator,title,userlist):
+def create_chatroom(creator,title,userlist,appPub):
 		openseed = mysql.connector.connect(
 			host = "localhost",
 			user = settings["dbuser"],
@@ -44,8 +44,8 @@ def create_chatroom(creator,title,userlist):
 			)
 		room = Seed.generate_publicid(userlist+creator+title)
 		chatcreator = openseed.cursor()
-		newchat = "INSERT INTO chat (room,title,attendees,record,speaker) VALUES (%s,%s,%s,%s,'server')"
-		vals = (room,title,userlist,'new')
+		newchat = "INSERT INTO chat (room,title,attendees,record,speaker,appPub) VALUES (%s,%s,%s,%s,'server',%s)"
+		vals = (room,title,userlist,'new',appPub)
 		chatcreator.execute(newchat,vals)
 		newroom = "INSERT INTO chatrooms (creator,title,attendees,room) VALUES (%s,%s,%s,%s)"
 		room_vals = (creator,title,userlist,room)
