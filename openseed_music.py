@@ -129,7 +129,7 @@ def get_new_artists():
 	music.close()
 	openseed.close()
 	
-	return '{"results":'+json.dumps(output)+'}'
+	return '{"artists":'+json.dumps(output)+'}'
 
 def get_new_tracks():
 	openseed = mysql.connector.connect(
@@ -185,7 +185,7 @@ def get_new_tracks_json():
 
 	music.close()
 	openseed.close()
-	return '{"results":'+json.dumps(output)+'}'
+	return '{"newtracks":'+json.dumps(output)+'}'
 
 
 
@@ -208,7 +208,7 @@ def get_genres():
 
 	music.close()
 	openseed.close()
-	return '{"results":'+json.dumps(output)+'}'
+	return '{"genres":'+json.dumps(output)+'}'
 
 def get_genre_tracks(genre):
 	openseed = mysql.connector.connect(
@@ -228,7 +228,7 @@ def get_genre_tracks(genre):
 
 	music.close()
 	openseed.close()
-	return '{"results":'+output+'}'
+	return '{"genre_tracks":'+output+'}'
 
 def get_genre_tracks_json(genre,count):
 	openseed = mysql.connector.connect(
@@ -266,7 +266,7 @@ def get_genre_tracks_json(genre,count):
 	music.close()
 	openseed.close()
 
-	response = '{"total":"'+str(len(result))+'","results":'+json.dumps(output)+'}'
+	response = '{"genre_tracks":{"total":"'+str(len(result))+'","results":'+json.dumps(output)+'}}'
 	return response
 
 def get_tracks_json(start = 0,count = 0):
@@ -303,5 +303,5 @@ def get_tracks_json(start = 0,count = 0):
 
 	music.close()
 	openseed.close()
-	return '{"total":"'+str(len(result))+'","results":'+json.dumps(output)+'}'
+	return '{"tracks":{"total":"'+str(len(result))+'","results":'+json.dumps(output)+'}}'
 
