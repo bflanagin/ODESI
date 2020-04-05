@@ -115,7 +115,7 @@ def get_conversations(token):
 	for r in result:
 		if convolist.count != 0:
 			if str(r[0]) not in convolist:
-				convolist.append(str(r[1]))
+				convolist.append(str(r[0]))
 				if chatlist != "":
 					chatlist = chatlist+',{"room":"'+str(r[0])+'","attendees":"'+str(r[1])+'","title":"'+str(r[2])+'","index":'+str(r[3])+'}'
 				else:
