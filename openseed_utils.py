@@ -27,8 +27,6 @@ def send_file(token,md5sum,filename):
 
 	return
 
-
-
 def oggify_and_share(thehash):
 	openseed = mysql.connector.connect(
 		host = "localhost",
@@ -136,7 +134,8 @@ def png_and_pin(url):
 			checkfile = subprocess.Popen(['file',baseDIR+"/source/"+title],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 			checkfile.wait()
 			stdout, stderr = checkfile.communicate()
-			if str(stdout).find("GIF") == -1:
+
+			if source_hash != "" and str(stdout).find("GIF") == -1:
 				original = subprocess.Popen(['convert',baseDIR+"/source/"+title,baseDIR+"/original/"+title+'.png'])
 				original.wait()
 				original_hash = to_ipfs(baseDIR+"/original/"+title+'.png')
@@ -179,7 +178,10 @@ def to_ipfs(data):
 	add_to_ipfs = subprocess.Popen(['ipfs', 'add' , data],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 	add_to_ipfs.wait()
 	stdout, stderr = add_to_ipfs.communicate()
-	return str(stdout).split(" ")[1]
+	if len(str(stdout).split(" ")) > 1: 
+		return str(stdout).split(" ")[1]
+	else:
+		return ""
 
 #def data_check(data):
 #	if data.search("{") and data.search("}"):
