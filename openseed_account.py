@@ -509,8 +509,8 @@ def update_history(account,history_type,appPub,data):
 		newdat = '{"linked":"'+data["linked"]+'"}'
 	if history_type == "7":
 		newdat = '{"highscore":"'+data["highscore"]+'"}'
-	if history_type == "9":
-		print(data)
+	#if history_type == "9":
+		#print(data)
 
 	hist = openseed.cursor()
 	check = "SELECT data FROM history WHERE account = %s AND data = %s"
@@ -689,7 +689,7 @@ class Steem:
 		openseed.commit()
 		mycursor.close()
 		openseed.close()
-		print("Account Verified")
+		#print("Account Verified")
 	
 	def from_posting_key(username,key,save):
 		s.wallet.unlock(user_passphrase=settings["passphrase"])
