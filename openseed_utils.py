@@ -18,6 +18,17 @@ import time
 
 settings = Settings.get_settings()
 
+
+def upload_file(token,filename,md5sum,data):
+
+	return
+
+def send_file(token,md5sum,filename):
+
+	return
+
+
+
 def oggify_and_share(thehash):
 	openseed = mysql.connector.connect(
 		host = "localhost",
