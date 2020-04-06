@@ -6,16 +6,16 @@ import time
 sys.path.append("..")
 import mysql.connector
 import json
-from steem import Steem
+from hive import hive
 import openseed_music as Music
-import steem_submit as Submit
+import hive_submit as Submit
 import openseed_ipfs as IPFS
 import openseed_setup as Settings
 import openseed_account as Account
 
 settings = Settings.get_settings()
-
-s = Steem()
+thenodes = ['anyx.io','api.steem.house','hive.anyx.io','steemd.minnowsupportproject.org','steemd.privex.io']
+s = hive.Hive(nodes=thenodes)
 
 songtype = "NA"
 genre = "NA"
@@ -89,6 +89,7 @@ def local_search(author):
 
 
 def search_music(author,limit) :
+ print(author,limit)
  local = local_search(author)
  activity = s.get_account_history(author,index_from = -1,limit = limit)
  for post_info in activity :
@@ -97,21 +98,22 @@ def search_music(author,limit) :
     permlink = post_info[1]['op'][1]['permlink']
     title = post_info[1]['op'][1]['title']
     if str(post_info[1]["op"][1].keys()).find("json_metadata") != -1:
-     metadata = json.loads(post_info[1]["op"][1]["json_metadata"])
-    if metadata != '{"app":"threespeak/1.0"}' and metadata != '' and str(metadata.keys()).find("tags") != -1:
-     tags = metadata["tags"]
-     if tags != None:
-      if str(tags).find("dsound") != -1:
-       if str(metadata.keys()).find("audio") != -1:
-        songtype = metadata["audio"]["type"]
-        songtags = tags
-        duration = metadata["audio"]["duration"]
-        ipfs = metadata["audio"]["files"]["sound"]
-        artist = author
-        img = metadata["audio"]["files"]["cover"]
-        genre = metadata["audio"]["genre"]
-        IPFS.pin_and_record(ipfs,artist,title,permlink,img,songtype,genre,songtags,duration)
-       
+     if len(post_info[1]["op"][1]["json_metadata"]) > 5:
+      metadata = json.loads(post_info[1]["op"][1]["json_metadata"])
+      if metadata != '{"app":"threespeak/1.0"}' and metadata != '' and str(metadata.keys()).find("tags") != -1:
+       tags = metadata["tags"]
+       if tags != None:
+        if str(tags).find("dsound") != -1:
+         if str(metadata.keys()).find("audio") != -1:
+          songtype = metadata["audio"]["type"]
+          songtags = tags
+          duration = metadata["audio"]["duration"]
+          ipfs = metadata["audio"]["files"]["sound"]
+          artist = author
+          img = metadata["audio"]["files"]["cover"]
+          genre = metadata["audio"]["genre"]
+          IPFS.pin_and_record(ipfs,artist,title,permlink,img,songtype,genre,songtags,duration)
+          print("found audio "+title)
  return(local)
 
 def search_history(user,limit):
@@ -140,7 +142,7 @@ def search_history(user,limit):
        tags = metadata["tags"]
     if len(title) > 2:
     	data = '{"post":{"title":"'+title+'","permlink":"'+permlink+'","tags":"'+str(tags)+'"}}'
-    	Account.update_history(str(result[0][0].decode()),9,"steem",str(data))
+    	Account.update_history(str(result[0][0].replace('\x00',"")),9,"steem",str(data))
     break
 
 

@@ -7,6 +7,7 @@ import sys
 sys.path.append("..")
 import openseed_seedgenerator as Seed
 from steem import Steem
+thenodes = ['anyx.io','api.steem.house','hive.anyx.io','steemd.minnowsupportproject.org','steemd.privex.io']
 s = Steem()
 
 import openseed_setup as Settings
