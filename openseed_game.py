@@ -6,7 +6,7 @@ import hive_submit as Submit
 import openseed_setup as Settings
 settings = Settings.get_settings()
 
-def update_leaderboard(devID,appID,user,data,steem,postingkey):
+def update_leaderboard(devID,appID,user,data):
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
@@ -21,7 +21,7 @@ def update_leaderboard(devID,appID,user,data,steem,postingkey):
 		sql = "INSERT INTO `leaderboard` (`devID`,`appID`,`username`,`data`) VALUES ('"+str(devID)+"','"+str(appID)+"','"+str(user)+"','"+str(data)+"')"
 		scoresearch.execute(sql)	
 		openseed.commit()
-		Submit.leaderboard(devID,appID,user,data,steem,postingkey)
+		Submit.leaderboard(devID,appID,user,data)
 	scoresearch.close()
 	openseed.close()
 	return "1"

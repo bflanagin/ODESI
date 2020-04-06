@@ -2,6 +2,7 @@
 import sys
 sys.path.append("..")
 import mysql.connector
+import openseed_account as Account
 import openseed_setup as Settings
 import openseed_seedgenerator as Seed
 settings = Settings.get_settings()
@@ -25,7 +26,7 @@ def set_appdata(mode,appID,data,update):
 
 # We get the application public id and the applications private token and check to see if they match. If they do we create a token for the app to send to the user
 
-def create_webapp_token(dpub,apub,verification):
+def create_webapp_token(dpub,apub,username,verification):
 	temptoken = ""
 	openseed = mysql.connector.connect(
 		host = "localhost",
@@ -40,7 +41,7 @@ def create_webapp_token(dpub,apub,verification):
 	result = search.fetchall()
 	if len(result) == 1:
 		if result[0][0] == apub:
-			temptoken = '{"'+apub+'":"'+Seed.generate_usertoken(dpub+apub)+'"}'
+			temptoken = '{"username":"'+username+'","'+apub+'":"'+Seed.generate_usertoken(dpub+apub)+'"}'
 			add_token = "INSERT INTO `temp_data` (`devID`, `appID`, `data`) VALUES (%s,%s,%s)"
 			token_vals = (dpub,apub,temptoken)
 			openseed.commit()
@@ -59,16 +60,18 @@ def get_webapp_token(token,username,appPub):
 		database = "openseed"
 		)
 	search = openseed.cursor()
-	the_token = '{"'+appPub+'":"'+token+'"}'
+	the_token = '{"username":"'+username+'","'+appPub+'":"'+token+'"}'
 	find = "SELECT * FROM `temp_data` WHERE data = %s"
 	val = (the_token,)
 	search.execute(find,val)
 	result = search.fetchall()
 
-	if len(result) == 1:
-		
+	token = json.loads(Account.id_from_username(username))["id"]
+
+	if token != "none" and len(result) == 1:
 		output = '{"appPub":"'+appPub+'","token":"'token'"}'
-	
+	elif token == "none":
+		
 	
 	
 	return output

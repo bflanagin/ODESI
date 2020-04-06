@@ -501,13 +501,14 @@ def update_history(account,history_type,appPub,data):
 		newdat = '{"program_stop":"'+data["program_stop"]+'"}'
 	if history_type == "3":
 		newdat = '{"playing":{"song":"'+data["playing"]["song"]+'","artist":"'+data["playing"]["artist"]+'"}}'
-		print(newdat)
 	if history_type == "4":
 		newdat = '{"purchase":"'+data["purchase"]+'"}'
 	if history_type == "5":
 		newdat = '{"download":"'+data["download"]+'"}'
 	if history_type == "6":
 		newdat = '{"linked":"'+data["linked"]+'"}'
+	if history_type == "7":
+		newdat = '{"highscore":"'+data["highscore"]+'"}'
 	if history_type == "9":
 		print(data)
 
