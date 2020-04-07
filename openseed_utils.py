@@ -322,11 +322,11 @@ def keytest(message):
 	print("attempts blanks are good")
 	for test in result:
 		decrypted = Seed.simp_decrypt(test[0],encrypted)
-		print("attempt:"decrypted)
+		print("attempt: "+decrypted)
 		if decrypted == message:
 			print("success - which is bad")
 
-	print("using a key create right after the first"+Seed.simp_decrypt(key2,encrypted))
+	print("using a key create right after the first "+Seed.simp_decrypt(key2,encrypted))
 
 	
 	
