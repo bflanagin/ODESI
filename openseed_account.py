@@ -40,7 +40,7 @@ def check_db(name,db):
 
 	
 	if db == "users":
-		search = "SELECT * FROM `users` WHERE `username` LIKE '"+str(name)+"'"
+		search = "SELECT * FROM `user_tokens` WHERE `username` LIKE '"+str(name)+"'"
 	if db == "developers":
 		search = "SELECT * FROM `developers` WHERE `devName` LIKE '"+str(name)+"'"
 	if db == "applications":
@@ -148,7 +148,7 @@ def id_from_user(username):
 		database = "openseed"
 		)
 	mysearch = openseed.cursor()
-	search = "SELECT userid FROM `users` WHERE `username` = %s"
+	search = "SELECT token FROM `user_tokens` WHERE `username` = %s"
 	val = (str(username),)
 	mysearch.execute(search,val)
 	result = mysearch.fetchall()
@@ -233,23 +233,23 @@ def create_user(username,passphrase,email):
 
 # External users bypass the password and username section of the login, and requires a trust relationship between the providers and OpenSeed
 # Steps to complete
-# 1. check user existance
-# 2. check appid existance
-# 3. 
-def external_user(username,apptoken):
+# 1. check user existance - done
+# 2. check appid existance - done elsewhere
+# 3. add to tokens - done
+# 4. remove temptoken from temp_data 
 
+def external_user(username,temptoken):
+	token = ""
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
 		password = settings["dbpassword"],
 		database = "openseed"
 		)
+	mycursor = openseed.cursor()
 
 	if check_db(username,"users") != 1:
-		mycursor = openseed.cursor()
-		#userid = Seed.generate_userid(username,passphrase,email)
-		#pubid = Seed.generate_publicid(userid)
-
+	
 		findlast = "SELECT token FROM `user_tokens` WHERE 1 LIMIT 1"
 		mycursor.execute(findlast)
 		lasttoken = mycursor.fetchall()
@@ -260,8 +260,17 @@ def external_user(username,apptoken):
 			newid = lasttoken[0][0]
 
 		utokens = "INSERT INTO `user_tokens` (`token`,`username`) VALUES (%s,%s)"
-		utoken_vals = (str(uid),str(username))
+		utoken_vals = (str(newid),str(username))
 		mycursor.execute(utokens,utoken_vals)
+		openseed.commit()
+		create_default_profile(newid,username,"")
+		token = newid
+	else:
+		token = json.loads(id_from_user(username))["id"]
+
+	return '{"token":"'+token+'","username":"'+username+'"}'	
+
+	
 		
 
 def create_default_profile(token,username,email):

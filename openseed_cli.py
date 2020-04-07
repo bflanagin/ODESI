@@ -28,7 +28,8 @@ if len(sys.argv) > 1:
 			contactName = input("Main contact name: ")
 			contactEmail = input(contactName+"'s email address: ")
 			openseed = input("OpenSeed account token for the creator account: ") 
-			Account.create_creator(devName,contactName,contactEmail,openseed)
+			result = Account.create_creator(devName,contactName,contactEmail,openseed)
+			print(result)
 			
 		elif sys.argv[2] == "app":
 			print("Creating new App account\n")

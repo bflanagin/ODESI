@@ -58,7 +58,6 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 	app = from_client["appPub"]
 	dev = from_client["devPub"]
 	
-	
 # Account Actions
  
 	if action == "accountcheck":
@@ -85,6 +84,9 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 		print(Account.get_history(from_client["account"],from_client["apprange"],from_client["count"]))
 	if action == "update_history":
 		print(Account.update_history(from_client["account"],from_client["type"],from_client["appPub"],from_client["data"]))
+
+	if action == "web_auth":
+		print()
 
 #  Media Actions
 			
@@ -118,8 +120,7 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 		print(Music.get_tracks_json(from_client["start"],from_client["count"]))
 
 # Chat Actions
- 
-	
+ 	
 	if action == "get_status":
 		print(Account.get_status(from_client["account"]))
 	if action == "set_status":
