@@ -319,10 +319,10 @@ def keytest(message):
 	search = "SELECT code FROM `onetime` WHERE 1"
 	u.execute(search)
 	result = u.fetchall()
-
+	print("attempts blanks are good")
 	for test in result:
 		decrypted = Seed.simp_decrypt(test[0],encrypted)
-		print(decrypted)
+		print("attempt:"decrypted)
 
 	print("using a key create right after the first"+Seed.simp_decrypt(key2,encrypted))
 
