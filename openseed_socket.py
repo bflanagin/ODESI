@@ -58,7 +58,7 @@ class TCPHandler(socketserver.BaseRequestHandler):
 			elif action == "get_status":
 				response = Account.get_status(from_client["account"])
 			elif action == "set_status":
-				response = Account.set_status(from_client["appPub"],from_client["account"],from_client["status"])
+				response = Account.set_status(from_client["appPub"],from_client["token"],from_client["status"])
 
 			elif action == "get_history":
 				response = Account.get_history(from_client["account"],from_client["apprange"],from_client["count"])
