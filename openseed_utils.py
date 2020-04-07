@@ -305,7 +305,7 @@ def password_reset(emailaddress,username,passphrase):
 
 
 def keytest(message):
-	key = Seed.cryptkey()
+	key = Seed.crypt_key()
 	Seed.simp_crypt(key,message)
 
 	openseed = mysql.connector.connect(
