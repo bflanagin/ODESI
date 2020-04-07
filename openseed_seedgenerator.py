@@ -305,10 +305,10 @@ def simp_crypt(key,raw_data):
 	digits = ""
 	#//lets turn it into integers first//
 	for t in raw_data.replace("%", ":percent:").replace("&", ":ampersand:"):
-		c = t.ord_at(0)
+		c = ord(t)
 		digits += str(c)+" "
 		
-	data = digits+str(str(" ").ord_at(0))
+	data = digits+str(ord(str(" ")))
 	while datanum < len(data):
 		keynum = 0
 		while keynum < len(key):
