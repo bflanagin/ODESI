@@ -307,7 +307,7 @@ def password_reset(emailaddress,username,passphrase):
 def keytest(message):
 	key = Seed.crypt_key()
 	encrypted = Seed.simp_crypt(key,message)
-
+	print(encrypted)
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
@@ -320,7 +320,6 @@ def keytest(message):
 	result = u.fetchall()
 
 	for test in result:
-		print("using key "+test[0])
 		decrypted = Seed.simp_decrypt(test[0],encrypted)
 		print(decrypted)
 	

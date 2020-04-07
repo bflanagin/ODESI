@@ -370,8 +370,8 @@ def simp_decrypt(key,raw_data):
 			
 		for c in message.split(" "):
 			if len(c) <= 4 and len(c) > 0:
-				if int(c) < 255:
-					decoded += chr(int(c))
+				if c < 255:
+					decoded += chr(c)
 				else:
 					decoded = "Unable to Decrypt"
 
