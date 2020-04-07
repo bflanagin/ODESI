@@ -312,7 +312,7 @@ def simp_crypt(key,raw_data):
 	while datanum < len(data):
 		keynum = 0
 		while keynum < len(key):
-			salt = int(round(randf() * 40))
+			salt = int(round(random.random() * 40))
 			if keynum < len(data) and salt % 3 == 0 and datanum < len(data):
 				if data[datanum] == key[keynum]:
 					num = keynum
