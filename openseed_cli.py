@@ -33,7 +33,7 @@ if len(sys.argv) > 1:
 			
 		elif sys.argv[2] == "app":
 			print("Creating new App account\n")
-			devID = input("Developer Public ID: ")
+			devID = input("Developer Priv ID: ")
 			appName = input("Application Name: ")
 			result = Account.create_app(devID,appName)
 			print(result)
