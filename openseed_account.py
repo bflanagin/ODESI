@@ -230,7 +230,13 @@ def create_user(username,passphrase,email):
 	else:
 		return '{"user":"exists"}'
 
-def external_user(username,appid):
+
+# External users bypass the password and username section of the login, and requires a trust relationship between the providers and OpenSeed
+# Steps to complete
+# 1. check user existance
+# 2. check appid existance
+# 3. 
+def external_user(username,apptoken):
 
 	openseed = mysql.connector.connect(
 		host = "localhost",
@@ -238,6 +244,25 @@ def external_user(username,appid):
 		password = settings["dbpassword"],
 		database = "openseed"
 		)
+
+	if check_db(username,"users") != 1:
+		mycursor = openseed.cursor()
+		#userid = Seed.generate_userid(username,passphrase,email)
+		#pubid = Seed.generate_publicid(userid)
+
+		findlast = "SELECT token FROM `user_tokens` WHERE 1 LIMIT 1"
+		mycursor.execute(findlast)
+		lasttoken = mycursor.fetchall()
+		newid =""
+		if len(lasttoken) <= 0:
+			newid = Seed.crypt_key()
+		else:
+			newid = lasttoken[0][0]
+
+		utokens = "INSERT INTO `user_tokens` (`token`,`username`) VALUES (%s,%s)"
+		utoken_vals = (str(uid),str(username))
+		mycursor.execute(utokens,utoken_vals)
+		
 
 def create_default_profile(token,username,email):
 	data1 = '{"name":"'+username+'","email":"'+email+'","phone":"","profession":"","company":""}'

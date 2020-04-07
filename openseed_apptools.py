@@ -7,7 +7,14 @@ import openseed_setup as Settings
 import openseed_seedgenerator as Seed
 settings = Settings.get_settings()
 
-def get_appdata(mode,appID,data):
+
+# Get app data from public app data 
+# This data is organized into developer and application with little or no regard to the data that they store
+# However, we require the data be stored in json formated units for easy searching through database returns. 
+# We do not have a standard format for this area as we want the developer to feel like they can use it for whatever they feel like.
+# Steps for future function: 1) search app and developer id and return results 2) search results for things that match data. 
+
+def get_public_appdata(mode,appID,data):
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
@@ -21,6 +28,15 @@ def get_appdata(mode,appID,data):
 	return
 
 def set_appdata(mode,appID,data,update):
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+	search = openseed.cursor()
+
+	openseed.close()
 
 	return
 
@@ -71,7 +87,7 @@ def get_webapp_token(token,username,appPub):
 	if token != "none" and len(result) == 1:
 		output = '{"appPub":"'+appPub+'","token":"'token'"}'
 	elif token == "none":
-		
+		Account.create_user
 	
 	
 	return output

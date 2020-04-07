@@ -20,7 +20,7 @@ settings = Settings.get_settings()
 import json
 
 if len(sys.argv) > 1:	
-	if sys.argv[1] == "new":
+	if sys.argv[1] == "add":
 		
 		if sys.argv[2] == "creator":
 			print("Creating new Creator account\n")
