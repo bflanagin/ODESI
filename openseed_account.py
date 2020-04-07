@@ -284,11 +284,12 @@ def create_creator(devName,contactName,contactEmail,account_token):
 		database = "openseed"
 		)
 	if check_db(devName,"developers") != 1:
-		devID = Seed.generate_id(devName,contactName,contactEmail)
-		pubID = Seed.generate_publicid(devID)
+		
 		mycursor = openseed.cursor()
 		account = json.loads(Account.user_from_id(account_token))["user"]
 		if account != "none":
+			devID = Seed.generate_id(devName,contactName,contactEmail,account)
+			pubID = Seed.generate_publicid(devID)
 			sql = "INSERT INTO `developers` (`devID`,`publicID`,`devName`,`contactName`,`contactEmail`,`steem`) VALUES (%s,%s,%s,%s,%s,%s)"
 			val = (str(devID),str(pubID),str(devName),str(contactName),str(contactEmail),str(account)) 
 			mycursor.execute(sql,val)	

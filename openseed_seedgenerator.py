@@ -72,7 +72,7 @@ def generate_userid_new(name,passphrase,email):
 
 	return mixer3
 
-def generate_id(name,account,contactname,contactemail):
+def generate_id(name,contactname,contactemail,account):
 	fullstring = name+contactemail+account+contactname
 	count1 = 0
 	count2 = 0
