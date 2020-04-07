@@ -321,6 +321,6 @@ def keytest(message):
 
 	for test in result:
 		print("using key "+test[0])
-		decrypted = Seed.simp_decrypt(test,message)
+		decrypted = Seed.simp_decrypt(test[0],message)
 		print(decrypted)
 	
