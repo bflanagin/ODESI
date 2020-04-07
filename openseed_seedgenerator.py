@@ -95,7 +95,7 @@ def generate_id(name,account,contactname,contactemail):
 		stir = str(hash2.hexdigest())
 	
 	count3 = 0	
-	while count3 < stir):
+	while count3 < len(stir):
 		mixer3 = mixer3+str(hash1.hexdigest()[count3])+str(hash2.hexdigest()[count3])
 		count3 += 1
 
