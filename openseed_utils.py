@@ -284,7 +284,7 @@ def password_reset(emailaddress,username,passphrase):
 	search = "SELECT userid FROM `users` WHERE email =%s AND username = %s"
 	val = (emailaddress,username)
 	u.execute(search,val)
-	result = image.fetchall()
+	result = u.fetchall()
 
 	if len(result) == 1:
 		newcode = Seed.generate_userid_new(name,passphrase,email)
@@ -304,3 +304,23 @@ def password_reset(emailaddress,username,passphrase):
 	openseed.close()
 
 
+def keytest(message):
+	key = Seed.cryptkey()
+	Seed.simp_crypt(key,message)
+
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+	)
+	u = openseed.cursor()
+	search = "SELECT code FROM `onetime` WHERE 1"
+	u.execute(search)
+	result = u.fetchall()
+
+	for test in result:
+		print("using key "+test)
+		decrypted = Seed.simp_decrypt(test,message)
+		print(decrypted)
+	
