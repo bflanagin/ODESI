@@ -370,11 +370,17 @@ def simp_decrypt(key,raw_data):
 			
 		for c in message.split(" "):
 			print(c)
-			if isinstance(int(c), int) and len(c) <= 3 and len(c) > 0:
-				if int(c) < 255:
-					decoded += chr(int(c))
-				else:
-					decoded = "Unable to Decrypt"
+			try:
+				int(c)
+			except: 
+				decode = "Unable to Decrypt"
+				break
+			else:
+				if len(c) <= 3 and len(c) > 0:
+					if int(c) < 255:
+						decoded += chr(int(c))
+					else:
+						decoded = "Unable to Decrypt"
 
 	return decoded.replace(":percent:","%").replace(":ampersand:","&")
 	
