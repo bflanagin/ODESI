@@ -286,7 +286,7 @@ def create_creator(devName,contactName,contactEmail,account_token):
 	if check_db(devName,"developers") != 1:
 		
 		mycursor = openseed.cursor()
-		account = json.loads(Account.user_from_id(account_token))["user"]
+		account = json.loads(user_from_id(account_token))["user"]
 		if account != "none":
 			devID = Seed.generate_id(devName,contactName,contactEmail,account)
 			pubID = Seed.generate_publicid(devID)
