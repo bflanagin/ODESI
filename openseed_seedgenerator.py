@@ -369,7 +369,6 @@ def simp_decrypt(key,raw_data):
 			datanum = datanum + 1
 			
 		for c in message.split(" "):
-			print(c)
 			try:
 				int(c)
 			except: 
