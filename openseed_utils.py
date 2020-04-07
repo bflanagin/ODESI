@@ -308,7 +308,7 @@ def keytest(message):
 	key = Seed.crypt_key()
 	encrypted = Seed.simp_crypt(key,message)
 	print(encrypted)
-	print("sample: "Seed.simp_decrypt(key,encrypted)
+	print("sample: "+Seed.simp_decrypt(key,encrypted)
 
 	openseed = mysql.connector.connect(
 		host = "localhost",
