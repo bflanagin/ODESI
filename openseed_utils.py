@@ -320,7 +320,7 @@ def keytest(message):
 	result = u.fetchall()
 
 	for test in result:
-		print("using key "+test)
+		print("using key "+test[0])
 		decrypted = Seed.simp_decrypt(test,message)
 		print(decrypted)
 	
