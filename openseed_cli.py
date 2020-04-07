@@ -27,8 +27,8 @@ if len(sys.argv) > 1:
 			devName = input("Creator Name: ")
 			contactName = input("Main contact name: ")
 			contactEmail = input(contactName+"'s email address: ")
-			#steem = input("Steem account for the creator account: ") 
-			Account.create_creator(devName,contactName,contactEmail,"")
+			openseed = input("OpenSeed account token for the creator account: ") 
+			Account.create_creator(devName,contactName,contactEmail,openseed)
 			
 		elif sys.argv[2] == "app":
 			print("Creating new App account\n")

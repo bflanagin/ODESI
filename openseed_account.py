@@ -276,7 +276,7 @@ def create_default_profile(token,username,email):
 	return userfriendly
 
 
-def create_creator(devName,contactName,contactEmail,steem):
+def create_creator(devName,contactName,contactEmail,account_token):
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
@@ -284,16 +284,20 @@ def create_creator(devName,contactName,contactEmail,steem):
 		database = "openseed"
 		)
 	if check_db(devName,"developers") != 1:
-		devID = Seed.generate_userid(devName,contactName,contactEmail)
+		devID = Seed.generate_id(devName,contactName,contactEmail)
 		pubID = Seed.generate_publicid(devID)
 		mycursor = openseed.cursor()
-		sql = "INSERT INTO `developers` (`devID`,`publicID`,`devName`,`contactName`,`contactEmail`,`steem`) VALUES (%s,%s,%s,%s,%s,%s)"
-		val = (str(devID),str(pubID),str(devName),str(contactName),str(contactEmail),str(steem)) 
-		mycursor.execute(sql,val)	
-		openseed.commit()
-		mycursor.close()
-		openseed.close()
-		return '{"devID":"'+devID+'","pubID":"'+pubID+'"}'
+		account = json.loads(Account.user_from_id(account_token))["user"]
+		if account != "none":
+			sql = "INSERT INTO `developers` (`devID`,`publicID`,`devName`,`contactName`,`contactEmail`,`steem`) VALUES (%s,%s,%s,%s,%s,%s)"
+			val = (str(devID),str(pubID),str(devName),str(contactName),str(contactEmail),str(account)) 
+			mycursor.execute(sql,val)	
+			openseed.commit()
+			mycursor.close()
+			openseed.close()
+			return '{"devID":"'+devID+'","pubID":"'+pubID+'"}'
+		else:
+			return '{"server":"no openseed user found"}'
 	else:
 		return '{"devID":"exists","pubID":"exists"}'
 	

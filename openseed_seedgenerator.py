@@ -73,7 +73,7 @@ def generate_userid_new(name,passphrase,email):
 	return mixer3
 
 def generate_id(name,account,contactname,contactemail):
-	fullstring = name+passphrase+contactemail+account+contactname
+	fullstring = name+contactemail+account+contactname
 	count1 = 0
 	count2 = 0
 	mixer1 = ""
@@ -88,9 +88,14 @@ def generate_id(name,account,contactname,contactemail):
 	
 	hash1 = hashlib.md5(mixer1.encode())
 	hash2 = hashlib.md5(mixer2.encode())
+
+	if len(str(hash1.hexdigest())) >= len(str(hash2.hexdigest())):
+		stir = str(hash1.hexdigest())
+	else:
+		stir = str(hash2.hexdigest())
 	
 	count3 = 0	
-	while count3 < len(hash1.hexdigest()):
+	while count3 < stir):
 		mixer3 = mixer3+str(hash1.hexdigest()[count3])+str(hash2.hexdigest()[count3])
 		count3 += 1
 
