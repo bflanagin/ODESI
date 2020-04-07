@@ -346,7 +346,7 @@ def create_app(devID,appName):
 		)
 	pubID = get_pub_from_priv(devID)
 	if check_db(appName,"applications") != 1:
-		appID = Seed.generate_userid(devID,devID+appName,appName)
+		appID = Seed.generate_id(devID,devID+appName,appName)
 		pubID = Seed.generate_publicid(appID)
 		mycursor = openseed.cursor()
 		sql = "INSERT INTO `applications` (`devID`,`appID`,`publicID`,`appName`) VALUES (%s,%s,%s,%s)"
