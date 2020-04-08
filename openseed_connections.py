@@ -32,10 +32,10 @@ def get_hive_connections(account):
 	for er in follows:
 		for ing in watching:
 			if er == ing:
-				if append == "":
-					connection = '{"name":"'+str(cname)+'","linked":"1","profile":{}}'
+				if connection == "":
+					connection = '{"name":"'+str(cname)+'","linked":"2","profile":{}}'
 				else:
-					connnection = connection+',{"name":"'+str(cname)+'","linked":"1","profile":{}}'
+					connnection = connection+',{"name":"'+str(cname)+'","linked":"2","profile":{}}'
 
 	return(connection.replace("'","\'"))
 
