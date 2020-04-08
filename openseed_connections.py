@@ -29,13 +29,14 @@ def get_hive_connections(account):
 		for flws in following:
 			watching.append(flws["following"])
 
+	var blank_p = '"profile":{"openseed":{},"extended":{},"appdata":{},"misc":{},"imports":{}}'
 	for er in follows:
 		for ing in watching:
 			if er == ing:
 				if connection == "":
-					connection = '{"name":"'+er+'","linked":"2","profile":{"openseed":{"name":"'+er+'"}}}'
+					connection = '{"name":"'+er+'","linked":"2",'+blank_p+'}'
 				else:
-					connnection = connection+',{"name":"'+er+'","linked":"2","profile":{"openseed":{"name":"'+er+'"}}}'
+					connnection = connection+',{"name":"'+er+'","linked":"2",'+blank_p+'}'
 
 	return(connection.replace("'","\'"))
 
