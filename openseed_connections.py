@@ -231,7 +231,7 @@ def connection_request(token,requestee,response = "request"):
 			openseed.commit()
 			output = '{"request":"updated","to":"'+requestee+'","from":"'+username+'"}'
 		# same as above but auto connects users.
-		elif len(exists_2) == 1 and int(response) == 1:
+		elif len(exists_2) == 1 and int(theresponse) == 1:
 
 			update = "UPDATE `connections` SET `response` = %s WHERE userid1 LIKE %s AND userid2 LIKE %s"
 			values = ("2",requestee,username)
