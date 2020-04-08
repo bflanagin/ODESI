@@ -79,8 +79,15 @@ def get_openseed_connections(account,external = True):
 		connections = '{"connections":['+accounts.replace("'","\'")+']}'
 	else:
 		hive = get_hive_connections(account)
-		
-		connections = '{"connections":['+accounts.replace("'","\'")+','+hive+']}' 
+		hive_connections = ""
+		for i in hive:
+			if accounts.find(i["name"]) == -1:
+				if hive_connections = ""
+					hive_connections = i
+				else:
+					hive_connections = hive_connections+","+i
+
+		connections = '{"connections":['+accounts.replace("'","\'")+','+hive_connections.replace("'","\'")+']}' 
  
 	return connections
 
@@ -196,10 +203,15 @@ def connection_request(token,requestee,response = "request"):
 		request_search.execute(search,vals_2)
 		exists_2 = request_search.fetchall()
 		
+		# Checks to see if the request is already accepted
 		if exists_1[0][3] == 2 or exists_2[0][3] == 2:
 			output = '{"request":"accepted","to":"'+requestee+'","from":"'+username+'"}'
+
+		# Checks to see if the request is already denied
 		elif exists_1[0][3] == 0 or exists_2[0][3] == 0:
 			output = '{"request":"denied","to":"'+requestee+'","from":"'+username+'"}'
+
+		# Checks to see if there is no request either direction
 		elif len(exists_1) != 1 and len(exists_2) !=1: 
 			insert = "INSERT INTO `connections` (`userid1`,`userid2`,`response`) VALUES  (%s,%s,%s)"
 			values = (username,requestee,theresponse)
@@ -207,6 +219,7 @@ def connection_request(token,requestee,response = "request"):
 			openseed.commit()
 			output = '{"request":"sent","to":"'+requestee+'","from":"'+username+'"}'
 
+		# checks to see if the second user has sent a request to the first
 		elif len(exists_2) == 1 and int(response) != 1:
   
 			update = "UPDATE `connections` SET `response` = %s WHERE userid1 LIKE %s AND userid2 LIKE %s"
@@ -214,7 +227,7 @@ def connection_request(token,requestee,response = "request"):
 			request_search.execute(update,values)
 			openseed.commit()
 			output = '{"request":"updated","to":"'+requestee+'","from":"'+username+'"}'
-
+		# same as above but auto connects users.
 		elif len(exists_2) == 1 and int(response) == 1:
 
 			update = "UPDATE `connections` SET `response` = %s WHERE userid1 LIKE %s AND userid2 LIKE %s"
@@ -223,6 +236,9 @@ def connection_request(token,requestee,response = "request"):
 			openseed.commit()
 			output = '{"request":"updated","to":"'+requestee+'","from":"'+username+'"}'
 
+		# disallows user from create a second request or updating their own request to others.
+		elif len(exists_1) == 1:
+			output = '{"request":"exists","to":"'+requestee+'","from":"'+username+'"}'
 		
 	
 		request_search.close()
