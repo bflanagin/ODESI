@@ -166,7 +166,7 @@ class TCPHandler(socketserver.BaseRequestHandler):
 					response = Chat.send_chat(from_client["token"],from_client["room"],from_client["data"],app)
 
 				elif action == "find_room_by_attendees":
-					response = Chat.find_attendees(from_client["token"],from_client["attendees"],from_client["create"])
+					response = Chat.find_attendees(from_client["token"],from_client["attendees"],from_client["create"],app)
 
 				elif action == "set_key":
 					response = OneTime.store_onetime(from_client["type"],from_client["register"],from_client["validusers"])

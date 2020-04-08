@@ -177,7 +177,7 @@ def user_profile(username):
  
 # Requests have three states 1 pending 2 accepted 0 denied. 
 
-def connection_request(token,requestee,response = "request"):
+def connection_request(token,requestee,response = "request",appPub):
 	output = '{"request":"error"}'
 	theresponse = 1
 	openseed = mysql.connector.connect(
