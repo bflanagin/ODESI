@@ -38,7 +38,7 @@ def get_hive_connections(account):
 				if connections == "":
 					connections = '{"name":"'+er+'","linked":"2",'+blank_p+'}'
 				else:
-					connnections +=',{"name":"'+er+'","linked":"2",'+blank_p+'}'
+					connections +=',{"name":"'+er+'","linked":"2",'+blank_p+'}'
 
 	return(connection.replace("'","\'"))
 
