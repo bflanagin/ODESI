@@ -81,7 +81,6 @@ def get_openseed_connections(account,external = True):
 		hive = get_hive_connections(account)
 		hive_connections = ""
 		for i in hive:
-			
 			if json.loads(i)["name"] not in accounts:
 				if hive_connections == "":
 					hive_connections = i
@@ -270,10 +269,18 @@ def get_requests(token,count):
 	result = mysearch.fetchall()
 	if len(result) > 0:
 		for a in result:
+			theresponse = "request"
+			if a[3] == 0:
+				theresponse = "denied"
+			if a[3] == 1:
+				theresponse = "request"
+			if a[3] == 2:
+				theresponse = "accept"
+
 			if requests == "":
-				requests = '{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","response":"'+str(a[3])+'"}'
+				requests = '{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","response":"'+theresponse+'"}'
 			else:
-				requests = requests+',{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","response":"'+str(a[3])+'"}'
+				requests = requests+',{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","response":"'+theresponse+'"}'
 	else:
 		requests = '{"request":"none"}'
  
