@@ -33,7 +33,7 @@ def get_hive_connections(account):
 	for er in follows:
 		print(er)
 		for ing in watching:
-			print(ing)
+			#print(ing)
 			if er == ing:
 				print("Matched")
 				if connection == "":
