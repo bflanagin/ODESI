@@ -34,7 +34,7 @@ def get_hive_connections(account):
 		for ing in watching:
 			#print(ing)
 			if er == ing:
-				print("Matched with "+er)
+				#print("Matched with "+er)
 				if connections == "":
 					connections = '{"name":"'+er+'","linked":"2",'+blank_p+'}'
 				else:
