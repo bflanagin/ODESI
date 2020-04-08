@@ -82,7 +82,7 @@ def get_openseed_connections(account,external = True):
 		hive_connections = ""
 		for i in hive:
 			if accounts.find(i["name"]) == -1:
-				if hive_connections == ""
+				if hive_connections == "":
 					hive_connections = i
 				else:
 					hive_connections = hive_connections+","+i
