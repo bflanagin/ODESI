@@ -223,7 +223,7 @@ def find_chatroom(chatroom):
 # First narrowing the search using a user token
 # Then check provided list against 
 
-def find_attendees(token,userlist,create = 1,appPub):
+def find_attendees(token,userlist,create,appPub):
 	room = ""
 	title = ""
 	found = ""
