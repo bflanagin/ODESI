@@ -310,12 +310,17 @@ def request_status(token,account):
 	result2 = mysearch.fetchall()
 	if len(result1) == 1:
 		status = result1[0]
-		#print(status)
-		jsoned = '{"request":"'+str(status).split(",")[3].split("'")[1]+'"}'
 	elif len(result2) == 1:
 		status = result2[0]
-		#print(status)	
-		jsoned = '{"request":"'+str(status).split(",")[3].split("'")[1]+'"}'
+	thestate = "request"
+	if status[3] == 0:
+		thestate = "denied"
+	if status[3] == 1:
+		thestate = "request"
+	if status[3] == 2:
+		thestate = "accept"
+	
+	jsoned = '{"request":"'+thestate+'"}'
 
 	mysearch.close()
 	openseed.close() 
