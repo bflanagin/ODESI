@@ -14,15 +14,34 @@ settings = Settings.get_settings()
 # We do not have a standard format for this area as we want the developer to feel like they can use it for whatever they feel like.
 # Steps for future function: 1) search app and developer id and return results 2) search results for things that match data. 
 
-def get_public_appdata(mode,appID,data):
+def get_appdata(mode,appID,data):
+
+	table = ""
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
 		password = settings["dbpassword"],
 		database = "openseed"
 		)
-	search = openseed.cursor()
+		if mode == "priv":
+			table = "app_data_priv"
+		else:
+			table = "app_data_pub"		
+	try:
+		json.loads(data)
+	except:
+		return '{"server":"not json"}'
+	else:
+		search = openseed.cursor()
+		find = "SELECT * FROM `"+table+"` WHERE appID = %s"
+		vals = (appID,)
+		search.execute(find,vals)
+		result = search.fetchall()
 
+		for t in result:
+			print(t)
+
+	search.close()
 	openseed.close()
 
 	return
@@ -34,8 +53,23 @@ def set_appdata(mode,appID,data,update):
 		password = settings["dbpassword"],
 		database = "openseed"
 		)
-	search = openseed.cursor()
-
+		if mode == "priv":
+			table = "app_data_priv"
+		else:
+			table = "app_data_pub"
+	try:
+		json.loads(data)
+	except:
+		return '{"server":"not json"}'
+	else:
+		search = openseed.cursor()
+		insert = "INSERT INTO `"+table+"` (`appID`,`data`) VALUES (%s,%s)"
+		vals = (appID,data)
+		search.execute(insert,vals)
+	
+	
+	openseed.commit()
+	search.close()
 	openseed.close()
 
 	return

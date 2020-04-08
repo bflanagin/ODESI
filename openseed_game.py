@@ -6,6 +6,9 @@ import hive_submit as Submit
 import openseed_setup as Settings
 settings = Settings.get_settings()
 
+#### These functions will need to be changed to match the current versions. We can move leaderboard to history and use filters to find just highscores based on apps #####
+#### Save functions can also be moved to appdata ####
+
 def update_leaderboard(devID,appID,user,data):
 	openseed = mysql.connector.connect(
 		host = "localhost",
