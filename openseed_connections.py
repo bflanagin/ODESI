@@ -167,41 +167,61 @@ def user_profile(username):
  
 # Requests have three states 1 pending 2 accepted 0 denied. 
 
-def send_request(token,requestee,response = 1):
+def connection_request(token,requestee,response = "request"):
 	output = '{"request":"error"}'
+	theresponse = 0
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
 		password = settings["dbpassword"],
 		database = "openseed"
 		)
+	if response == "request":
+		theresponse = 1
+	if response == "accept":
+		theresponse = 2
+	if response == "denied":
+		theresponse = 0
+
 	username = json.loads(Account.user_from_id(token))["user"]
-	request_search = openseed.cursor()
-	search = "SELECT * FROM `connections` WHERE userid1 LIKE %s AND userid2 LIKE %s"
-	vals_1 = (username,requestee)
-	vals_2 = (requestee,username)
-	request_search.execute(search,vals_1)
-	exists_1 = len(request_search.fetchall())
-	request_search.execute(search,vals_2)
-	exists_2 = len(request_search.fetchall())
-
-	if exists_1 != 1 and exists_2 !=1: 
-		insert = "INSERT INTO `connections` (`userid1`,`userid2`,`response`) VALUES  (%s,%s,%s)"
-		values = (username,requestee,response)
-		request_search.execute(insert,values)
-		openseed.commit()
-		output = '{"request":"sent","to":"'+requestee+'","from":"'+username+'"}'
-
-	elif exists_2 == 1 and int(response) != 1:
-  
-		update = "UPDATE `connections` SET `response` = %s WHERE userid1 LIKE %s AND userid2 LIKE %s"
-		values = (response,requestee,username)
-		request_search.execute(update,values)
-		openseed.commit()
-		output = '{"request":"updated","to":"'+requestee+'","from":"'+username+'"}'
+	if username != "none":
+		request_search = openseed.cursor()
+		search = "SELECT * FROM `connections` WHERE userid1 LIKE %s AND userid2 LIKE %s"
+		vals_1 = (username,requestee)
+		vals_2 = (requestee,username)
+		request_search.execute(search,vals_1)
+		exists_1 = len(request_search.fetchall())
+		request_search.execute(search,vals_2)
+		exists_2 = len(request_search.fetchall())
 	
-	request_search.close()
-	openseed.close()
+		if exists_1 != 1 and exists_2 !=1: 
+			insert = "INSERT INTO `connections` (`userid1`,`userid2`,`response`) VALUES  (%s,%s,%s)"
+			values = (username,requestee,theresponse)
+			request_search.execute(insert,values)
+			openseed.commit()
+			output = '{"request":"sent","to":"'+requestee+'","from":"'+username+'"}'
+
+		elif exists_2 == 1 and int(response) != 1:
+  
+			update = "UPDATE `connections` SET `response` = %s WHERE userid1 LIKE %s AND userid2 LIKE %s"
+			values = (theresponse,requestee,username)
+			request_search.execute(update,values)
+			openseed.commit()
+			output = '{"request":"updated","to":"'+requestee+'","from":"'+username+'"}'
+
+		elif exists_2 == 1 and int(response) == 1:
+
+			update = "UPDATE `connections` SET `response` = %s WHERE userid1 LIKE %s AND userid2 LIKE %s"
+			values = ("2",requestee,username)
+			request_search.execute(update,values)
+			openseed.commit()
+			output = '{"request":"updated","to":"'+requestee+'","from":"'+username+'"}'
+	
+		request_search.close()
+		openseed.close()
+	else:
+		output = '{"request":"error","log":"bad token"}'
+
 	return output 
 
 # gets request based on token and limit. Only returns pending requests
