@@ -17,7 +17,7 @@ thenodes = ['anyx.io','api.steem.house','hive.anyx.io','steemd.minnowsupportproj
 h = hive.Hive(nodes=thenodes)
 
 def get_hive_connections(account):
-	connection = ""
+	connections = ""
 	follows = []
 	watching = []
 	followers = h.get_followers(account,0,"",1000)
@@ -31,15 +31,14 @@ def get_hive_connections(account):
 
 	blank_p = '"profile":{"openseed":{},"extended":{},"appdata":{},"misc":{},"imports":{}}'
 	for er in follows:
-		print(er)
 		for ing in watching:
 			#print(ing)
 			if er == ing:
-				print("Matched")
-				if connection == "":
-					connection = '{"name":"'+er+'","linked":"2",'+blank_p+'}'
+				print("Matched with "+er)
+				if connections == "":
+					connections = '{"name":"'+er+'","linked":"2",'+blank_p+'}'
 				else:
-					connnection = connection+',{"name":"'+er+'","linked":"2",'+blank_p+'}'
+					connnections +=',{"name":"'+er+'","linked":"2",'+blank_p+'}'
 
 	return(connection.replace("'","\'"))
 
