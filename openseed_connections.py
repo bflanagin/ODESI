@@ -33,12 +33,12 @@ def get_hive_connections(account):
 		for ing in watching:
 			if er == ing:
 				blank_p = '"profile":{"openseed":{"name":"'+er+'"},"extended":{},"appdata":{},"misc":{},"imports":{}}'
-				if connections == "":
-					connections = '{"name":"'+er+'","linked":"2",'+blank_p+'}'
-				else:
-					connections +=',{"name":"'+er+'","linked":"2",'+blank_p+'}'
+				#if connections == "":
+				connections.append('{"name":"'+er+'","linked":"2",'+blank_p+'}')
+				#else:
+				#	connections +=',{"name":"'+er+'","linked":"2",'+blank_p+'}'
 
-	return(connections.replace("'","\'"))
+	return(connections)
 
 def get_openseed_connections(account,external = True):
 	connections = '{"connections":"none"}'
@@ -78,7 +78,9 @@ def get_openseed_connections(account,external = True):
 	if external == False:
 		connections = '{"connections":['+accounts.replace("'","\'")+']}'
 	else:
-		connections = '{"connections":['+accounts.replace("'","\'")+','+get_hive_connections(account)+']}' 
+		hive = get_hive_connections(account)
+		
+		connections = '{"connections":['+accounts.replace("'","\'")+','+hive+']}' 
  
 	return connections
 
@@ -190,18 +192,22 @@ def connection_request(token,requestee,response = "request"):
 		vals_1 = (username,requestee)
 		vals_2 = (requestee,username)
 		request_search.execute(search,vals_1)
-		exists_1 = len(request_search.fetchall())
+		exists_1 = request_search.fetchall()
 		request_search.execute(search,vals_2)
-		exists_2 = len(request_search.fetchall())
-	
-		if exists_1 != 1 and exists_2 !=1: 
+		exists_2 = request_search.fetchall()
+		
+		if exists_1[0][3] == 2 or exists_2[0][3] == 2:
+			output = '{"request":"accepted","to":"'+requestee+'","from":"'+username+'"}'
+		elif exists_1[0][3] == 0 or exists_2[0][3] == 0:
+			output = '{"request":"denied","to":"'+requestee+'","from":"'+username+'"}'
+		elif len(exists_1) != 1 and len(exists_2) !=1: 
 			insert = "INSERT INTO `connections` (`userid1`,`userid2`,`response`) VALUES  (%s,%s,%s)"
 			values = (username,requestee,theresponse)
 			request_search.execute(insert,values)
 			openseed.commit()
 			output = '{"request":"sent","to":"'+requestee+'","from":"'+username+'"}'
 
-		elif exists_2 == 1 and int(response) != 1:
+		elif len(exists_2) == 1 and int(response) != 1:
   
 			update = "UPDATE `connections` SET `response` = %s WHERE userid1 LIKE %s AND userid2 LIKE %s"
 			values = (theresponse,requestee,username)
@@ -209,13 +215,15 @@ def connection_request(token,requestee,response = "request"):
 			openseed.commit()
 			output = '{"request":"updated","to":"'+requestee+'","from":"'+username+'"}'
 
-		elif exists_2 == 1 and int(response) == 1:
+		elif len(exists_2) == 1 and int(response) == 1:
 
 			update = "UPDATE `connections` SET `response` = %s WHERE userid1 LIKE %s AND userid2 LIKE %s"
 			values = ("2",requestee,username)
 			request_search.execute(update,values)
 			openseed.commit()
 			output = '{"request":"updated","to":"'+requestee+'","from":"'+username+'"}'
+
+		
 	
 		request_search.close()
 		openseed.close()
