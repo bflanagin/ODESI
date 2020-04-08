@@ -10,6 +10,7 @@ sys.path.append("..")
 from hive import hive
 import openseed_account as Account
 import openseed_setup as Settings
+import openseed_chat as Chat
 
 settings = Settings.get_settings()
 
@@ -34,7 +35,7 @@ def get_hive_connections(account):
 			if er == ing:
 				blank_p = '"profile":{"openseed":{"name":"'+er+'"},"extended":{},"appdata":{},"misc":{},"imports":{}}'
 				#if connections == "":
-				connections.append('{"name":"'+er+'","linked":"2",'+blank_p+'}')
+				connections.append('{"name":"'+er+'","linked":"1",'+blank_p+'}')
 				#else:
 				#	connections +=',{"name":"'+er+'","linked":"2",'+blank_p+'}'
 
@@ -230,6 +231,7 @@ def connection_request(token,requestee,response = "request"):
 			request_search.execute(update,values)
 			openseed.commit()
 			output = '{"request":"updated","to":"'+requestee+'","from":"'+username+'"}'
+			Chat.find_attendees(token,requestee+","+username)
 		# same as above but auto connects users.
 		elif len(exists_2) == 1 and int(theresponse) == 1:
 
@@ -238,7 +240,7 @@ def connection_request(token,requestee,response = "request"):
 			request_search.execute(update,values)
 			openseed.commit()
 			output = '{"request":"updated","to":"'+requestee+'","from":"'+username+'"}'
-
+			Chat.find_attendees(token,requestee+","+username)
 		# disallows user from create a second request or updating their own request to others.
 		elif len(exists_1) == 1:
 			output = '{"request":"exists","to":"'+requestee+'","from":"'+username+'"}'
