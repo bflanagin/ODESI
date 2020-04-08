@@ -204,11 +204,14 @@ def connection_request(token,requestee,response = "request"):
 		exists_2 = request_search.fetchall()
 		
 		# Checks to see if the request is already accepted
-		if exists_1[0][3] == 2 or exists_2[0][3] == 2:
+		if len(exists_1) == 1 and exists_1[0][3] == 2: 
 			output = '{"request":"accepted","to":"'+requestee+'","from":"'+username+'"}'
-
+		elif len(exists_2) == 1 and exists_2[0][3] == 2:
+			output = '{"request":"accepted","to":"'+requestee+'","from":"'+username+'"}'	
 		# Checks to see if the request is already denied
-		elif exists_1[0][3] == 0 or exists_2[0][3] == 0:
+		elif len(exists_1) == 1 and exists_1[0][3] == 0 
+			output = '{"request":"denied","to":"'+requestee+'","from":"'+username+'"}'
+		elif len(exists_2) == 1 and exists_2[0][3] == 0:
 			output = '{"request":"denied","to":"'+requestee+'","from":"'+username+'"}'
 
 		# Checks to see if there is no request either direction
