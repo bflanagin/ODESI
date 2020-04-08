@@ -74,7 +74,7 @@ def get_openseed_connections(account,external = True):
 				accounts = '{"name":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile(str(cname)))+'}'
 			else:
 				accounts = accounts+',{"name":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile(str(cname)))+'}'
-	if external == false:
+	if external == False:
 		connections = '{"connections":['+accounts.replace("'","\'")+']}'
 	else:
 		connections = '{"connections":['+accounts.replace("'","\'")+','+get_hive_connections+']}' 
