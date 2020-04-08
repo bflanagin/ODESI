@@ -33,9 +33,9 @@ def get_hive_connections(account):
 		for ing in watching:
 			if er == ing:
 				if connection == "":
-					connection = '{"name":"'+str(cname)+'","linked":"2","profile":{}}'
+					connection = '{"name":"'+er+'","linked":"2","profile":{"openseed":{"name":"'+er+'"}}}'
 				else:
-					connnection = connection+',{"name":"'+str(cname)+'","linked":"2","profile":{}}'
+					connnection = connection+',{"name":"'+er+'","linked":"2","profile":{"openseed":{"name":"'+er+'"}}}'
 
 	return(connection.replace("'","\'"))
 
