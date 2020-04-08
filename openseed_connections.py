@@ -17,7 +17,7 @@ thenodes = ['anyx.io','api.steem.house','hive.anyx.io','steemd.minnowsupportproj
 h = hive.Hive(nodes=thenodes)
 
 def get_hive_connections(account):
-	connections = ""
+	connections = []
 	follows = []
 	watching = []
 	followers = h.get_followers(account,0,"",1000)
