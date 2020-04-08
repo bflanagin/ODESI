@@ -77,7 +77,7 @@ def get_openseed_connections(account,external = true):
 	if external == false:
 		connections = '{"connections":['+accounts.replace("'","\'")+']}'
 	else:
-		connections = '{"connections":['+accounts.replace("'","\'")+","+get_hive_connections']}' 
+		connections = '{"connections":['+accounts.replace("'","\'")+','+get_hive_connections+']}' 
  
 	return connections
 
