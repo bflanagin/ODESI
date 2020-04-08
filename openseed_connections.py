@@ -29,12 +29,10 @@ def get_hive_connections(account):
 		for flws in following:
 			watching.append(flws["following"])
 
-	blank_p = '"profile":{"openseed":{},"extended":{},"appdata":{},"misc":{},"imports":{}}'
 	for er in follows:
 		for ing in watching:
-			#print(ing)
 			if er == ing:
-				#print("Matched with "+er)
+				blank_p = '"profile":{"openseed":{"name":"'+er+'"},"extended":{},"appdata":{},"misc":{},"imports":{}}'
 				if connections == "":
 					connections = '{"name":"'+er+'","linked":"2",'+blank_p+'}'
 				else:
