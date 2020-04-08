@@ -40,7 +40,7 @@ def get_hive_connections(account):
 				else:
 					connections +=',{"name":"'+er+'","linked":"2",'+blank_p+'}'
 
-	return(connection.replace("'","\'"))
+	return(connections.replace("'","\'"))
 
 def get_openseed_connections(account,external = True):
 	connections = '{"connections":"none"}'
