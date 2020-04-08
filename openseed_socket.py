@@ -139,6 +139,7 @@ class TCPHandler(socketserver.BaseRequestHandler):
 			    		response = Connections.get_steem_connections(from_client["steem"])
 				elif action == "openseed_connections":
 					response = Connections.get_openseed_connections(from_client["account"],from_client["hive"])
+					print(response)
 				elif action == "get_profile":
 					response = "{"+Connections.user_profile(from_client["account"])+"}"
 				elif action == "get_requests":
