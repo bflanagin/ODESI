@@ -178,7 +178,7 @@ def user_profile(username):
 
 def connection_request(token,requestee,response = "request"):
 	output = '{"request":"error"}'
-	theresponse = 0
+	theresponse = 1
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
@@ -226,7 +226,7 @@ def connection_request(token,requestee,response = "request"):
 		elif len(exists_2) == 1 and int(response) != 1:
   
 			update = "UPDATE `connections` SET `response` = %s WHERE userid1 LIKE %s AND userid2 LIKE %s"
-			values = (theresponse,requestee,username)
+			values = (str(theresponse),requestee,username)
 			request_search.execute(update,values)
 			openseed.commit()
 			output = '{"request":"updated","to":"'+requestee+'","from":"'+username+'"}'
