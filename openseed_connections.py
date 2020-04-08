@@ -223,7 +223,7 @@ def connection_request(token,requestee,response = "request"):
 			output = '{"request":"sent","to":"'+requestee+'","from":"'+username+'"}'
 
 		# checks to see if the second user has sent a request to the first
-		elif len(exists_2) == 1 and int(response) != 1:
+		elif len(exists_2) == 1 and int(theresponse) != 1:
   
 			update = "UPDATE `connections` SET `response` = %s WHERE userid1 LIKE %s AND userid2 LIKE %s"
 			values = (str(theresponse),requestee,username)
