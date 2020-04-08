@@ -144,9 +144,9 @@ class TCPHandler(socketserver.BaseRequestHandler):
 				elif action == "get_requests":
 					response = Connections.get_requests(from_client["token"],from_client["count"])
 				elif action == "send_request":
-					response = Connections.connection_request(from_client["token"],from_client["account"],"request")
+					response = Connections.connection_request(from_client["token"],from_client["account"],"request",app)
 				elif action == "set_request":
-					response = Connections.connection_request(from_client["token"],from_client["account"],from_client["response"])
+					response = Connections.connection_request(from_client["token"],from_client["account"],from_client["response"],app)
 
 			#####################################################
 			#
