@@ -209,7 +209,7 @@ def connection_request(token,requestee,response = "request"):
 		elif len(exists_2) == 1 and exists_2[0][3] == 2:
 			output = '{"request":"accepted","to":"'+requestee+'","from":"'+username+'"}'	
 		# Checks to see if the request is already denied
-		elif len(exists_1) == 1 and exists_1[0][3] == 0 
+		elif len(exists_1) == 1 and exists_1[0][3] == 0: 
 			output = '{"request":"denied","to":"'+requestee+'","from":"'+username+'"}'
 		elif len(exists_2) == 1 and exists_2[0][3] == 0:
 			output = '{"request":"denied","to":"'+requestee+'","from":"'+username+'"}'
