@@ -31,8 +31,11 @@ def get_hive_connections(account):
 
 	blank_p = '"profile":{"openseed":{},"extended":{},"appdata":{},"misc":{},"imports":{}}'
 	for er in follows:
+		print(er)
 		for ing in watching:
+			print(ing)
 			if er == ing:
+				print("Matched")
 				if connection == "":
 					connection = '{"name":"'+er+'","linked":"2",'+blank_p+'}'
 				else:
