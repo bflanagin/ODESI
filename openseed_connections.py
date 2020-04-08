@@ -29,7 +29,7 @@ def get_hive_connections(account):
 		for flws in following:
 			watching.append(flws["following"])
 
-	var blank_p = '"profile":{"openseed":{},"extended":{},"appdata":{},"misc":{},"imports":{}}'
+	blank_p = '"profile":{"openseed":{},"extended":{},"appdata":{},"misc":{},"imports":{}}'
 	for er in follows:
 		for ing in watching:
 			if er == ing:
