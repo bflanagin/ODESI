@@ -168,9 +168,9 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 	if action == "get_profile":
 		print("{"+Connections.user_profile(from_client["account"])+"}")
 	if action == "send_request":
-		print(Connections.connection_request(from_client["token"],from_client["account"],"request",app)
+		print(Connections.connection_request(from_client["token"],from_client["account"],"request",app))
 	if action == "set_request":
-		print(Connections.connection_request(from_client["token"],from_client["account"],from_client["response"],app)
+		print(Connections.connection_request(from_client["token"],from_client["account"],from_client["response"],app))
 	if action == "get_requests":
 		print(Connections.get_requests(from_client["token"],from_client["count"]))
 	if action == "request_status":
