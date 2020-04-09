@@ -49,3 +49,12 @@ def get_leaderboard(devID,appID):
 	openseed.close()
 	return str(output)
 
+def save_game(devID,appID,token,data):
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+	save = openseed.cursor()
+

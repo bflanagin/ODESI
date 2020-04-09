@@ -230,8 +230,9 @@ def connection_request(token,requestee,response,appPub):
 			values = (str(theresponse),requestee,username)
 			request_search.execute(update,values)
 			openseed.commit()
-			output = '{"request":"updated","to":"'+requestee+'","from":"'+username+'"}'
-			Chat.find_attendees(token,requestee+","+username,1,appPub)
+			
+			chatroom = Chat.find_attendees(token,requestee+","+username,1,appPub)
+			output = '{"request":"accepted","room":'+chatroom+'}'
 		# same as above but auto connects users.
 		elif len(exists_2) == 1 and int(theresponse) == 1:
 
@@ -239,8 +240,9 @@ def connection_request(token,requestee,response,appPub):
 			values = ("2",requestee,username)
 			request_search.execute(update,values)
 			openseed.commit()
-			output = '{"request":"updated","to":"'+requestee+'","from":"'+username+'"}'
-			Chat.find_attendees(token,requestee+","+username,1,appPub)
+			
+			chatroom = Chat.find_attendees(token,requestee+","+username,1,appPub)
+			output = '{"request":"accpeted","room":'+chatroom+'}'
 		# disallows user from create a second request or updating their own request to others.
 		elif len(exists_1) == 1:
 			output = '{"request":"exists","to":"'+requestee+'","from":"'+username+'"}'
