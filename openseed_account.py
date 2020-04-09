@@ -387,10 +387,10 @@ def set_profile(theid,data1,data2,data3,data4,data5,thetype):
 		openseed.close() 
 		return '{"profile":"updated"}'
 
-def get_status(username):
+def get_status(account):
 	
 	dat = '{"chat":"offline"}'
-	status = '{"username":"none","date":"none","data":'+dat+'}'
+	status = '{"account":"none","date":"none","data":'+dat+'}'
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
@@ -399,12 +399,12 @@ def get_status(username):
 		)
 	user = openseed.cursor()
 	search = "SELECT * FROM logins WHERE username = %s"
-	val = (username,)
+	val = (account,)
 	user.execute(search,val)
 	result = user.fetchall()
 	if len(result) == 1:
 		dat = str(result[0][4])
-		status = '{"username":"'+str(result[0][1])+'","date":"'+str(result[0][3])+'","data":'+dat.lower()+'}'
+		status = '{"status":{"account":"'+str(result[0][1])+'","date":"'+str(result[0][3])+'","data":'+dat.lower()+'}}'
 	
 
 	user.close()

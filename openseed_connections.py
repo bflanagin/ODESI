@@ -322,7 +322,7 @@ def request_status(token,account):
 	if status[3] == 2:
 		thestate = "accept"
 	
-	jsoned = '{"request":"'+thestate+'"}'
+	jsoned = '{"request":"'+thestate+'","account":"'+account+'"}'
 
 	mysearch.close()
 	openseed.close() 
