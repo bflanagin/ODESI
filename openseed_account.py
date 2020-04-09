@@ -226,9 +226,9 @@ def create_user(username,passphrase,email):
 		mycursor.close()
 		openseed.close()
 		pfile = create_default_profile(uid,username,email)
-		return '{"token":"'+uid+'","user":"'+username+'","profile":'+pfile+'}'
+		return '{"token":"'+uid+'","username":"'+username+'","profile":'+pfile+'}'
 	else:
-		return '{"user":"exists"}'
+		return '{"username":"exists"}'
 
 
 # External users bypass the password and username section of the login, and requires a trust relationship between the providers and OpenSeed
