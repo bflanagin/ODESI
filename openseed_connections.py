@@ -242,7 +242,7 @@ def connection_request(token,requestee,response,appPub):
 			openseed.commit()
 			
 			chatroom = Chat.find_attendees(token,requestee+","+username,1,appPub)
-			output = '{"request":"accpeted","room":'+chatroom+'}'
+			output = '{"request":"accepted","room":'+chatroom+'}'
 		# disallows user from create a second request or updating their own request to others.
 		elif len(exists_1) == 1:
 			output = '{"request":"exists","to":"'+requestee+'","from":"'+username+'"}'
