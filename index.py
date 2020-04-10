@@ -137,7 +137,7 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 	if action == "get_chat":
 		print(Chat.get_chat(from_client["token"],from_client["room"],from_client["last"]))
 	if action == "send_chat":
-		print(Chat.send_chat(from_client["token"],from_client["room"],from_client["data"],app))
+		print(Chat.send_chat(from_client["token"],from_client["room"],from_client["message"],app))
 	
 	if action == "check_chat":
 		print(Chat.check_chat(from_client["token"],from_client["room"]))
