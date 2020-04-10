@@ -503,7 +503,7 @@ def get_history(account,apprange,count):
 		)
 	hist = openseed.cursor()
 	if apprange == "all":
-		search = "SELECT data,date FROM `history` WHERE account = %s AND type !=1 ORDER BY date DESC"
+		search = "SELECT data,date FROM `history` WHERE account = %s ORDER BY date DESC"
 		vals = (json.loads(id_from_user(account))["id"],)
 		hist.execute(search,vals)
 	else:
