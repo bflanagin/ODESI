@@ -23,7 +23,7 @@ def get_settings():
 	
 def save_settings(data):
 	settings_file = open("./openseed_settings.json","w")
-	settings = {"serverkey":data[0],"steemaccount":data[1],"passphrase":data[2],"dbuser":data[3],"dbpassword":data[4],"ipfsuser":data[5],"ipfspassword":data[6]}
+	settings = {"serverkey":data[0],"openseedaccount":data[1],"passphrase":data[2],"dbuser":data[3],"dbpassword":data[4],"ipfsuser":data[5],"ipfspassword":data[6]}
 	settings_file.write()
 	settings_file.close()
 
