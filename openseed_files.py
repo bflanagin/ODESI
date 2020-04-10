@@ -15,7 +15,7 @@ import openseed_music as Music
 import openseed_setup as Settings
 import json
 import time
-from bottle import route, run, template
+from bottle import route, run, template, get, post, request, static_file
 
 settings = Settings.get_settings()
 
