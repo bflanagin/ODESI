@@ -35,7 +35,7 @@ def get_hive_connections(account):
 			if er == ing:
 				blank_p = '"profile":{"openseed":{"name":"'+er+'"},"extended":{},"appdata":{},"misc":{},"imports":{}}'
 				#if connections == "":
-				connections.append('{"name":"'+er+'","linked":"1",'+blank_p+'}')
+				connections.append('{"username":"'+er+'","linked":"1",'+blank_p+'}')
 				#else:
 				#	connections +=',{"name":"'+er+'","linked":"2",'+blank_p+'}'
 
@@ -64,31 +64,34 @@ def get_openseed_connections(account,external = True):
 		for u in exists1:
 			cname = str(u[0])
 			if accounts == "":
-				accounts = '{"name":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile(str(cname)))+'}'
+				accounts = '{"username":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile(str(cname)))+'}'
 			else:
-				accounts = accounts+',{"name":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile(str(cname)))+'}'
+				accounts = accounts+',{"username":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile(str(cname)))+'}'
 
 	if len(exists2) != 0:
 		ac += len(exists2)
 		for u in exists2:
 			cname = str(u[0])
 			if accounts == "":
-				accounts = '{"name":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile(str(cname)))+'}'
+				accounts = '{"username":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile(str(cname)))+'}'
 			else:
-				accounts = accounts+',{"name":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile(str(cname)))+'}'
+				accounts = accounts+',{"username":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile(str(cname)))+'}'
 	if external == False:
 		connections = '{"connections":['+accounts.replace("'","\'")+']}'
 	else:
 		hive = get_hive_connections(account)
 		hive_connections = ""
-		for i in hive:
-			if json.loads(i)["name"] not in accounts:
-				if hive_connections == "":
-					hive_connections = i
-				else:
-					hive_connections = hive_connections+","+i
+		if len(hive) > 0:
+			for i in hive:
+				if json.loads(i)["name"] not in accounts:
+					if hive_connections == "":
+						hive_connections = i
+					else:
+						hive_connections = hive_connections+","+i
 
-		connections = '{"connections":['+accounts.replace("'","\'")+','+hive_connections.replace("'","\'")+']}' 
+			connections = '{"connections":['+accounts.replace("'","\'")+','+hive_connections.replace("'","\'")+']}'
+		else:
+			connections = '{"connections":['+accounts.replace("'","\'")+']}'
  
 	return connections
 
