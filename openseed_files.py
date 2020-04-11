@@ -3,6 +3,7 @@
 import subprocess
 import sys
 import os
+import fileinput
 sys.path.append("..")
 import mysql.connector
 import socketserver
@@ -15,7 +16,7 @@ import openseed_music as Music
 import openseed_setup as Settings
 import json
 import time
-from bottle import route, run, template, get, post, request, static_file
+from bottle import route, run, template, request
 
 settings = Settings.get_settings()
 
