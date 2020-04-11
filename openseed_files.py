@@ -19,13 +19,13 @@ from bottle import route, run, template, get, post, request, static_file
 
 settings = Settings.get_settings()
 
-@route('/img/<size>/<name>')
-@route('/upload', method='POST')
-@route('/')
+#@route('/img/<size>/<name>')
 
+@route('/')
 def index():
 	return template('<b>Hello {{name}}</b>!', name="you need to supply a command")
 
+@route('/upload', method='POST')
 def do_upload():
 	category = request.forms.get('category')
 	md5sum = request.forms.get('md5sum')
