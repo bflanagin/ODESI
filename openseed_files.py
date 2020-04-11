@@ -34,7 +34,7 @@ def do_upload():
 
 	#save_path = get_save_path_for_category(category)
 	#upload.save(save_path) # appends upload.filename automatically
-	return 'OK' 
+	return '<b>'+category+' '+upload+' OK</b>' 
 
 def get_save_path_for_category(category):
 	path = ""
