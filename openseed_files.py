@@ -28,7 +28,6 @@ def index():
 @route('/upload', method='POST')
 def do_upload():
 	category = request.forms.get('category')
-	md5sum = request.forms.get('md5sum')
 	upload = request.files.get('upload')
    
 	name, ext = os.path.splitext(upload.filename)
