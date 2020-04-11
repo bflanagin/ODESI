@@ -28,7 +28,7 @@ def index():
 @route('/upload', method='POST')
 def do_upload():
 	category = request.forms.get('category')
-	upload = request.files.get('upload')
+	upload = request.files.get('file')
    
 	name, ext = os.path.splitext(upload.filename)
 
