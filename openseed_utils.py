@@ -21,8 +21,8 @@ settings = Settings.get_settings()
 
 def sendmail(category):
 	port = 465  # For SSL
-	smtp_server = "smtp.gmail.com"
-	sender_email = "bflanagin@gmail.com"  # Enter your address
+	smtp_server = "smtp.vagueentertainment.com"
+	sender_email = "bflanagin@vagueentertainment.com"  # Enter your address
 	receiver_email = "bflanagin@openorchard.io"  # Enter receiver address
 	password = input("Type your password and press enter: ")
 	message = """\
