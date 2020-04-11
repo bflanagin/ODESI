@@ -23,8 +23,8 @@ settings = Settings.get_settings()
 @route('/upload', method='POST')
 @route('/')
 
-def index(name):
-	return template('<b>Hello {{name}}</b>!', name=name)
+def index():
+	return template('<b>You\'ll need to supply a file name or function </b>!', name=name)
 
 def do_upload():
 	category = request.forms.get('category')
