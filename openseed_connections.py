@@ -276,13 +276,13 @@ def get_requests(token,count):
 	result = mysearch.fetchall()
 	if len(result) > 0:
 		for a in result:
-			theresponse = "request"
+			theresponse = "pending"
 			if a[3] == 0:
 				theresponse = "denied"
 			if a[3] == 1:
-				theresponse = "request"
+				theresponse = "pending"
 			if a[3] == 2:
-				theresponse = "accept"
+				theresponse = "accepted"
 
 			if requests == "":
 				requests = '{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","response":"'+theresponse+'"}'
@@ -319,13 +319,13 @@ def request_status(token,account):
 		status = result1[0]
 	elif len(result2) == 1:
 		status = result2[0]
-	thestate = "request"
+	thestate = "pending"
 	if status[3] == 0:
 		thestate = "denied"
 	if status[3] == 1:
-		thestate = "request"
+		thestate = "pending"
 	if status[3] == 2:
-		thestate = "accept"
+		thestate = "accepted"
 	
 	jsoned = '{"request":"'+thestate+'","account":"'+account+'"}'
 
