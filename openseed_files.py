@@ -28,12 +28,12 @@ def index():
 @route('/upload', method='POST')
 def do_upload():
 	category = request.forms.get('category')
-	upload = request.files.get('file')
-   
-	name, ext = os.path.splitext(upload.filename)
+	upload = request.forms.get('file')
+   	
+	#name, ext = os.path.splitext(upload.filename)
 
-	save_path = get_save_path_for_category(category)
-	upload.save(save_path) # appends upload.filename automatically
+	#save_path = get_save_path_for_category(category)
+	#upload.save(save_path) # appends upload.filename automatically
 	return 'OK' 
 
 def get_save_path_for_category(category):
