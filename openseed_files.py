@@ -21,6 +21,7 @@ settings = Settings.get_settings()
 
 @route('/img/<size>/<name>')
 @route('/upload', method='POST')
+@route('/')
 
 def index(name):
 	return template('<b>Hello {{name}}</b>!', name=name)
@@ -42,12 +43,10 @@ def get_save_path_for_category(category):
 		path = "./openseed/images/source"
 	if category == "video":
 		path = "./openseed/videos/source"
-	if category == "games":
+	if category == "game":
 		path = "./openseed/games"
 	if category == "music":
 		path = "./openseed/music/source"
 		
 	
-
-
 run(host='0.0.0.0', port=8689)
