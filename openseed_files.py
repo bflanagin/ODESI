@@ -30,11 +30,11 @@ def do_upload():
 	category = request.forms.get('category')
 	upload = request.forms.get('file')
    	
-	#name, ext = os.path.splitext(upload.filename)
+	name, ext = os.path.splitext(upload.filename)
 
 	#save_path = get_save_path_for_category(category)
 	#upload.save(save_path) # appends upload.filename automatically
-	return '<b>'+category+' '+upload+' OK</b>' 
+	return '<b>'+category+' '+name+' OK</b>' 
 
 def get_save_path_for_category(category):
 	path = ""
