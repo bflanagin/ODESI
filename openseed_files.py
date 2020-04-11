@@ -39,7 +39,7 @@ def upload():
 def do_upload():
 	#category = request.forms.get('category')
 	#upload = request.files.get('file')
-   	category = request.POST['category']
+	category = request.POST['category']
 	upload = request.POST['file']
 	name, ext = os.path.splitext(upload.filename)
 
