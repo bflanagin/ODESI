@@ -39,6 +39,13 @@ def do_upload():
 def get_save_path_for_category(category):
 	path = ""
 	if category == "image":
+		path = "./openseed/images/source"
+	if category == "video":
+		path = "./openseed/videos/source"
+	if category == "games":
+		path = "./openseed/games"
+	if category == "music":
+		path = "./openseed/music/source"
 		
 	
 

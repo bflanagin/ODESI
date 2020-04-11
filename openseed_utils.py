@@ -19,11 +19,11 @@ import email, smtplib, ssl
 
 settings = Settings.get_settings()
 
-def sendmail(category):
-	port = 25  # For SSL
-	smtp_server = "smtp.vagueentertainment.com"
-	sender_email = "bflanagin@vagueentertainment.com"  # Enter your address
-	receiver_email = "bflanagin@openorchard.io"  # Enter receiver address
+def sendmail(receiver,category):
+	port = 25
+	smtp_server = "smtp.google.com"
+	sender_email = "no-reply@openorchard.io"  # Enter your address
+	receiver_email = receiver  # Enter receiver address
 	password = input("Type your password and press enter: ")
 	message = """\
 		Subject: Hi there
@@ -34,14 +34,6 @@ def sendmail(category):
 		server.starttls(context=context)
 		server.login(sender_email, password)
 		server.sendmail(sender_email, receiver_email, message)
-
-	return
-
-def upload_file(token,filename,md5sum,data):
-
-	return
-
-def send_file(token,md5sum,filename):
 
 	return
 
