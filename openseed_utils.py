@@ -15,9 +15,26 @@ import openseed_music as Music
 import openseed_setup as Settings
 import json
 import time
+import email, smtplib, ssl
 
 settings = Settings.get_settings()
 
+def sendmail(category):
+	port = 465  # For SSL
+	smtp_server = "smtp.gmail.com"
+	sender_email = "bflanagin@gmail.com"  # Enter your address
+	receiver_email = "bflanagin@openorchard.io"  # Enter receiver address
+	password = input("Type your password and press enter: ")
+	message = """\
+		Subject: Hi there
+		This message is sent from Python."""
+
+	context = ssl.create_default_context()
+	with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+		server.login(sender_email, password)
+		server.sendmail(sender_email, receiver_email, message)
+
+	return
 
 def upload_file(token,filename,md5sum,data):
 

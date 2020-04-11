@@ -19,8 +19,28 @@ from bottle import route, run, template, get, post, request, static_file
 
 settings = Settings.get_settings()
 
-@route('/hello/<name>')
+@route('/img/<size>/<name>')
+@route('/upload', method='POST')
+
 def index(name):
-    return template('<b>Hello {{name}}</b>!', name=name)
+	return template('<b>Hello {{name}}</b>!', name=name)
+
+def do_upload():
+	category = request.forms.get('category')
+	md5sum = request.forms.get('md5sum')
+	upload = request.files.get('upload')
+   
+	name, ext = os.path.splitext(upload.filename)
+
+	save_path = get_save_path_for_category(category)
+	upload.save(save_path) # appends upload.filename automatically
+	return 'OK' 
+
+def get_save_path_for_category(category):
+	path = ""
+	if category == "image":
+		
+	
+
 
 run(host='0.0.0.0', port=8689)
