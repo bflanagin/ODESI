@@ -20,7 +20,7 @@ import email, smtplib, ssl
 settings = Settings.get_settings()
 
 def sendmail(category):
-	port = 465  # For SSL
+	port = 25  # For SSL
 	smtp_server = "smtp.vagueentertainment.com"
 	sender_email = "bflanagin@vagueentertainment.com"  # Enter your address
 	receiver_email = "bflanagin@openorchard.io"  # Enter receiver address
@@ -31,6 +31,7 @@ def sendmail(category):
 
 	context = ssl.create_default_context()
 	with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+		server.starttls(context=context)
 		server.login(sender_email, password)
 		server.sendmail(sender_email, receiver_email, message)
 
