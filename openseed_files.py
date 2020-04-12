@@ -37,14 +37,14 @@ def upload():
 
 @route('/upload', method='POST')
 def do_upload():
-	category = request.forms.get('category')
-	upload = request.files.get('data')
+	cat = request.forms.get('category')
+	thefile = request.files.get('data')
 	
-	name, ext = os.path.splitext(upload.filename)
+	name, ext = os.path.splitext(thefile.filename)
 
-	save_path = get_save_path_for_category(category)
+	save_path = get_save_path_for_category(cat)
 	print(save_path)
-	print(upload.content_length)
+	print(thefile.content_length)
 	#upload.save(save_path) # appends upload.filename automatically
 	
 	return 'OK' 
