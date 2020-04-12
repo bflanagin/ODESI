@@ -93,12 +93,12 @@ def update_check(check):
 		update = "UPDATE `logins` SET data = %s WHERE username = %s"
 		result = users.fetchall()
 		for user in result:
-			status = '{"chat":"Offline"}'
+			status = '{"chat":"offline"}'
 			username = user[0]
 			lastseen = user[1]
 			currentdate = datetime.datetime.now()
 			currentstate = json.loads(user[2])
-			if currentstate["chat"] == "Online":
+			if currentstate["chat"].lower == "online":
 				val = (str(status),username,)
 				if currentdate.year > lastseen.year:
 					users.execute(update,(status,username,))

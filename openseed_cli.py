@@ -20,19 +20,20 @@ settings = Settings.get_settings()
 import json
 
 if len(sys.argv) > 1:	
-	if sys.argv[1] == "new":
+	if sys.argv[1] == "add":
 		
 		if sys.argv[2] == "creator":
 			print("Creating new Creator account\n")
 			devName = input("Creator Name: ")
 			contactName = input("Main contact name: ")
 			contactEmail = input(contactName+"'s email address: ")
-			steem = input("Steem account for the creator account: ") 
-			Account.create_developer(devName,contactName,contactEmail,steem)
+			openseed = input("OpenSeed account token for the creator account: ") 
+			result = Account.create_creator(devName,contactName,contactEmail,openseed)
+			print(result)
 			
 		elif sys.argv[2] == "app":
 			print("Creating new App account\n")
-			devID = input("Developer Public ID: ")
+			devID = input("Developer Priv ID: ")
 			appName = input("Application Name: ")
 			result = Account.create_app(devID,appName)
 			print(result)

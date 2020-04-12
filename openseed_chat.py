@@ -223,7 +223,7 @@ def find_chatroom(chatroom):
 # First narrowing the search using a user token
 # Then check provided list against 
 
-def find_attendees(token,userlist,create = 1):
+def find_attendees(token,userlist,create,appPub):
 	room = ""
 	title = ""
 	found = ""
@@ -255,7 +255,7 @@ def find_attendees(token,userlist,create = 1):
 			break
 	if found == "":
 		if int(create) == 1 and len(userlist.split(",")) == 2:
-			return create_chatroom(token,"chat",userlist)
+			return create_chatroom(token,"chat",userlist,appPub)
 	else:
 		key = Seed.get_room_key(token,found[0])
 		if key != "":

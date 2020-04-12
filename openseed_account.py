@@ -40,7 +40,7 @@ def check_db(name,db):
 
 	
 	if db == "users":
-		search = "SELECT * FROM `users` WHERE `username` LIKE '"+str(name)+"'"
+		search = "SELECT * FROM `user_tokens` WHERE `username` LIKE '"+str(name)+"'"
 	if db == "developers":
 		search = "SELECT * FROM `developers` WHERE `devName` LIKE '"+str(name)+"'"
 	if db == "applications":
@@ -148,7 +148,7 @@ def id_from_user(username):
 		database = "openseed"
 		)
 	mysearch = openseed.cursor()
-	search = "SELECT userid FROM `users` WHERE `username` = %s"
+	search = "SELECT token FROM `user_tokens` WHERE `username` = %s"
 	val = (str(username),)
 	mysearch.execute(search,val)
 	result = mysearch.fetchall()
@@ -226,18 +226,52 @@ def create_user(username,passphrase,email):
 		mycursor.close()
 		openseed.close()
 		pfile = create_default_profile(uid,username,email)
-		return '{"token":"'+uid+'","user":"'+username+'","profile":'+pfile+'}'
+		return '{"token":"'+uid+'","username":"'+username+'","profile":'+pfile+'}'
 	else:
-		return '{"user":"exists"}'
+		return '{"username":"exists"}'
 
-def external_user(username,appid):
 
+# External users bypass the password and username section of the login, and requires a trust relationship between the providers and OpenSeed
+# Steps to complete
+# 1. check user existance - done
+# 2. check appid existance - done elsewhere
+# 3. add to tokens - done
+# 4. remove temptoken from temp_data 
+
+def external_user(username,temptoken):
+	token = ""
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
 		password = settings["dbpassword"],
 		database = "openseed"
 		)
+	mycursor = openseed.cursor()
+
+	if check_db(username,"users") != 1:
+	
+		findlast = "SELECT token FROM `user_tokens` WHERE 1 LIMIT 1"
+		mycursor.execute(findlast)
+		lasttoken = mycursor.fetchall()
+		newid =""
+		if len(lasttoken) <= 0:
+			newid = Seed.crypt_key()
+		else:
+			newid = lasttoken[0][0]
+
+		utokens = "INSERT INTO `user_tokens` (`token`,`username`) VALUES (%s,%s)"
+		utoken_vals = (str(newid),str(username))
+		mycursor.execute(utokens,utoken_vals)
+		openseed.commit()
+		create_default_profile(newid,username,"")
+		token = newid
+	else:
+		token = json.loads(id_from_user(username))["id"]
+
+	return '{"token":"'+token+'","username":"'+username+'"}'	
+
+	
+		
 
 def create_default_profile(token,username,email):
 	data1 = '{"name":"'+username+'","email":"'+email+'","phone":"","profession":"","company":""}'
@@ -251,7 +285,7 @@ def create_default_profile(token,username,email):
 	return userfriendly
 
 
-def create_creator(devName,contactName,contactEmail,steem):
+def create_creator(devName,contactName,contactEmail,account_token):
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
@@ -259,16 +293,21 @@ def create_creator(devName,contactName,contactEmail,steem):
 		database = "openseed"
 		)
 	if check_db(devName,"developers") != 1:
-		devID = Seed.generate_userid(devName,contactName,contactEmail)
-		pubID = Seed.generate_publicid(devID)
+		
 		mycursor = openseed.cursor()
-		sql = "INSERT INTO `developers` (`devID`,`publicID`,`devName`,`contactName`,`contactEmail`,`steem`) VALUES (%s,%s,%s,%s,%s,%s)"
-		val = (str(devID),str(pubID),str(devName),str(contactName),str(contactEmail),str(steem)) 
-		mycursor.execute(sql,val)	
-		openseed.commit()
-		mycursor.close()
-		openseed.close()
-		return '{"devID":"'+devID+'","pubID":"'+pubID+'"}'
+		account = json.loads(user_from_id(account_token))["user"]
+		if account != "none":
+			devID = Seed.generate_id(devName,contactName,contactEmail,account)
+			pubID = Seed.generate_publicid(devID)
+			sql = "INSERT INTO `developers` (`devID`,`publicID`,`devName`,`contactName`,`contactEmail`,`steem`) VALUES (%s,%s,%s,%s,%s,%s)"
+			val = (str(devID),str(pubID),str(devName),str(contactName),str(contactEmail),str(account)) 
+			mycursor.execute(sql,val)	
+			openseed.commit()
+			mycursor.close()
+			openseed.close()
+			return '{"devID":"'+devID+'","pubID":"'+pubID+'"}'
+		else:
+			return '{"server":"no openseed user found"}'
 	else:
 		return '{"devID":"exists","pubID":"exists"}'
 	
@@ -305,9 +344,9 @@ def create_app(devID,appName):
 		password = settings["dbpassword"],
 		database = "openseed"
 		)
-	pubID = pub_from_priv(devID)
+	pubID = get_pub_from_priv(devID)
 	if check_db(appName,"applications") != 1:
-		appID = Seed.generate_userid(devID,devID+appName,appName)
+		appID = Seed.generate_id(devID,devID+appName,appName,appName+devID)
 		pubID = Seed.generate_publicid(appID)
 		mycursor = openseed.cursor()
 		sql = "INSERT INTO `applications` (`devID`,`appID`,`publicID`,`appName`) VALUES (%s,%s,%s,%s)"
@@ -348,10 +387,10 @@ def set_profile(theid,data1,data2,data3,data4,data5,thetype):
 		openseed.close() 
 		return '{"profile":"updated"}'
 
-def get_status(username):
+def get_status(account):
 	
 	dat = '{"chat":"offline"}'
-	status = '{"username":"none","date":"none","data":'+dat+'}'
+	status = '{"account":"none","date":"none","data":'+dat+'}'
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
@@ -360,12 +399,12 @@ def get_status(username):
 		)
 	user = openseed.cursor()
 	search = "SELECT * FROM logins WHERE username = %s"
-	val = (username,)
+	val = (account,)
 	user.execute(search,val)
 	result = user.fetchall()
 	if len(result) == 1:
 		dat = str(result[0][4])
-		status = '{"username":"'+str(result[0][1])+'","date":"'+str(result[0][3])+'","data":'+dat.lower()+'}'
+		status = '{"status":{"account":"'+str(result[0][1])+'","date":"'+str(result[0][3])+'","data":'+dat.lower()+'}}'
 	
 
 	user.close()
@@ -464,7 +503,7 @@ def get_history(account,apprange,count):
 		)
 	hist = openseed.cursor()
 	if apprange == "all":
-		search = "SELECT data,date FROM `history` WHERE account = %s AND type !=1 ORDER BY date DESC"
+		search = "SELECT data,date FROM `history` WHERE account = %s ORDER BY date DESC"
 		vals = (json.loads(id_from_user(account))["id"],)
 		hist.execute(search,vals)
 	else:
@@ -501,15 +540,16 @@ def update_history(account,history_type,appPub,data):
 		newdat = '{"program_stop":"'+data["program_stop"]+'"}'
 	if history_type == "3":
 		newdat = '{"playing":{"song":"'+data["playing"]["song"]+'","artist":"'+data["playing"]["artist"]+'"}}'
-		print(newdat)
 	if history_type == "4":
 		newdat = '{"purchase":"'+data["purchase"]+'"}'
 	if history_type == "5":
 		newdat = '{"download":"'+data["download"]+'"}'
 	if history_type == "6":
 		newdat = '{"linked":"'+data["linked"]+'"}'
-	if history_type == "9":
-		print(data)
+	if history_type == "7":
+		newdat = '{"highscore":"'+data["highscore"]+'"}'
+	#if history_type == "9":
+		#print(data)
 
 	hist = openseed.cursor()
 	check = "SELECT data FROM history WHERE account = %s AND data = %s"
@@ -688,7 +728,7 @@ class Steem:
 		openseed.commit()
 		mycursor.close()
 		openseed.close()
-		print("Account Verified")
+		#print("Account Verified")
 	
 	def from_posting_key(username,key,save):
 		s.wallet.unlock(user_passphrase=settings["passphrase"])

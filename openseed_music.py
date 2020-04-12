@@ -246,7 +246,6 @@ def get_genre_tracks_json(genre,count):
 	num = 0
 	for genre in result:
 		if genre:
-			print(genre[1])
 			output.append({"author":genre[0],
 					"title": genre[1],
 					"post": genre[2],

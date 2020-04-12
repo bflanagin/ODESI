@@ -72,8 +72,8 @@ def generate_userid_new(name,passphrase,email):
 
 	return mixer3
 
-def generate_id(name,account,contactname,contactemail):
-	fullstring = name+passphrase+contactemail+account+contactname
+def generate_id(name,contactname,contactemail,account):
+	fullstring = name+contactemail+account+contactname
 	count1 = 0
 	count2 = 0
 	mixer1 = ""
@@ -88,9 +88,14 @@ def generate_id(name,account,contactname,contactemail):
 	
 	hash1 = hashlib.md5(mixer1.encode())
 	hash2 = hashlib.md5(mixer2.encode())
+
+	if len(str(hash1.hexdigest())) >= len(str(hash2.hexdigest())):
+		stir = str(hash1.hexdigest())
+	else:
+		stir = str(hash2.hexdigest())
 	
 	count3 = 0	
-	while count3 < len(hash1.hexdigest()):
+	while count3 < len(stir):
 		mixer3 = mixer3+str(hash1.hexdigest()[count3])+str(hash2.hexdigest()[count3])
 		count3 += 1
 
@@ -300,14 +305,14 @@ def simp_crypt(key,raw_data):
 	digits = ""
 	#//lets turn it into integers first//
 	for t in raw_data.replace("%", ":percent:").replace("&", ":ampersand:"):
-		c = t.ord_at(0)
+		c = ord(t)
 		digits += str(c)+" "
 		
-	data = digits+str(str(" ").ord_at(0))
+	data = digits+str(ord(str(" ")))
 	while datanum < len(data):
 		keynum = 0
 		while keynum < len(key):
-			salt = int(round(randf() * 40))
+			salt = int(round(random.random() * 40))
 			if keynum < len(data) and salt % 3 == 0 and datanum < len(data):
 				if data[datanum] == key[keynum]:
 					num = keynum
@@ -364,11 +369,17 @@ def simp_decrypt(key,raw_data):
 			datanum = datanum + 1
 			
 		for c in message.split(" "):
-			if len(c) <= 4 and len(c) > 0:
-				if int(c) < 255:
-					decoded += chr(int(c))
-				else:
-					decoded = "Unable to Decrypt"
+			try:
+				int(c)
+			except: 
+				decode = "Unable to Decrypt"
+				break
+			else:
+				if len(c) <= 3 and len(c) > 0:
+					if int(c) < 255:
+						decoded += chr(int(c))
+					else:
+						decoded = "Unable to Decrypt"
 
 	return decoded.replace(":percent:","%").replace(":ampersand:","&")
 	

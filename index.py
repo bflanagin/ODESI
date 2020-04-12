@@ -58,7 +58,6 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 	app = from_client["appPub"]
 	dev = from_client["devPub"]
 	
-	
 # Account Actions
  
 	if action == "accountcheck":
@@ -85,6 +84,9 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 		print(Account.get_history(from_client["account"],from_client["apprange"],from_client["count"]))
 	if action == "update_history":
 		print(Account.update_history(from_client["account"],from_client["type"],from_client["appPub"],from_client["data"]))
+
+	if action == "web_auth":
+		print()
 
 #  Media Actions
 			
@@ -118,8 +120,7 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 		print(Music.get_tracks_json(from_client["start"],from_client["count"]))
 
 # Chat Actions
- 
-	
+ 	
 	if action == "get_status":
 		print(Account.get_status(from_client["account"]))
 	if action == "set_status":
@@ -136,7 +137,7 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 	if action == "get_chat":
 		print(Chat.get_chat(from_client["token"],from_client["room"],from_client["last"]))
 	if action == "send_chat":
-		print(Chat.send_chat(from_client["token"],from_client["room"],from_client["data"],app))
+		print(Chat.send_chat(from_client["token"],from_client["room"],from_client["message"],app))
 	
 	if action == "check_chat":
 		print(Chat.check_chat(from_client["token"],from_client["room"]))
@@ -144,7 +145,7 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
  		print(Chat.get_chat(from_client["token"],from_client["username"],from_client["chatroom"],from_client["data"]))
 
 	if action == "find_room_by_attendees":
-		print(Chat.find_attendees(from_client["token"],from_client["attendees"],from_client["create"]))
+		print(Chat.find_attendees(from_client["token"],from_client["attendees"],from_client["create"],app))
 
 # Key Actions
 
@@ -156,10 +157,10 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 
 # Connection Actions
 
-	if action == "steem_connections":
+	if action == "hive_connections":
 		print(Connections.get_steem_connections(from_client["steem"]))
 	if action == "openseed_connections":
-		print(Connections.get_openseed_connections(from_client["account"]))
+		print(Connections.get_openseed_connections(from_client["account"],from_client["hive"]))
 	if action == "profile_small":
 		print(Connections.get_account(from_client["steem"]))
 	if action == "profile":
@@ -167,7 +168,9 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 	if action == "get_profile":
 		print("{"+Connections.user_profile(from_client["account"])+"}")
 	if action == "send_request":
-		print(Connections.send_request(from_client["token"],from_client["account"],from_client["response"]))
+		print(Connections.connection_request(from_client["token"],from_client["account"],"request",app))
+	if action == "set_request":
+		print(Connections.connection_request(from_client["token"],from_client["account"],from_client["response"],app))
 	if action == "get_requests":
 		print(Connections.get_requests(from_client["token"],from_client["count"]))
 	if action == "request_status":

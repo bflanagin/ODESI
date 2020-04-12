@@ -15,19 +15,26 @@ import openseed_music as Music
 import openseed_setup as Settings
 import json
 import time
+import email, smtplib, ssl
 
 settings = Settings.get_settings()
 
+def sendmail(receiver,category):
+	port = 465
+	smtp_server = "smtp.gmail.com"
+	sender_email = "no-reply@openorchard.io"  # Enter your address
+	receiver_email = receiver  # Enter receiver address
+	password = ""
+	message = """\
+		Subject: Hi there
+		This message is sent from Python."""
 
-def upload_file(token,filename,md5sum,data):
+	context = ssl.create_default_context()
+	with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+		server.login(sender_email, password)
+		server.sendmail(sender_email, receiver_email, message)
 
 	return
-
-def send_file(token,md5sum,filename):
-
-	return
-
-
 
 def oggify_and_share(thehash):
 	openseed = mysql.connector.connect(
@@ -59,7 +66,7 @@ def oggify_and_share(thehash):
 	openseed.commit()
 	openseed.close()
 
-def get_image(source,source_type,size):
+def get_image(direct,source,source_type,size):
 	image_url = "No_Image_found"
 	openseed = mysql.connector.connect(
 		host = "localhost",
@@ -108,7 +115,10 @@ def get_image(source,source_type,size):
 			
 	openseed.close()
 
-	return image_url
+	if direct == True:
+		return result[0][1]
+	else:
+		return image_url
 
 def png_and_pin(url):
 	png_returns = -1
@@ -126,46 +136,53 @@ def png_and_pin(url):
 	result = image.fetchall()
 	
 	if len(result) <= 0:
-		get = subprocess.Popen(['wget','-T 3','-t 1','-P',baseDIR+"/source",'-nc',url],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-		get.wait()
-		stdout, stderr = get.communicate()
-		if str(stderr).find("Connection timed out") == -1:
+		if data_check(baseDIR+"/source",url) == False:
+			get = subprocess.Popen(['wget','-T 3','-t 1','-P',baseDIR+"/source",'-nc',url],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+			get.wait()
+			stdout, stderr = get.communicate()
+			if str(stderr).find("Connection timed out") == -1:
+				source = url
+				title = url.split("/")[-1]
+				source_hash = to_ipfs(baseDIR+"/source/"+title)
+				checkfile = subprocess.Popen(['file',baseDIR+"/source/"+title],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+				checkfile.wait()
+				stdout, stderr = checkfile.communicate()
+		else:
 			source = url
-			title = url.split("/")[-1]
-			source_hash = to_ipfs(baseDIR+"/source/"+title)
-			checkfile = subprocess.Popen(['file',baseDIR+"/source/"+title],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+			title = url
+			source_hash = to_ipfs(baseDIR+"/source/"+url)
+			checkfile = subprocess.Popen(['file',baseDIR+"/source/"+url],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 			checkfile.wait()
 			stdout, stderr = checkfile.communicate()
-			if str(stdout).find("GIF") == -1:
-				original = subprocess.Popen(['convert',baseDIR+"/source/"+title,baseDIR+"/original/"+title+'.png'])
+
+			if source_hash != "" and str(stdout).find("GIF") == -1:
+				original = subprocess.Popen(['convert',baseDIR+"/source/"+title,baseDIR+"/original/"+source_hash+'.png'])
 				original.wait()
-				original_hash = to_ipfs(baseDIR+"/original/"+title+'.png')
+				original_hash = to_ipfs(baseDIR+"/original/"+source_hash+'.png')
 
-				high = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '4096x4096',baseDIR+"/high/"+title+'.png'])
+				high = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '4096x4096',baseDIR+"/high/"+source_hash+'.png'])
 				high.wait()
-				high_hash = to_ipfs(baseDIR+"/high/"+title+'.png')
+				high_hash = to_ipfs(baseDIR+"/high/"+source_hash+'.png')
 
-				medium = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '2048x2048',baseDIR+"/medium/"+title+'.png'])
+				medium = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '2048x2048',baseDIR+"/medium/"+source_hash+'.png'])
 				medium.wait()
-				medium_hash = to_ipfs(baseDIR+"/original/"+title+'.png')
+				medium_hash = to_ipfs(baseDIR+"/original/"+source_hash+'.png')
 
-				low = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '1024x1024',baseDIR+"/low/"+title+'.png'])
+				low = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '1024x1024',baseDIR+"/low/"+source_hash+'.png'])
 				low.wait()
-				low_hash = to_ipfs(baseDIR+"/low/"+title+'.png')
+				low_hash = to_ipfs(baseDIR+"/low/"+source_hash+'.png')
 
-				thumbnail = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '128x128',baseDIR+"/thumbnail/"+title+'.png'])
+				thumbnail = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '128x128',baseDIR+"/thumbnail/"+source_hash+'.png'])
 				thumbnail.wait()
-				thumbnail_hash = to_ipfs(baseDIR+"/thumbnail/"+title+'.png')
+				thumbnail_hash = to_ipfs(baseDIR+"/thumbnail/"+source_hash+'.png')
 
 				insert = "INSERT INTO `images` (`ipfs`,`source`,`title`,`thumbnail`,`low`,`medium`,`high`,`original`,`version`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,1)"
 				data =  (source_hash,url,title,thumbnail_hash,low_hash,medium_hash,high_hash,original_hash,)
 				image.execute(insert,data)
 		
-				png_returns = [source_hash,url,title,thumbnail_hash,low_hash,medium_hash,high_hash,original_hash]
+				png_returns = '{"image":{"source":"'+source_hash+'","url":"'+url+'","title":"'+title+'","thumbnail":"'+thumbnail_hash+'","low":"'+low_hash+'","medium":"'+medium_hash+'","high":"'+high_hash+'","original":"'+original_hash+'"}}'
 			else:
 				png_returns = -1
-		else:
-			png_returns = 0
 	else:
 		png_returns = 1
 		
@@ -179,10 +196,17 @@ def to_ipfs(data):
 	add_to_ipfs = subprocess.Popen(['ipfs', 'add' , data],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 	add_to_ipfs.wait()
 	stdout, stderr = add_to_ipfs.communicate()
-	return str(stdout).split(" ")[1]
+	if len(str(stdout).split(" ")) > 1: 
+		return str(stdout).split(" ")[1]
+	else:
+		return ""
 
-#def data_check(data):
-#	if data.search("{") and data.search("}"):
+def data_check(path,filename):
+	dirlist = os.listdir(path)
+	if filename in dirlist:
+		return True
+	else: 
+		return False
 
 # The tasks for this function are as follows
 # 1. Find user in user database
@@ -282,7 +306,7 @@ def password_reset(emailaddress,username,passphrase):
 	search = "SELECT userid FROM `users` WHERE email =%s AND username = %s"
 	val = (emailaddress,username)
 	u.execute(search,val)
-	result = image.fetchall()
+	result = u.fetchall()
 
 	if len(result) == 1:
 		newcode = Seed.generate_userid_new(name,passphrase,email)
@@ -302,3 +326,34 @@ def password_reset(emailaddress,username,passphrase):
 	openseed.close()
 
 
+def keytest(message):
+	key = Seed.crypt_key()
+	key2 = Seed.crypt_key()
+	encrypted = Seed.simp_crypt(key,message)
+	print("sample using supplied key: "+Seed.simp_decrypt(key,encrypted))
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+	)
+	u = openseed.cursor()
+	search = "SELECT code FROM `onetime` WHERE 1"
+	u.execute(search)
+	result = u.fetchall()
+	print("attempts using existing keys: blanks are good")
+	for test in result:
+		decrypted = Seed.simp_decrypt(test[0],encrypted)
+		print("attempt: "+decrypted)
+		if decrypted == message:
+			print("success - which is bad")
+			break
+	print("test with random values")
+	while 1:
+		decrypted = Seed.simp_decrypt(Seed.crypt_key(),encrypted)
+		if decrypted == message:
+			print("success - which is bad")
+			break
+
+	
+	
