@@ -34,7 +34,8 @@ def do_upload():
 	appPub = request.forms.get('appPub')
 	cat = request.forms.get('category')
 	thefile = request.files.get('data')
-	if devPub and appPub:
+
+	if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 		name, ext = os.path.splitext(thefile.filename)
 		save_path = get_save_path_for_category(cat)
 		thefile.save(save_path) # appends upload.filename automatically
