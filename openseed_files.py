@@ -23,8 +23,7 @@ settings = Settings.get_settings()
 @route('/img/<size>/<title>')
 def send_image(size,title):
 	url = Utils.get_image(True,title,"url",size)
-	print(url)
-	return static_file(url, root='openseed/images/'+size+'/', mimetype='image/png')
+	return static_file(url+'.png', root='openseed/images/'+size+'/', mimetype='image/png')
 
 @route('/')
 def index():
