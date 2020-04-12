@@ -43,20 +43,22 @@ def do_upload():
 	name, ext = os.path.splitext(upload.filename)
 
 	save_path = get_save_path_for_category(category)
-	upload.save(save_path) # appends upload.filename automatically
+	print(save_path)
+	print(upload.content_length)
+	#upload.save(save_path) # appends upload.filename automatically
 	
 	return 'OK' 
 
 def get_save_path_for_category(category):
 	path = ""
 	if category == "image":
-		path = "./openseed/images/source"
+		path = "openseed/images/source"
 	if category == "video":
-		path = "./openseed/videos/source"
+		path = "openseed/videos/source"
 	if category == "game":
-		path = "./openseed/games"
+		path = "openseed/games"
 	if category == "music":
-		path = "./openseed/music/source"
+		path = "openseed/music/source"
 		
 	
 run(host='0.0.0.0', port=8689)
