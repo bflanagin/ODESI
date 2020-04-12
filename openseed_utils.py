@@ -67,7 +67,7 @@ def oggify_and_share(thehash):
 	openseed.commit()
 	openseed.close()
 
-def get_image(direct = True,source,source_type,size):
+def get_image(direct,source,source_type,size):
 	image_url = "No_Image_found"
 	openseed = mysql.connector.connect(
 		host = "localhost",
