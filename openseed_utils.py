@@ -67,7 +67,7 @@ def oggify_and_share(thehash):
 	openseed.commit()
 	openseed.close()
 
-def get_image(source,source_type,size):
+def get_image(direct = True,source,source_type,size):
 	image_url = "No_Image_found"
 	openseed = mysql.connector.connect(
 		host = "localhost",
@@ -116,7 +116,10 @@ def get_image(source,source_type,size):
 			
 	openseed.close()
 
-	return image_url
+	if direct == True:
+		return result[0][7]
+	else:
+		return image_url
 
 def png_and_pin(url):
 	png_returns = -1
@@ -154,25 +157,25 @@ def png_and_pin(url):
 			stdout, stderr = checkfile.communicate()
 
 			if source_hash != "" and str(stdout).find("GIF") == -1:
-				original = subprocess.Popen(['convert',baseDIR+"/source/"+title,baseDIR+"/original/"+title+'.png'])
+				original = subprocess.Popen(['convert',baseDIR+"/source/"+title,baseDIR+"/original/"+source_hash+'.png'])
 				original.wait()
 				original_hash = to_ipfs(baseDIR+"/original/"+title+'.png')
 
-				high = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '4096x4096',baseDIR+"/high/"+title+'.png'])
+				high = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '4096x4096',baseDIR+"/high/"+source_hash+'.png'])
 				high.wait()
 				high_hash = to_ipfs(baseDIR+"/high/"+title+'.png')
 
-				medium = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '2048x2048',baseDIR+"/medium/"+title+'.png'])
+				medium = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '2048x2048',baseDIR+"/medium/"+source_hash+'.png'])
 				medium.wait()
 				medium_hash = to_ipfs(baseDIR+"/original/"+title+'.png')
 
-				low = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '1024x1024',baseDIR+"/low/"+title+'.png'])
+				low = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '1024x1024',baseDIR+"/low/"+source_hash+'.png'])
 				low.wait()
 				low_hash = to_ipfs(baseDIR+"/low/"+title+'.png')
 
-				thumbnail = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '128x128',baseDIR+"/thumbnail/"+title+'.png'])
+				thumbnail = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '128x128',baseDIR+"/thumbnail/"+source_hash+'.png'])
 				thumbnail.wait()
-				thumbnail_hash = to_ipfs(baseDIR+"/thumbnail/"+title+'.png')
+				thumbnail_hash = to_ipfs(baseDIR+"/thumbnail/"+source_hash+'.png')
 
 				insert = "INSERT INTO `images` (`ipfs`,`source`,`title`,`thumbnail`,`low`,`medium`,`high`,`original`,`version`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,1)"
 				data =  (source_hash,url,title,thumbnail_hash,low_hash,medium_hash,high_hash,original_hash,)
