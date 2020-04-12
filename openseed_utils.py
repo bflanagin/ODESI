@@ -181,8 +181,7 @@ def png_and_pin(url):
 				data =  (source_hash,url,title,thumbnail_hash,low_hash,medium_hash,high_hash,original_hash,)
 				image.execute(insert,data)
 		
-				png_returns = '{"image":{"source":"'+source_hash+'","url":"'+url+'","title":"'+title+'","thumbnail":"' 
-						+thumbnail_hash+'","low":"'+low_hash+'","medium":"'+medium_hash+'","high":"'+high_hash+'","original":"'+original_hash+'"}}'
+				png_returns = '{"image":{"source":"'+source_hash+'","url":"'+url+'","title":"'+title+'","thumbnail":"'+thumbnail_hash+'","low":"'+low_hash+'","medium":"'+medium_hash+'","high":"'+high_hash+'","original":"'+original_hash+'"}}'
 			else:
 				png_returns = -1
 	else:
