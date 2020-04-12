@@ -22,9 +22,9 @@ settings = Settings.get_settings()
 def sendmail(receiver,category):
 	port = 465
 	smtp_server = "smtp.gmail.com"
-	sender_email = "bflanagin@openorchard.io"  # Enter your address
+	sender_email = "no-reply@openorchard.io"  # Enter your address
 	receiver_email = receiver  # Enter receiver address
-	password = "hiscdyolnqgevhxs"
+	password = ""
 	message = """\
 		Subject: Hi there
 		This message is sent from Python."""
