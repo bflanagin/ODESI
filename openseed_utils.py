@@ -29,7 +29,7 @@ def sendmail(receiver,category):
 	msg = email.message.EmailMessage()
 	msg['Subject'] = "Verify your OpenSeed Account"
 	msg['From'] = 'no-reply@openorchard.io'
-	msg['To'] = reciever
+	msg['To'] = receiver
 	message = """\
 		Subject: Hi there
 		This message is sent from Python."""
