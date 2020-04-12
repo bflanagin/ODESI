@@ -8,6 +8,7 @@ import mysql.connector
 import socketserver
 import openseed_account as Account
 import openseed_seedgenerator as Seed
+import openseed_utils as Utils
 #import steem_get as Get
 #import steem_submit as Submit
 #import leaderboard as LeaderBoard
@@ -39,6 +40,7 @@ def do_upload():
 		name, ext = os.path.splitext(thefile.filename)
 		save_path = get_save_path_for_category(cat)
 		thefile.save(save_path) # appends upload.filename automatically
+		Utils.png_and_pin(thefile.filename)
 		return 'OK' 
 	else:
 		return 'error'

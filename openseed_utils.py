@@ -134,12 +134,18 @@ def png_and_pin(url):
 	result = image.fetchall()
 	
 	if len(result) <= 0:
-		get = subprocess.Popen(['wget','-T 3','-t 1','-P',baseDIR+"/source",'-nc',url],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-		get.wait()
-		stdout, stderr = get.communicate()
-		if str(stderr).find("Connection timed out") == -1:
-			source = url
-			title = url.split("/")[-1]
+		if data_check(baseDIR+"/source",url) == False:
+			get = subprocess.Popen(['wget','-T 3','-t 1','-P',baseDIR+"/source",'-nc',url],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+			get.wait()
+			stdout, stderr = get.communicate()
+			if str(stderr).find("Connection timed out") == -1:
+				source = url
+				title = url.split("/")[-1]
+				source_hash = to_ipfs(baseDIR+"/source/"+title)
+				checkfile = subprocess.Popen(['file',baseDIR+"/source/"+title],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+				checkfile.wait()
+				stdout, stderr = checkfile.communicate()
+		else:
 			source_hash = to_ipfs(baseDIR+"/source/"+title)
 			checkfile = subprocess.Popen(['file',baseDIR+"/source/"+title],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 			checkfile.wait()
@@ -193,8 +199,12 @@ def to_ipfs(data):
 	else:
 		return ""
 
-#def data_check(data):
-#	if data.search("{") and data.search("}"):
+def data_check(path,filename):
+	dirlist = os.listdir(path)
+	if filename in dirlist:
+		return True
+	else: 
+		return False
 
 # The tasks for this function are as follows
 # 1. Find user in user database
