@@ -146,8 +146,8 @@ def png_and_pin(url):
 				checkfile.wait()
 				stdout, stderr = checkfile.communicate()
 		else:
-			source_hash = to_ipfs(baseDIR+"/source/"+title)
-			checkfile = subprocess.Popen(['file',baseDIR+"/source/"+title],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+			source_hash = to_ipfs(baseDIR+"/source/"+url)
+			checkfile = subprocess.Popen(['file',baseDIR+"/source/"+url],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 			checkfile.wait()
 			stdout, stderr = checkfile.communicate()
 
