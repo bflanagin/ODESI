@@ -20,7 +20,7 @@ import email, smtplib, ssl
 settings = Settings.get_settings()
 
 def sendmail(receiver,category):
-	port = 25
+	port = 465
 	smtp_server = "smtp.google.com"
 	sender_email = "no-reply@openorchard.io"  # Enter your address
 	receiver_email = receiver  # Enter receiver address
@@ -181,7 +181,8 @@ def png_and_pin(url):
 				data =  (source_hash,url,title,thumbnail_hash,low_hash,medium_hash,high_hash,original_hash,)
 				image.execute(insert,data)
 		
-				png_returns = str([source_hash,url,title,thumbnail_hash,low_hash,medium_hash,high_hash,original_hash])
+				png_returns = '{"image":{"source":"'+source_hash+'","url":"'+url+'","title":"'+title+'","thumbnail":"' 
+						+thumbnail_hash+'","low":"'+low_hash+'","medium":"'+medium_hash+'","high":"'+high_hash+'","original":"'+original_hash+'"}}'
 			else:
 				png_returns = -1
 	else:
