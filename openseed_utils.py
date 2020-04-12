@@ -21,7 +21,7 @@ settings = Settings.get_settings()
 
 def sendmail(receiver,category):
 	port = 465
-	smtp_server = "smtp.google.com"
+	smtp_server = "smtp.gmail.com"
 	sender_email = "no-reply@openorchard.io"  # Enter your address
 	receiver_email = receiver  # Enter receiver address
 	password = input("Type your password and press enter: ")
