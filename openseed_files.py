@@ -19,36 +19,30 @@ from bottle import route, run, template, request
 
 settings = Settings.get_settings()
 
-#@route('/img/<size>/<name>')
+@route('/img/<size>/<name>')
+def display_image():
+	return
 
 @route('/')
 def index():
 	return template('<b>Hello {{name}}</b>!', name="you need to supply a command")
 
-@route('/upload')
-def upload():
-	return '''
-		<form action="/upload" method="post" enctype="multipart/form-data">
- 		Category:      <input type="text" name="category" />
-  		Select a file: <input type="file" name="file" />
-  		<input type="submit" value="Start upload" />
-		</form>
-	'''
 
 @route('/upload', method='POST')
 def do_upload():
+	devPub = request.forms.get('devPub')
+	appPub = request.forms.get('appPub')
 	cat = request.forms.get('category')
 	thefile = request.files.get('data')
+	if devPub and appPub:
+		name, ext = os.path.splitext(thefile.filename)
+		save_path = get_save_path_for_category(cat)
+		thefile.save(save_path) # appends upload.filename automatically
+		return 'OK' 
+	else:
+		return 'error'
 	
-	name, ext = os.path.splitext(thefile.filename)
-
-	save_path = get_save_path_for_category(cat)
-	print(thefile.filename)
-	print(save_path)
-	print(thefile.content_type)
-	thefile.save(save_path) # appends upload.filename automatically
 	
-	return 'OK' 
 
 def get_save_path_for_category(category):
 	path = ""
