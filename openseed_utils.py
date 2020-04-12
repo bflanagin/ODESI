@@ -17,6 +17,7 @@ import json
 import time
 import email, smtplib, ssl
 
+
 settings = Settings.get_settings()
 
 def sendmail(receiver,category):
@@ -25,14 +26,20 @@ def sendmail(receiver,category):
 	sender_email = "bflanagin@openorchard.io"  # Enter your address
 	receiver_email = receiver  # Enter receiver address
 	password = settings["emailpassword"]
+	msg = email.message.EmailMessage()
+	msg['Subject'] = "Verify your OpenSeed Account"
+	msg['From'] = 'no-reply@openorchard.io'
+	msg['To'] = reciever
 	message = """\
 		Subject: Hi there
 		This message is sent from Python."""
-
+	msg.set_content(message)
+	
 	context = ssl.create_default_context()
 	with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
 		server.login(sender_email, password)
-		server.sendmail(sender_email, receiver_email, message)
+		server.send_message(msg)
+		server.quit()
 
 	return
 
