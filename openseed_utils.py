@@ -23,16 +23,24 @@ settings = Settings.get_settings()
 def sendmail(receiver,category):
 	port = 465
 	smtp_server = "smtp.gmail.com"
-	sender_email = "no-reply@openorchard.io"  # Enter your address
+	sender_email = "bflanagin@openorchard.io"  # Enter your address
 	receiver_email = receiver  # Enter receiver address
 	password = settings["emailpassword"]
 	msg = email.message.EmailMessage()
 	msg['Subject'] = "Verify your OpenSeed Account"
 	msg['From'] = 'no-reply@openorchard.io'
 	msg['To'] = receiver
-	message = """\
-		Subject: Hi there
-		This message is sent from Python."""
+	message = """
+		<html>
+  		<head></head>
+  		<body>
+    		<p>Welcome to OpenSeed</p>
+    		<p> Please copy and paste the code below to finish registration
+			<b>code</b>
+    		</p>
+  		</body>
+		</html>
+		"""
 	msg.set_content(message)
 	
 	context = ssl.create_default_context()
