@@ -46,7 +46,7 @@ def do_upload():
 	print(thefile.filename)
 	print(save_path)
 	print(thefile.content_type)
-	#upload.save(save_path) # appends upload.filename automatically
+	thefile.save(save_path) # appends upload.filename automatically
 	
 	return 'OK' 
 
