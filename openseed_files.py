@@ -40,11 +40,11 @@ def do_upload():
 	category = request.forms.get('category')
 	upload = request.files.get('data')
 	
-	#name, ext = os.path.splitext(upload.filename)
+	name, ext = os.path.splitext(upload.filename)
 
 	#save_path = get_save_path_for_category(category)
 	#upload.save(save_path) # appends upload.filename automatically
-	print(upload.content_type)
+	print(name)
 	
 	return 'OK' 
 
