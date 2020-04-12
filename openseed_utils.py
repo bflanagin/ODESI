@@ -159,19 +159,19 @@ def png_and_pin(url):
 			if source_hash != "" and str(stdout).find("GIF") == -1:
 				original = subprocess.Popen(['convert',baseDIR+"/source/"+title,baseDIR+"/original/"+source_hash+'.png'])
 				original.wait()
-				original_hash = to_ipfs(baseDIR+"/original/"+title+'.png')
+				original_hash = to_ipfs(baseDIR+"/original/"+source_hash+'.png')
 
 				high = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '4096x4096',baseDIR+"/high/"+source_hash+'.png'])
 				high.wait()
-				high_hash = to_ipfs(baseDIR+"/high/"+title+'.png')
+				high_hash = to_ipfs(baseDIR+"/high/"+source_hash+'.png')
 
 				medium = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '2048x2048',baseDIR+"/medium/"+source_hash+'.png'])
 				medium.wait()
-				medium_hash = to_ipfs(baseDIR+"/original/"+title+'.png')
+				medium_hash = to_ipfs(baseDIR+"/original/"+source_hash+'.png')
 
 				low = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '1024x1024',baseDIR+"/low/"+source_hash+'.png'])
 				low.wait()
-				low_hash = to_ipfs(baseDIR+"/low/"+title+'.png')
+				low_hash = to_ipfs(baseDIR+"/low/"+source_hash+'.png')
 
 				thumbnail = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '128x128',baseDIR+"/thumbnail/"+source_hash+'.png'])
 				thumbnail.wait()
