@@ -24,7 +24,7 @@ def sendmail(receiver,category):
 	smtp_server = "smtp.gmail.com"
 	sender_email = "no-reply@openorchard.io"  # Enter your address
 	receiver_email = receiver  # Enter receiver address
-	password = ""
+	password = settings.emailpassword
 	message = """\
 		Subject: Hi there
 		This message is sent from Python."""
