@@ -41,7 +41,7 @@ def sendmail(receiver,category):
   		</body>
 		</html>
 		"""
-	msg.set_content(message)
+	msg.set_content(message,subtype='html')
 	
 	context = ssl.create_default_context()
 	with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
