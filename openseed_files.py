@@ -16,13 +16,15 @@ import openseed_music as Music
 import openseed_setup as Settings
 import json
 import time
-from bottle import route, run, template, request
+from bottle import route, run, template, request, static_file
 
 settings = Settings.get_settings()
 
-@route('/img/<size>/<name>')
-def display_image():
-	return
+@route('/img/<size>/<title>')
+def send_image(size,title):
+	print(size)
+	print(title)
+    #return static_file(title, root='/path/to/image/files', mimetype='image/png')
 
 @route('/')
 def index():
@@ -45,8 +47,6 @@ def do_upload():
 	else:
 		return 'error'
 	
-	
-
 def get_save_path_for_category(category):
 	path = ""
 	if category == "image":
