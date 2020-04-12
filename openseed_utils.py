@@ -117,7 +117,7 @@ def get_image(direct,source,source_type,size):
 	openseed.close()
 
 	if direct == True:
-		return result[0][7]
+		return result[0][0]
 	else:
 		return image_url
 
