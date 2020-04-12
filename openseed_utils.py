@@ -179,8 +179,6 @@ def png_and_pin(url):
 				png_returns = [source_hash,url,title,thumbnail_hash,low_hash,medium_hash,high_hash,original_hash]
 			else:
 				png_returns = -1
-		else:
-			png_returns = 0
 	else:
 		png_returns = 1
 		
