@@ -8,7 +8,7 @@ import mysql.connector
 import socketserver
 import openseed_account as Account
 import hive_get as Get
-import hive_submit as Submit
+#import hive_submit as Submit
 import openseed_music as Music
 import json
 
@@ -42,7 +42,7 @@ def pin_and_record(ipfs,author,title,post,img,songtype,genre,songtags,duration):
 		mycursor = openseed.cursor() 
 		print(title)
 		time.sleep(3)
-		Submit.like_post(author,post) 
+		#Submit.like_post(author,post) 
 		sql = "INSERT INTO `audio` (`ipfs`,`author`,`title`,`post`,`img`,`type`,`genre`,`tags`,`duration`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
 		values = (str(ipfs),str(author),str(title),str(post),str(img),str(songtype),str(genre),str(songtags),str(duration))
 		mycursor.execute(sql,values)
