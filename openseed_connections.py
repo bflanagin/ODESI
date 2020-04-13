@@ -59,7 +59,7 @@ def get_hive_connections(account):
 
 def get_account(account):
  profile = '{"profile":"Not found"}'
- full_account = s.get_account(account)
+ full_account = h.get_account(account)
  if full_account:
   profile = full_account["json_metadata"]
  return(profile)
