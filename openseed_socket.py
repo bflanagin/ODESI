@@ -182,7 +182,7 @@ class TCPHandler(socketserver.BaseRequestHandler):
 
 			# Utils #
 				elif action =="get_image":
-					response = Utils.get_image(from_client["image"],from_client["thetype"],from_client["size"])
+					response = Utils.get_image(False,from_client["image"],from_client["thetype"],from_client["size"])
 				
 			else:
 				response = "App rejected"
