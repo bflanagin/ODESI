@@ -114,7 +114,7 @@ def get_openseed_connections(account,external = True):
 					connections = '{"connections":['+accounts.replace("'","\'")+','+hive_connections.replace("'","\'")+']}'
 		else:
 			connections = '{"connections":['+accounts.replace("'","\'")+']}'
- 	try:
+	try:
 		json.loads(connections)
 	except:
 		return '{"connections":"error"}'
