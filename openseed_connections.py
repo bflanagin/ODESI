@@ -40,6 +40,7 @@ def get_hive_connections(account):
 					theAbout = ""
 					theProfileImg = ""
 					theBannerImg = ""
+					print(hiveaccount)
 					if "name" in hiveaccount["profile"]:
 						theName = hiveaccount["profile"]["name"]
 					if "about" in hiveaccount["profile"]:
