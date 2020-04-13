@@ -27,10 +27,11 @@ def sendmail(receiver,category):
 	receiver_email = receiver  # Enter receiver address
 	password = settings["emailpassword"]
 	msg = email.message.EmailMessage()
-	msg['Subject'] = "Verify your OpenSeed Account"
+	mess = email_cat(category)
+	msg['Subject'] = mess[0]
 	msg['From'] = 'no-reply@openorchard.io'
 	msg['To'] = receiver
-	message = email_cat(category)
+	message = mess[1]
 	msg.set_content(message,subtype='html')
 	
 	context = ssl.create_default_context()
@@ -43,6 +44,7 @@ def sendmail(receiver,category):
 
 def email_cat(cat):
 	middle = ""
+	subject = ""
 	begins = """
 		<html>
   		<head></head>
@@ -54,12 +56,14 @@ def email_cat(cat):
 		"""
 
 	if cat == "userreg":
+		title = "Verify your OpenSeed User Account"
 		middle = """
 			<p> Welcome to OpenSeed!</p>
 			<p> To finish your registration you can input the code below into the application that requested it.</p> 
 			<p> <b> code </b> </p>
 			<p> or click on the link to finish registration through the web.</p> """
 	if cat == "devreg":
+		title = "Verify your OpenSeed Developer Account"
 		middle = """
 			<p> Welcome brave Developer</p>
 			<p> Please input the code below into the application that requested it.</p> 
@@ -67,6 +71,7 @@ def email_cat(cat):
 			<p> or click on this link (link) to finish registration.</p>
 			<p> A second email will arrive with your private and public keys, keep them secret, keep them safe. """
 	if cat == "devkeymessage":
+		title = "Dev keys for your OpenSeed Developer Account"
 		middle = """
 			<p> Keys for developername </p>
 			<p> These keys will be used for various tasks within openseed. It is important you keep them safe.</p> 
@@ -74,13 +79,14 @@ def email_cat(cat):
 			<p> <b> public key </b> </p>
 			 """
 	if cat == "appkeymessage":
+		title = "App Keys for Application"
 		middle = """
 			<p> Keys for application </p>
 			<p> Your application is registerd and below are the keys needed to access OpenSeed! </p> 
 			<p> <b> private key </b> </p>
 			<p> <b> public key </b> </p>
 			 """
-	return begins+middle+ends
+	return [title,begins+middle+ends]
 
 def oggify_and_share(thehash):
 	openseed = mysql.connector.connect(
