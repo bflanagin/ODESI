@@ -72,14 +72,14 @@ class TCPHandler(socketserver.BaseRequestHandler):
 
 			#####################################################
 			#
-			#  Steem Section
+			#  Hive Section
 			#
 			#####################################################
 
 				elif action == "payment":
-					response = Submit.payment(from_client["steemaccount"],from_client["to"],from_client["amount"],from_client["for"],from_client["postingkey"])
+					response = Submit.payment(from_client["hiveaccount"],from_client["to"],from_client["amount"],from_client["for"],from_client["postingkey"])
 				elif action == "flush":
-					response = Submit.flush(from_client["steemaccount"])
+					response = Submit.flush(from_client["hiveaccount"])
 				elif action == "verify":
 					response = Account.Steem.verify(from_client["username"],from_client["onetime"])
 

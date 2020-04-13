@@ -238,7 +238,7 @@ def create_user(username,passphrase,email):
 # 3. add to tokens - done
 # 4. remove temptoken from temp_data 
 
-def external_user(username,temptoken):
+def external_user(username,temptoken,network):
 	token = ""
 	openseed = mysql.connector.connect(
 		host = "localhost",

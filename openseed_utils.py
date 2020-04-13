@@ -8,9 +8,9 @@ import mysql.connector
 import socketserver
 import openseed_account as Account
 import openseed_seedgenerator as Seed
-#import steem_get as Get
-#import steem_submit as Submit
-#import leaderboard as LeaderBoard
+import hive_get as Get
+#import hive_submit as Submit
+import openseed_game as Game
 import openseed_music as Music
 import openseed_setup as Settings
 import json
@@ -168,7 +168,10 @@ def get_image(direct,source,source_type,size):
 	openseed.close()
 
 	if direct == True:
-		return result[0][1]
+		if len(result) == 1:
+			return result[0][1]
+		else:
+			return image_url
 	else:
 		return image_url
 
@@ -407,5 +410,13 @@ def keytest(message):
 			print("success - which is bad")
 			break
 
+
+def import_hive_profile(token,username):
 	
-	
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+	)
+

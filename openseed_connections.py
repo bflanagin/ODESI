@@ -11,6 +11,7 @@ from hive import hive
 import openseed_account as Account
 import openseed_setup as Settings
 import openseed_chat as Chat
+import hive_get as HiveGet
 
 settings = Settings.get_settings()
 
@@ -33,7 +34,10 @@ def get_hive_connections(account):
 	for er in follows:
 		for ing in watching:
 			if er == ing:
-				blank_p = '"profile":{"openseed":{"name":"'+er+'"},"extended":{},"appdata":{},"misc":{},"imports":{}}'
+				hiveaccount = HiveGet.get_account(er)["profile"]
+				data1 = '{"name":"'+hiveaccount["name"]+'","email":"'+email+'","phone":"","profession":"","company":""}'
+				data2 = '{"about":"'+hiveaccount["about"]+'","profile_img":"'+hiveaccount["profile_image"]+'","banner":"'+hiveaccount["cover_image"]+'"}'
+				blank_p = '"profile":{"openseed":'+data1+',"extended":'+data2+',"appdata":{},"misc":{},"imports":{}}'
 				#if connections == "":
 				connections.append('{"username":"'+er+'","linked":"1",'+blank_p+'}')
 				#else:
