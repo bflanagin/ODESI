@@ -40,7 +40,7 @@ def get_hive_connections(account):
 					theAbout = ""
 					theProfileImg = ""
 					theBannerImg = ""
-					print(hiveaccount)
+					
 					if "name" in hiveaccount["profile"]:
 						theName = hiveaccount["profile"]["name"]
 					if "about" in hiveaccount["profile"]:
@@ -59,11 +59,11 @@ def get_hive_connections(account):
 	return(connections)
 
 def get_account(account):
- profile = '{"profile":"Not found"}'
- full_account = h.get_account(account)
- if full_account:
-  profile = full_account["json_metadata"]
- return(profile)
+	profile = '{"profile":"Not found"}'
+	full_account = h.get_account(account)
+	if full_account:
+		profile = full_account["json_metadata"]
+	return(profile)
 
 def get_openseed_connections(account,external = True):
 	connections = '{"connections":"none"}'
