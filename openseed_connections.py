@@ -34,21 +34,20 @@ def get_hive_connections(account):
 	for er in follows:
 		for ing in watching:
 			if er == ing:
-				hiveaccount = h.get_account(er)["json_metadata"]
+				hiveaccount = get_account(er)
 				if "profile" in hiveaccount:
 					theName = er
 					theAbout = ""
 					theProfileImg = ""
 					theBannerImg = ""
-					hva = json.loads(hiveaccount["profile"])
-					if "name" in hva["profile"]:
-						theName = hva["profile"]["name"]
-					if "about" in hva["profile"]:
-						theAbout = hva["profile"]["about"]
-					if "profile_image" in hva["profile"]:
-						theProfileImg = hva["profile"]["profile_image"]
-					if "cover_image" in hva["profile"]:
-						theBannerImg = hva["profile"]["cover_image"]
+					if "name" in hiveaccount["profile"]:
+						theName = hiveaccount["profile"]["name"]
+					if "about" in hiveaccount["profile"]:
+						theAbout = hiveaccount["profile"]["about"]
+					if "profile_image" in hiveaccount["profile"]:
+						theProfileImg = hiveaccount["profile"]["profile_image"]
+					if "cover_image" in hiveaccount["profile"]:
+						theBannerImg = hiveaccount["profile"]["cover_image"]
 
 					data1 = '{"name":"'+theName+'","email":"","phone":"","profession":"","company":""}'
 					data2 = '{"about":"'+theAbout+'","profile_img":"'+theProfileImg+'","banner":"'+theBannerImg+'"}'
@@ -57,6 +56,13 @@ def get_hive_connections(account):
 
 
 	return(connections)
+
+def get_account(account):
+ profile = '{"profile":"Not found"}'
+ full_account = s.get_account(account)
+ if full_account:
+  profile = full_account["json_metadata"]
+ return(profile)
 
 def get_openseed_connections(account,external = True):
 	connections = '{"connections":"none"}'
