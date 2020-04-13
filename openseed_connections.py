@@ -35,7 +35,7 @@ def get_hive_connections(account):
 		for ing in watching:
 			if er == ing:
 				hiveaccount = json.loads(HiveGet.get_account(er))
-				if hiveaccount["profile"] != "Not found":
+				if "profile" in hiveaccount and hiveaccount["profile"] != "Not found":
 					theName = er
 					theAbout = ""
 					theProfileImg = ""
