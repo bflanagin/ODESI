@@ -58,13 +58,6 @@ def get_hive_connections(account):
 
 	return(connections)
 
-def get_account(account):
-	profile = '{"profile":"Not found"}'
-	full_account = h.get_account(account)
-	if full_account:
-		profile = full_account["json_metadata"]
-	return(profile)
-
 def get_openseed_connections(account,external = True):
 	connections = '{"connections":"none"}'
 	ac = 0
@@ -131,7 +124,7 @@ def get_openseed_connections(account,external = True):
 
 def get_account(account):
 	profile = '{"profile":"Not found"}'
-	full_account = s.get_account(account)
+	full_account = h.get_account(account)
 	if full_account:
 		profile = full_account["json_metadata"]
 	return(profile)
