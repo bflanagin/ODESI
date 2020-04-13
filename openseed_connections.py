@@ -99,7 +99,9 @@ def get_openseed_connections(account,external = True):
 		hive_connections = ""
 		if len(hive) > 0:
 			for i in hive:
-				if i["username"] not in accounts:
+				print(i)
+				stuff = json.loads(i)
+				if "username" in stuff and stuff["username"] not in accounts:
 					if hive_connections == "":
 						hive_connections = i
 					else:
