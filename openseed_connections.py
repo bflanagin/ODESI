@@ -11,7 +11,7 @@ from hive import hive
 import openseed_account as Account
 import openseed_setup as Settings
 import openseed_chat as Chat
-import hive_get as HiveGet
+#import hive_get as HiveGet
 
 settings = Settings.get_settings()
 
@@ -34,7 +34,7 @@ def get_hive_connections(account):
 	for er in follows:
 		for ing in watching:
 			if er == ing:
-				hiveaccount = json.loads(HiveGet.get_account(er))
+				hiveaccount = json.loads(h.get_account(er))["json_metadata"]
 				if "profile" in hiveaccount and hiveaccount["profile"] != "Not found":
 					theName = er
 					theAbout = ""
