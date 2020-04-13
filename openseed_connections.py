@@ -35,12 +35,13 @@ def get_hive_connections(account):
 		for ing in watching:
 			if er == ing:
 				hiveaccount = HiveGet.get_account(er)
+				print(hiveaccount)
 				if hiveaccount["profile"] != "Not found":
-					data1 = '{"name":"'+hiveaccount["profile"]["name"]+'","email":"","phone":"","profession":"","company":""}'
-					data2 = '{"about":"'+hiveaccount["profile"]["about"]+'","profile_img":"'+hiveaccount["profile"]["profile_image"]+'","banner":"'+hiveaccount["profile"]["cover_image"]+'"}'
-					blank_p = '"profile":{"openseed":'+data1+',"extended":'+data2+',"appdata":{},"misc":{},"imports":{}}'
+					#data1 = '{"name":"'+hiveaccount["profile"]["name"]+'","email":"","phone":"","profession":"","company":""}'
+					#data2 = '{"about":"'+hiveaccount["profile"]["about"]+'","profile_img":"'+hiveaccount["profile"]["profile_image"]+'","banner":"'+hiveaccount["profile"]["cover_image"]+'"}'
+					#blank_p = '"profile":{"openseed":'+data1+',"extended":'+data2+',"appdata":{},"misc":{},"imports":{}}'
 					#if connections == "":
-					connections.append('{"username":"'+er+'","linked":"1",'+blank_p+'}')
+					#connections.append('{"username":"'+er+'","linked":"1",'+blank_p+'}')
 					#else:
 					#	connections +=',{"name":"'+er+'","linked":"2",'+blank_p+'}'
 
