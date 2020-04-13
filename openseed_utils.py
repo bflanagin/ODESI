@@ -30,17 +30,7 @@ def sendmail(receiver,category):
 	msg['Subject'] = "Verify your OpenSeed Account"
 	msg['From'] = 'no-reply@openorchard.io'
 	msg['To'] = receiver
-	message = """
-		<html>
-  		<head></head>
-  		<body>
-    		<p>Welcome to OpenSeed</p>
-    		<p> Please copy and paste the code below to finish registration
-			<b>code</b>
-    		</p>
-  		</body>
-		</html>
-		"""
+	message = email_cat(category)
 	msg.set_content(message,subtype='html')
 	
 	context = ssl.create_default_context()
@@ -50,6 +40,47 @@ def sendmail(receiver,category):
 		server.quit()
 
 	return
+
+def email_cat(cat):
+	middle = ""
+	begins = """
+		<html>
+  		<head></head>
+  		<body> 
+		"""
+	ends = """
+		</body>
+		</html>
+		"""
+
+	if cat == "userreg":
+		middle = """
+			<p> Welcome to OpenSeed!</p>
+			<p> To finish your registration you can input the code below into the application that requested it.</p> 
+			<p> <b> code </b> </p>
+			<p> or click on the link to finish registration through the web.</p> """
+	if cat == "devreg":
+		middle = """
+			<p> Welcome brave Developer</p>
+			<p> Please input the code below into the application that requested it.</p> 
+			<p> <b> code </b> </p>
+			<p> or click on this link (link) to finish registration.</p>
+			<p> A second email will arrive with your private and public keys, keep them secret, keep them safe. """
+	if cat == "devkeymessage":
+		middle = """
+			<p> Keys for developername </p>
+			<p> These keys will be used for various tasks within openseed. It is important you keep them safe.</p> 
+			<p> <b> private key </b> </p>
+			<p> <b> public key </b> </p>
+			 """
+	if cat == "appkeymessage":
+		middle = """
+			<p> Keys for application </p>
+			<p> Your application is registerd and below are the keys needed to access OpenSeed! </p> 
+			<p> <b> private key </b> </p>
+			<p> <b> public key </b> </p>
+			 """
+	return begins+middle+ends
 
 def oggify_and_share(thehash):
 	openseed = mysql.connector.connect(
