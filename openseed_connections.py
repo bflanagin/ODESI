@@ -49,8 +49,8 @@ def get_hive_connections(account):
 					if "cover_image" in hiveaccount["profile"]:
 						theBannerImg = hiveaccount["profile"]["cover_image"]
 
-					data1 = '{"name":"'+thename+'","email":"","phone":"","profession":"","company":""}'
-					data2 = '{"about":"'+theabout+'","profile_img":"'+theProfileImg+'","banner":"'+theBannerImg+'"}'
+					data1 = '{"name":"'+theName+'","email":"","phone":"","profession":"","company":""}'
+					data2 = '{"about":"'+theAbout+'","profile_img":"'+theProfileImg+'","banner":"'+theBannerImg+'"}'
 					blank_p = '"profile":{"openseed":'+data1+',"extended":'+data2+',"appdata":{},"misc":{},"imports":{}}'
 					connections.append('{"username":"'+er+'","linked":"1",'+blank_p+'}')
 
