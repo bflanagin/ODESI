@@ -228,7 +228,7 @@ def user_profile_lite(username):
 		if(result[0][1] != "None"):
 			data2 = result[0][1]
 
-		profile = '"profile":{"openseed":'+data1.replace("\n","")+',"extended":'+data2.replace("\n","")	
+		profile = '"profile":{"openseed":'+data1.replace("\n","")+',"extended":'+data2.replace("\n","")+'}'
 	
 
 		mysearch.close()
