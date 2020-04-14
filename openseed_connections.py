@@ -42,7 +42,7 @@ def get_hive_connections(account):
 					theBannerImg = ""
 					
 					if "name" in hiveaccount["profile"]:
-						theName = hiveaccount["profile"]["name"]
+						theName = hiveaccount["profile"]["name"].encode("utf8")
 					if "about" in hiveaccount["profile"]:
 						theAbout = hiveaccount["profile"]["about"]
 					if "profile_image" in hiveaccount["profile"]:
