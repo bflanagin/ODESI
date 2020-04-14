@@ -184,3 +184,5 @@ def message(data):
 			else:
 				response = "App rejected"
 
+	return response
+
