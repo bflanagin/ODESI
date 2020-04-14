@@ -22,7 +22,7 @@ from bottle import route, run, template, request, static_file
 settings = Settings.get_settings()
 
 
-@route('/')
+@route('/' method='POST')
 def index():
 	if request.forms.get["msg"] != None:
 		return template('<b>Hello {{name}}</b>!', name="you need to supply a command")
