@@ -42,7 +42,7 @@ def get_hive_connections(account):
 					theBannerImg = ""
 					
 					if "name" in hiveaccount["profile"]:
-						theName = hiveaccount["profile"]["name"].encode("utf8")
+						theName = hiveaccount["profile"]["name"]
 					if "about" in hiveaccount["profile"]:
 						theAbout = hiveaccount["profile"]["about"]
 					if "profile_image" in hiveaccount["profile"]:
@@ -50,7 +50,7 @@ def get_hive_connections(account):
 					if "cover_image" in hiveaccount["profile"]:
 						theBannerImg = hiveaccount["profile"]["cover_image"]
 
-					data1 = '{"name":"'+theName.replace("'","\'")+'","email":"","phone":"","profession":"","company":""}'
+					data1 = '{"name":"'+theName+'","email":"","phone":"","profession":"","company":""}'
 					data2 = '{"about":"","profile_img":"'+theProfileImg+'","banner":"'+theBannerImg+'"}'
 					blank_p = '"profile":{"openseed":'+data1+',"extended":{},"appdata":{},"misc":{},"imports":{}}'
 					connections.append('{"username":"'+er+'","linked":"1",'+blank_p+'}')
