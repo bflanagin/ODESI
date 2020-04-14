@@ -116,7 +116,7 @@ def get_openseed_connections(account,external = True):
 		else:
 			connections = '{"connections":['+accounts.replace("'","\'")+']}'
 	try:
-		json.loads(connections)
+		json.loads(connections.encode())
 	except:
 		return '{"connections":"error"}'
 	else:
