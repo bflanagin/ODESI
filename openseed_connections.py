@@ -162,13 +162,8 @@ def user_profile(username):
 		)
 	profile = '"profile":{}'
 	theid = json.loads(Account.id_from_user(username))["id"]
-	mysearch = openseed.cursor()
-	user = "SELECT id FROM `profiles` WHERE `id` = %s"
-	val = (theid,)
-	mysearch.execute(user,val)
-	userid = mysearch.fetchall()
-	if len(userid) == 1:
-		theid = userid[0][0]
+
+	if theid != "none":
 		search = "SELECT data1,data2,data3,data4,data5 FROM `profiles` WHERE `id` = %s"
 		sval = (theid,)
 		mysearch.execute(search,sval)
@@ -201,7 +196,40 @@ def user_profile(username):
 
 		profile = '"profile":{"openseed":'+data1.replace("\n","")+',"extended":'+data2.replace("\n","")+',"appdata":'+data3.replace("\n","")+',"misc":'+data4.replace("\n","")+',"imports":'+data5.replace("\n","")+'}'
 
-	mysearch.close()
+		mysearch.close()
+	openseed.close()
+
+	return(profile)
+
+
+def user_profile_lite(username):
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+	profile = '"profile":{}'
+	theid = json.loads(Account.id_from_user(username))["id"]
+
+	if theid != "none":
+		search = "SELECT data1,data2,data3,data4,data5 FROM `profiles` WHERE `id` = %s"
+		sval = (theid,)
+		mysearch.execute(search,sval)
+		result = mysearch.fetchall()
+		data1 = '"None"'
+		data2 = '"None"'
+
+		if(result[0][0] != "None"):
+			data1 = result[0][0]
+ 
+		if(result[0][1] != "None"):
+			data2 = result[0][1]
+
+		profile = '"profile":{"openseed":'+data1.replace("\n","")+',"extended":'+data2.replace("\n","")	
+	
+
+		mysearch.close()
 	openseed.close()
 
 	return(profile)
