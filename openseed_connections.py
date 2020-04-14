@@ -81,18 +81,18 @@ def get_openseed_connections(account,external = True):
 		for u in exists1:
 			cname = str(u[0])
 			if accounts == "":
-				accounts = '{"username":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile(str(cname)))+'}'
+				accounts = '{"username":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile_lite(str(cname)))+'}'
 			else:
-				accounts = accounts+',{"username":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile(str(cname)))+'}'
+				accounts = accounts+',{"username":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile_lite(str(cname)))+'}'
 
 	if len(exists2) != 0:
 		ac += len(exists2)
 		for u in exists2:
 			cname = str(u[0])
 			if accounts == "":
-				accounts = '{"username":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile(str(cname)))+'}'
+				accounts = '{"username":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile_lite(str(cname)))+'}'
 			else:
-				accounts = accounts+',{"username":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile(str(cname)))+'}'
+				accounts = accounts+',{"username":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile_lite(str(cname)))+'}'
 	if external == False:
 		connections = '{"total":'+str(ac)+',"connections":['+accounts.replace("'","\'")+']}'
 	else:
@@ -166,6 +166,7 @@ def user_profile(username):
 	if theid != "none":
 		search = "SELECT data1,data2,data3,data4,data5 FROM `profiles` WHERE `id` = %s"
 		sval = (theid,)
+		mysearch = openseed.cursor()
 		mysearch.execute(search,sval)
 		result = mysearch.fetchall()
 		data1 = '"None"'
@@ -215,6 +216,7 @@ def user_profile_lite(username):
 	if theid != "none":
 		search = "SELECT data1,data2,data3,data4,data5 FROM `profiles` WHERE `id` = %s"
 		sval = (theid,)
+		mysearch = openseed.cursor()
 		mysearch.execute(search,sval)
 		result = mysearch.fetchall()
 		data1 = '"None"'
