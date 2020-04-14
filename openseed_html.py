@@ -24,7 +24,7 @@ settings = Settings.get_settings()
 
 @route('/')
 def index():
-	if !request.forms.get["msg"]:
+	if request.forms.get["msg"] != None:
 		return template('<b>Hello {{name}}</b>!', name="you need to supply a command")
 	else:
 		return Core.message(request.forms.get["msg"])
