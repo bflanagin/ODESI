@@ -120,7 +120,7 @@ def get_openseed_connections(account,external = True):
 	except:
 		return '{"connections":"error"}'
 	else:
-		return connections.encode()
+		return connections
 
 def get_account(account):
 	profile = '{"profile":"Not found"}'
