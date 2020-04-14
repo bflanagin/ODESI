@@ -113,13 +113,13 @@ def get_openseed_connections(account,external = True):
 						else:
 							hive_connections = hive_connections+","+i
 
-					connections = '{"total":"'+str(ac)+'","connections":['+accounts.replace("'","\'")+','+hive_connections.replace("'","\'")+']}'
+					connections = '{"total":'+str(ac)+',"connections":['+accounts.replace("'","\'")+','+hive_connections.replace("'","\'")+']}'
 		else:
-			connections = '{"total":"'+str(ac)+'","connections":['+accounts.replace("'","\'")+']}'
+			connections = '{"total":'+str(ac)+',"connections":['+accounts.replace("'","\'")+']}'
 	try:
 		json.loads(connections)
 	except:
-		return '{"total":"0","connections":"error"}'
+		return '{"total":0,"connections":"error"}'
 	else:
 		return connections
 
