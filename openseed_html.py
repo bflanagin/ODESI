@@ -24,7 +24,8 @@ settings = Settings.get_settings()
 
 @route('/', method='POST')
 def index():
-	return Core.message(request.forms.get["msg"])
+	themessage = request.forms.get["msg"]
+	return Core.message(themessage)
 
 
 
