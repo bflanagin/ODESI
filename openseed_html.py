@@ -16,6 +16,7 @@ import openseed_music as Music
 import openseed_setup as Settings
 import json
 import time
+import openseed_core as Core
 from bottle import route, run, template, request, static_file
 
 settings = Settings.get_settings()
@@ -23,10 +24,10 @@ settings = Settings.get_settings()
 
 @route('/')
 def index():
-	return template('<b>Hello {{name}}</b>!', name="you need to supply a command")
-
-
-
+	if !request.forms.get["msg"]:
+		return template('<b>Hello {{name}}</b>!', name="you need to supply a command")
+	else:
+		return Core.message(request.forms.get["msg"])
 
 
 
