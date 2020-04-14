@@ -240,7 +240,11 @@ def get_genre_tracks_json(genre,count):
 	music = openseed.cursor()
 	output = []
 	num = 0
-	search = "SELECT author,title,post,img,ogg,curation,type,genre,tags,duration,date FROM `audio` WHERE genre LIKE '"+genre+"' AND ogg IS NOT NULL AND ogg LIKE '_%' ORDER BY date DESC LIMIT "+str(count)
+	if count != "0":
+		search = "SELECT author,title,post,img,ogg,curation,type,genre,tags,duration,date FROM `audio` WHERE genre LIKE '"+genre+"' AND ogg IS NOT NULL AND ogg LIKE '_%' ORDER BY date DESC LIMIT "+str(count)
+	else:
+		search = "SELECT author,title,post,img,ogg,curation,type,genre,tags,duration,date FROM `audio` WHERE genre LIKE '"+genre+"' AND ogg IS NOT NULL AND ogg LIKE '_%' ORDER BY date DESC"
+
 	music.execute(search)
 	result = music.fetchall()
 	num = 0
