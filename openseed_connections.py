@@ -52,7 +52,7 @@ def get_hive_connections(account):
 
 					data1 = '{"name":"'+theName+'","email":"","phone":"","profession":"","company":""}'
 					data2 = '{"about":"","profile_img":"'+theProfileImg+'","banner":"'+theBannerImg+'"}'
-					blank_p = '"profile":{"openseed":'+data1+',"extended":'+data2+',"appdata":{},"misc":{},"imports":{}}'
+					blank_p = '"profile":{"openseed":'+data1+',"extended":{},"appdata":{},"misc":{},"imports":{}}'
 					connections.append('{"username":"'+er+'","linked":"1",'+blank_p+'}')
 
 
