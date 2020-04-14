@@ -1,16 +1,36 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
+import subprocess
 import sys
+import os
 sys.path.append("..")
+import mysql.connector
 import socketserver
-import http.server
-Handler = http.server.SimpleHTTPRequestHandler
+import openseed_account as Account
+import openseed_seedgenerator as Seed
+import openseed_utils as Utils
+import hive_get as Get
+import hive_submit as Submit
+#import leaderboard as LeaderBoard
+import openseed_music as Music
+import openseed_setup as Settings
+import json
+import time
+from bottle import route, run, template, request, static_file
 
-class TCPHandler(http.server.SimpleHTTPRequestHandler):
-	print("Hello")
+settings = Settings.get_settings()
 
-if __name__=="__main__":
-	HOST1, PORT1 = "0.0.0.0",8689
-	with socketserver.TCPServer((HOST1, PORT1), TCPHandler) as httpd:
-    		print("serving at port", PORT1)
-    		httpd.serve_forever() 
+
+@route('/')
+def index():
+	return template('<b>Hello {{name}}</b>!', name="you need to supply a command")
+
+
+
+
+
+
+
+
+
+run(host='0.0.0.0', port=8689)
