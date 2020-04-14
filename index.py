@@ -160,7 +160,7 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 	if action == "hive_connections":
 		print(Connections.get_steem_connections(from_client["steem"]))
 	if action == "openseed_connections":
-		print(Connections.get_openseed_connections(from_client["account"],from_client["last"],from_client["count"],from_client["hive"]))
+		print(Connections.get_openseed_connections(from_client["account"],from_client["hive"]))
 	if action == "profile_small":
 		print(Connections.get_account(from_client["steem"]))
 	if action == "profile":
