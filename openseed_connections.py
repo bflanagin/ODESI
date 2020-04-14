@@ -127,7 +127,7 @@ def get_account(account):
 	profile = '{"profile":"Not found"}'
 	full_account = h.get_account(account)
 	if full_account:
-		profile = full_account["json_metadata"]
+		profile = full_account["json_metadata"].decode("utf8")
 	return(profile)
 
 def profile(token):
