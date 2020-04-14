@@ -58,7 +58,7 @@ def get_hive_connections(account):
 
 	return(connections)
 
-def get_openseed_connections(account,external = True):
+def get_openseed_connections(account,last,count,external = True):
 	connections = '{"connections":"none"}'
 	ac = 0
 	accounts = ""
@@ -69,9 +69,9 @@ def get_openseed_connections(account,external = True):
 		database = "openseed"
 		)
 	request_search = openseed.cursor()
-	search1 = "SELECT userid2,response FROM `connections` WHERE userid1 = %s AND response != 0"
-	search2 = "SELECT userid1,response FROM `connections` WHERE userid2 = %s AND response != 0"
-	vals = (account, )
+	search1 = "SELECT userid2,response FROM `connections` WHERE userid1 = %s AND response != 0 LIMIT %s OFFSET %s"
+	search2 = "SELECT userid1,response FROM `connections` WHERE userid2 = %s AND response != 0 LIMIT %s OFFSET %s"
+	vals = (account,str(count),str(last))
 	request_search.execute(search1,vals)
 	exists1 = request_search.fetchall()
 	request_search.execute(search2,vals)
@@ -298,8 +298,8 @@ def get_requests(token,count):
 		)
 	username = json.loads(Account.user_from_id(token))["user"]
 	mysearch = openseed.cursor()
-	search = "SELECT * FROM connections WHERE userid2 = %s AND response = 1 LIMIT "+str(count)
-	val = (username, )
+	search = "SELECT * FROM connections WHERE userid2 = %s AND response = 1 LIMIT %s"
+	val = (username, str(count))
 	mysearch.execute(search,val)
 	result = mysearch.fetchall()
 	if len(result) > 0:
