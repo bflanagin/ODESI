@@ -94,11 +94,12 @@ def get_openseed_connections(account,external = True):
 			else:
 				accounts = accounts+',{"username":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile(str(cname)))+'}'
 	if external == False:
-		connections = '{"connections":['+accounts.replace("'","\'")+']}'
+		connections = '{"total":'+ac+',"connections":['+accounts.replace("'","\'")+']}'
 	else:
 		hive = get_hive_connections(account)
 		hive_connections = ""
 		if len(hive) > 0:
+			ac += len(hive)
 			for i in hive:
 				try:
 					json.loads(i)
@@ -112,13 +113,13 @@ def get_openseed_connections(account,external = True):
 						else:
 							hive_connections = hive_connections+","+i
 
-					connections = '{"connections":['+accounts.replace("'","\'")+','+hive_connections.replace("'","\'")+']}'
+					connections = '{"total":'+ac+',"connections":['+accounts.replace("'","\'")+','+hive_connections.replace("'","\'")+']}'
 		else:
-			connections = '{"connections":['+accounts.replace("'","\'")+']}'
+			connections = '{"total":'+ac+',"connections":['+accounts.replace("'","\'")+']}'
 	try:
 		json.loads(connections)
 	except:
-		return '{"connections":"error"}'
+		return '{"total":0,"connections":"error"}'
 	else:
 		return connections
 
