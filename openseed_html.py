@@ -22,7 +22,9 @@ from bottle import route, run, template, request, static_file
 settings = Settings.get_settings()
 
 
-@route('/', method='POST')
+
+
+@route('/api', method='POST')
 def index():
 	themessage = request.forms.get("msg")
 	if themessage != None:
