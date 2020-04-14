@@ -54,7 +54,7 @@ def message(data):
 			elif action == "set_profile":
 				response = Account.set_profile(from_client["token"],from_client["data1"],from_client["data2"],
 					from_client["data3"],from_client["data4"],from_client["data5"],from_client["type"])
-				elif action == "get_status":
+			elif action == "get_status":
 				response = Account.get_status(from_client["account"])
 			elif action == "set_status":
 				response = Account.set_status(from_client["appPub"],from_client["token"],from_client["status"])
