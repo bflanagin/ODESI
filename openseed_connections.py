@@ -69,9 +69,9 @@ def get_openseed_connections(account,last,count,external = True):
 		database = "openseed"
 		)
 	request_search = openseed.cursor()
-	search1 = "SELECT userid2,response FROM `connections` WHERE userid1 = %s AND response != 0 LIMIT %s OFFSET %s"
-	search2 = "SELECT userid1,response FROM `connections` WHERE userid2 = %s AND response != 0 LIMIT %s OFFSET %s"
-	vals = (account,str(count),str(last))
+	search1 = "SELECT userid2,response FROM `connections` WHERE userid1 = %s AND response != 0 LIMIT "+str(count)+" OFFSET "+str(last)
+	search2 = "SELECT userid1,response FROM `connections` WHERE userid2 = %s AND response != 0 LIMIT "+str(count)+" OFFSET "+str(last)
+	vals = (account,)
 	request_search.execute(search1,vals)
 	exists1 = request_search.fetchall()
 	request_search.execute(search2,vals)
