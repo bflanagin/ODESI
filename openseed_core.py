@@ -15,7 +15,7 @@ import openseed_music as Music
 import openseed_setup as Settings
 import openseed_game as Game
 import openseed_chat as Chat
-
+import onetime as OneTime
 import hive_get as Get
 import hive_submit as Submit
 
@@ -89,9 +89,9 @@ def message(data):
 			#####################################################
 
 			elif action == "toleaderboard":
-				response = LeaderBoard.update_leaderboard(dev,app,from_client["username"],from_client["data"],from_client["steem"],from_client["postingkey"])
+				response = Game.update_leaderboard(dev,app,from_client["username"],from_client["data"],from_client["steem"],from_client["postingkey"])
 			elif action == "getleaderboard":
-				response = LeaderBoard.get_leaderboard(dev,app)
+				response = Game.get_leaderboard(dev,app)
 
 			#####################################################
 			#
