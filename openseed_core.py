@@ -32,7 +32,7 @@ def message(data):
 	try:
 		from_client = json.loads(data)
 	except:
-		return '{"server":"not json"}'
+		return '{"server":"messages must be in json formated string"}'
 	else:		
 		action = from_client["act"]
 		if Account.check_appID(from_client["appPub"],from_client["devPub"]):
