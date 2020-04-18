@@ -45,18 +45,18 @@ def message(data):
 			#
 			#####################################################
 
-			if action == "accountcheck":
-				response = Account.accountCheck(from_client["username"],from_client["passphrase"])
-			elif action == "creatorcheck":
-				response = Account.creator_check(from_client["steem"])
-			elif action == "create":
-				response = Account.create_user(from_client["username"],from_client["passphrase"],from_client["email"])
-			elif action == "link":
+			if action == "account_check":
+				response = Account.accountCheck(from_client["account"],from_client["passphrase"])
+			elif action == "creator_check":
+				response = Account.creator_check(from_client["hive"])
+			elif action == "create_account":
+				response = Account.create_user(from_client["account"],from_client["passphrase"],from_client["email"])
+			elif action == "link_account":
 				response = Account.Steem.link(from_client["username"],from_client["steemname"])
 				if response:
 					Submit.memo(from_client["username"],from_client["steemname"],response)
-			elif action == "create_creator":
-				response = Account.create_creator(from_client["devName"],from_client["contactName"],from_client["contactEmail"],from_client["steem"])
+			elif action == "create_creator_account":
+				response = Account.create_creator(from_client["creatorName"],from_client["contactName"],from_client["contactEmail"],from_client["openseedAccount"])
 			elif action == "set_profile":
 				response = Account.set_profile(from_client["token"],from_client["data1"],from_client["data2"],
 					from_client["data3"],from_client["data4"],from_client["data5"],from_client["type"])
@@ -75,11 +75,11 @@ def message(data):
 			#
 			#####################################################
 
-			elif action == "payment":
+			elif action == "hive_send_payment":
 				response = Submit.payment(from_client["hiveaccount"],from_client["to"],from_client["amount"],from_client["for"],from_client["postingkey"])
-			elif action == "flush":
+			elif action == "hive_flush_keys":
 				response = Submit.flush(from_client["hiveaccount"])
-			elif action == "verify":
+			elif action == "hive_verify_account":
 				response = Account.Steem.verify(from_client["username"],from_client["onetime"])
 
 			#####################################################
@@ -88,9 +88,9 @@ def message(data):
 			#
 			#####################################################
 
-			elif action == "toleaderboard":
+			elif action == "update_leaderboard":
 				response = Game.update_leaderboard(dev,app,from_client["username"],from_client["data"],from_client["steem"],from_client["postingkey"])
-			elif action == "getleaderboard":
+			elif action == "get_leaderboard":
 				response = Game.get_leaderboard(dev,app)
 
 			#####################################################
@@ -100,32 +100,26 @@ def message(data):
 			#####################################################
 
 			elif action == "music":
-				response = Music.get_curated_music(from_client["curator"])
-			elif action == "music_json":
 				response = Music.get_curated_music_json(from_client["curator"])
 			elif action == "post":
 				response = Get.get_post(from_client["author"],from_client["permlink"])
 			elif action == "artist_search":
 				response = Get.search_music(from_client["author"],10000)
-			elif action == "getaccount":
+			elif action == "get_hive_account":
 				response = Get.get_account(from_client["account"])
 			elif action == "getfullaccount":
 				response = Get.get_full_account(from_client["account"])
-			elif action == "newmusicians":
+			elif action == "get_new_musicians":
 				response = Music.get_new_artists()
-			elif action == "newtracks":
-				response = Music.get_new_tracks()
-			elif action == "newtracks_json":
+			elif action == "get_new_tracks":
 				response = Music.get_new_tracks_json()
-			elif action == "genres":
+			elif action == "get_genres":
 				response = Music.get_genres()
-			elif action == "genre":
-				response = Music.get_genre_tracks(from_client["genre"])
-			elif action == "genre_json":
+			elif action == "get_genre":
 				response = Music.get_genre_tracks_json(from_client["genre"],from_client["count"])
-			elif action == "getArtistTracks":
+			elif action == "get_artist_tracks":
 				response = Music.get_artist_tracks_json(from_client["author"],from_client["count"])
-			elif action == "getTracks":
+			elif action == "get_tracks":
 				response = Music.get_tracks_json(from_client["start"],from_client["count"])
 
 			#####################################################
@@ -134,9 +128,7 @@ def message(data):
 			#
 			#####################################################
 
-			elif action == "hive_connections":
-		    		response = Connections.get_steem_connections(from_client["hive"])
-			elif action == "openseed_connections":
+			elif action == "get_connections":
 				response = Connections.get_openseed_connections(from_client["account"],from_client["hive"])
 			elif action == "get_profile":
 				response = "{"+Connections.user_profile(from_client["account"])+"}"
@@ -146,7 +138,7 @@ def message(data):
 				response = Connections.connection_request(from_client["token"],from_client["account"],"request",app)
 			elif action == "set_request":
 				response = Connections.connection_request(from_client["token"],from_client["account"],from_client["response"],app)
-			elif action == "request_status":
+			elif action == "get_request_status":
 				response = Connections.request_status(from_client["token"],from_client["account"])
 
 			#####################################################
