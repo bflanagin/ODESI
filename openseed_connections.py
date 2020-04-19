@@ -328,8 +328,8 @@ def get_requests(token,count):
 		)
 	username = json.loads(Account.user_from_id(token))["user"]
 	mysearch = openseed.cursor()
-	search = "SELECT * FROM connections WHERE userid2 = %s AND response = 1 ORDER BY connect_id ASC LIMIT %s"
-	val = (username, str(count))
+	search = "SELECT * FROM connections WHERE userid2 = %s AND response = 1"
+	val = (username)
 	mysearch.execute(search,val)
 	result = mysearch.fetchall()
 	if len(result) > 0:
