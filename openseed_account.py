@@ -181,14 +181,14 @@ def accountCheck(username,passphrase):
 		mysearch.close()
 		openseed.close()
 		if str(testid) == str(auth_result[0][0]):
-			return '{"token":"'+str(result[0][0])+'","username":"'+username+'"}' 
+			return '{"account":{"token":"'+str(result[0][0])+'","username":"'+username+'"}}' 
 		else:
-			return '{"token":"denied"}' 
+			return '{"account":{"token":"denied"}}' 
 	else:
-		return '{"token":"none"}'
+		return '{"account":{"token":"none"}}'
 
 
-def create_user(username,passphrase,email):
+def create_account(username,passphrase,email):
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
@@ -226,9 +226,9 @@ def create_user(username,passphrase,email):
 		mycursor.close()
 		openseed.close()
 		pfile = create_default_profile(uid,username,email)
-		return '{"token":"'+uid+'","username":"'+username+'","profile":'+pfile+'}'
+		return '{"account":{"token":"'+uid+'","username":"'+username+'","profile":'+pfile+'}}'
 	else:
-		return '{"username":"exists"}'
+		return '{"account":{"username":"exists"}}'
 
 
 # External users bypass the password and username section of the login, and requires a trust relationship between the providers and OpenSeed
@@ -238,7 +238,7 @@ def create_user(username,passphrase,email):
 # 3. add to tokens - done
 # 4. remove temptoken from temp_data 
 
-def external_user(username,temptoken):
+def external_user(username,temptoken,network):
 	token = ""
 	openseed = mysql.connector.connect(
 		host = "localhost",
@@ -285,7 +285,7 @@ def create_default_profile(token,username,email):
 	return userfriendly
 
 
-def create_creator(devName,contactName,contactEmail,account_token):
+def create_creator_account(devName,contactName,contactEmail,account_token):
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
@@ -305,11 +305,11 @@ def create_creator(devName,contactName,contactEmail,account_token):
 			openseed.commit()
 			mycursor.close()
 			openseed.close()
-			return '{"devID":"'+devID+'","pubID":"'+pubID+'"}'
+			return '{"creator_account":{"devID":"'+devID+'","pubID":"'+pubID+'"}}'
 		else:
-			return '{"server":"no openseed user found"}'
+			return '{"creator_account":{"server":"no openseed user found"}}'
 	else:
-		return '{"devID":"exists","pubID":"exists"}'
+		return '{"creator_account":{"devID":"exists","pubID":"exists"}}'
 	
 
 def creator_check(account):

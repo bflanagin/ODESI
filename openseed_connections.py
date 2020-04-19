@@ -11,6 +11,7 @@ from hive import hive
 import openseed_account as Account
 import openseed_setup as Settings
 import openseed_chat as Chat
+#import hive_get as HiveGet
 
 settings = Settings.get_settings()
 
@@ -33,11 +34,27 @@ def get_hive_connections(account):
 	for er in follows:
 		for ing in watching:
 			if er == ing:
-				blank_p = '"profile":{"openseed":{"name":"'+er+'"},"extended":{},"appdata":{},"misc":{},"imports":{}}'
-				#if connections == "":
-				connections.append('{"username":"'+er+'","linked":"1",'+blank_p+'}')
-				#else:
-				#	connections +=',{"name":"'+er+'","linked":"2",'+blank_p+'}'
+				hiveaccount = json.loads(get_account(er))
+				if "profile" in hiveaccount and hiveaccount["profile"] != "Not found":
+					theName = er
+					theAbout = ""
+					theProfileImg = ""
+					theBannerImg = ""
+					
+					if "name" in hiveaccount["profile"]:
+						theName = hiveaccount["profile"]["name"]
+					if "about" in hiveaccount["profile"]:
+						theAbout = hiveaccount["profile"]["about"]
+					if "profile_image" in hiveaccount["profile"]:
+						theProfileImg = hiveaccount["profile"]["profile_image"]
+					if "cover_image" in hiveaccount["profile"]:
+						theBannerImg = hiveaccount["profile"]["cover_image"]
+
+					data1 = '{"name":"'+theName+'","email":"","phone":"","profession":"","company":""}'
+					data2 = '{"about":"","profile_img":"'+theProfileImg+'","banner":"'+theBannerImg+'"}'
+					blank_p = '"profile":{"openseed":'+data1+',"extended":{},"appdata":{},"misc":{},"imports":{}}'
+					connections.append('{"username":"'+er+'","linked":"1",'+blank_p+'}')
+
 
 	return(connections)
 
@@ -54,7 +71,7 @@ def get_openseed_connections(account,external = True):
 	request_search = openseed.cursor()
 	search1 = "SELECT userid2,response FROM `connections` WHERE userid1 = %s AND response != 0"
 	search2 = "SELECT userid1,response FROM `connections` WHERE userid2 = %s AND response != 0"
-	vals = (account, )
+	vals = (account,)
 	request_search.execute(search1,vals)
 	exists1 = request_search.fetchall()
 	request_search.execute(search2,vals)
@@ -77,27 +94,38 @@ def get_openseed_connections(account,external = True):
 			else:
 				accounts = accounts+',{"username":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile(str(cname)))+'}'
 	if external == False:
-		connections = '{"connections":['+accounts.replace("'","\'")+']}'
+		connections = '{"total":'+str(ac)+',"connections":['+accounts.replace("'","\'")+']}'
 	else:
 		hive = get_hive_connections(account)
 		hive_connections = ""
 		if len(hive) > 0:
+			ac += len(hive)
 			for i in hive:
-				if json.loads(i)["username"] not in accounts:
-					if hive_connections == "":
-						hive_connections = i
-					else:
-						hive_connections = hive_connections+","+i
+				try:
+					json.loads(i)
+				except:
+					pass
+				else:
+					stuff = json.loads(i)
+					if "username" in stuff and stuff["username"] not in accounts:
+						if hive_connections == "":
+							hive_connections = i
+						else:
+							hive_connections = hive_connections+","+i
 
-			connections = '{"connections":['+accounts.replace("'","\'")+','+hive_connections.replace("'","\'")+']}'
+					connections = '{"total":'+str(ac)+',"connections":['+accounts.replace("'","\'")+','+hive_connections.replace("'","\'")+']}'
 		else:
-			connections = '{"connections":['+accounts.replace("'","\'")+']}'
- 
-	return connections
+			connections = '{"total":'+str(ac)+',"connections":['+accounts.replace("'","\'")+']}'
+	try:
+		json.loads(connections)
+	except:
+		return '{"total":0,"connections":"error"}'
+	else:
+		return connections
 
 def get_account(account):
 	profile = '{"profile":"Not found"}'
-	full_account = s.get_account(account)
+	full_account = h.get_account(account)
 	if full_account:
 		profile = full_account["json_metadata"]
 	return(profile)
@@ -134,15 +162,11 @@ def user_profile(username):
 		)
 	profile = '"profile":{}'
 	theid = json.loads(Account.id_from_user(username))["id"]
-	mysearch = openseed.cursor()
-	user = "SELECT id FROM `profiles` WHERE `id` = %s"
-	val = (theid,)
-	mysearch.execute(user,val)
-	userid = mysearch.fetchall()
-	if len(userid) == 1:
-		theid = userid[0][0]
+
+	if theid != "none":
 		search = "SELECT data1,data2,data3,data4,data5 FROM `profiles` WHERE `id` = %s"
 		sval = (theid,)
+		mysearch = openseed.cursor()
 		mysearch.execute(search,sval)
 		result = mysearch.fetchall()
 		data1 = '"None"'
@@ -173,7 +197,41 @@ def user_profile(username):
 
 		profile = '"profile":{"openseed":'+data1.replace("\n","")+',"extended":'+data2.replace("\n","")+',"appdata":'+data3.replace("\n","")+',"misc":'+data4.replace("\n","")+',"imports":'+data5.replace("\n","")+'}'
 
-	mysearch.close()
+		mysearch.close()
+	openseed.close()
+
+	return(profile)
+
+
+def user_profile_lite(username):
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+	profile = '"profile":{}'
+	theid = json.loads(Account.id_from_user(username))["id"]
+
+	if theid != "none":
+		search = "SELECT data1,data2,data3,data4,data5 FROM `profiles` WHERE `id` = %s"
+		sval = (theid,)
+		mysearch = openseed.cursor()
+		mysearch.execute(search,sval)
+		result = mysearch.fetchall()
+		data1 = '"None"'
+		data2 = '"None"'
+
+		if(result[0][0] != "None"):
+			data1 = result[0][0]
+ 
+		if(result[0][1] != "None"):
+			data2 = result[0][1]
+
+		profile = '"profile":{"openseed":'+data1.replace("\n","")+',"extended":'+data2.replace("\n","")+'}'
+	
+
+		mysearch.close()
 	openseed.close()
 
 	return(profile)
@@ -258,7 +316,7 @@ def connection_request(token,requestee,response,appPub):
 
 	return output 
 
-# gets request based on token and limit. Only returns pending requests
+# gets requests based on token and limit. Only returns pending requests
 
 def get_requests(token,count):
 	requests = ""
@@ -271,7 +329,7 @@ def get_requests(token,count):
 	username = json.loads(Account.user_from_id(token))["user"]
 	mysearch = openseed.cursor()
 	search = "SELECT * FROM connections WHERE userid2 = %s AND response = 1 LIMIT "+str(count)
-	val = (username, )
+	val = (username,)
 	mysearch.execute(search,val)
 	result = mysearch.fetchall()
 	if len(result) > 0:

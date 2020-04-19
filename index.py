@@ -8,7 +8,7 @@ import openseed_account as Account
 import openseed_setup as Settings
 import openseed_utils as Utils
 #import hive_get as Get
-#import steem_submit as Submit
+#import hive_submit as Submit
 #import leaderboard as LeaderBoard
 import openseed_seedgenerator as Seeds
 import openseed_music as Music

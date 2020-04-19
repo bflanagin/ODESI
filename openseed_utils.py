@@ -8,33 +8,85 @@ import mysql.connector
 import socketserver
 import openseed_account as Account
 import openseed_seedgenerator as Seed
-#import steem_get as Get
-#import steem_submit as Submit
-#import leaderboard as LeaderBoard
+#import hive_get as Get
+#import hive_submit as Submit
+import openseed_game as Game
 import openseed_music as Music
 import openseed_setup as Settings
 import json
 import time
 import email, smtplib, ssl
 
+
 settings = Settings.get_settings()
 
 def sendmail(receiver,category):
 	port = 465
 	smtp_server = "smtp.gmail.com"
-	sender_email = "no-reply@openorchard.io"  # Enter your address
+	sender_email = "bflanagin@openorchard.io"  # Enter your address
 	receiver_email = receiver  # Enter receiver address
-	password = ""
-	message = """\
-		Subject: Hi there
-		This message is sent from Python."""
-
+	password = settings["emailpassword"]
+	msg = email.message.EmailMessage()
+	mess = email_cat(category)
+	msg['Subject'] = mess[0]
+	msg['From'] = 'no-reply@openorchard.io'
+	msg['To'] = receiver
+	message = mess[1]
+	msg.set_content(message,subtype='html')
+	
 	context = ssl.create_default_context()
 	with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
 		server.login(sender_email, password)
-		server.sendmail(sender_email, receiver_email, message)
+		server.send_message(msg)
+		server.quit()
 
 	return
+
+def email_cat(cat):
+	middle = ""
+	subject = ""
+	begins = """
+		<html>
+  		<head></head>
+  		<body> 
+		"""
+	ends = """
+		</body>
+		</html>
+		"""
+
+	if cat == "userreg":
+		title = "Verify your OpenSeed User Account"
+		middle = """
+			<p> Welcome to OpenSeed!</p>
+			<p> To finish your registration you can input the code below into the application that requested it.</p> 
+			<p> <b> code </b> </p>
+			<p> or click on the link to finish registration through the web.</p> """
+	if cat == "devreg":
+		title = "Verify your OpenSeed Developer Account"
+		middle = """
+			<p> Welcome brave Developer</p>
+			<p> Please input the code below into the application that requested it.</p> 
+			<p> <b> code </b> </p>
+			<p> or click on this link (link) to finish registration.</p>
+			<p> A second email will arrive with your private and public keys, keep them secret, keep them safe. """
+	if cat == "devkeymessage":
+		title = "Dev keys for your OpenSeed Developer Account"
+		middle = """
+			<p> Keys for developername </p>
+			<p> These keys will be used for various tasks within openseed. It is important you keep them safe.</p> 
+			<p> <b> private key </b> </p>
+			<p> <b> public key </b> </p>
+			 """
+	if cat == "appkeymessage":
+		title = "App Keys for Application"
+		middle = """
+			<p> Keys for application </p>
+			<p> Your application is registerd and below are the keys needed to access OpenSeed! </p> 
+			<p> <b> private key </b> </p>
+			<p> <b> public key </b> </p>
+			 """
+	return [title,begins+middle+ends]
 
 def oggify_and_share(thehash):
 	openseed = mysql.connector.connect(
@@ -116,7 +168,10 @@ def get_image(direct,source,source_type,size):
 	openseed.close()
 
 	if direct == True:
-		return result[0][1]
+		if len(result) == 1:
+			return result[0][1]
+		else:
+			return image_url
 	else:
 		return image_url
 
@@ -355,5 +410,13 @@ def keytest(message):
 			print("success - which is bad")
 			break
 
+
+def import_hive_profile(token,username):
 	
-	
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+	)
+
