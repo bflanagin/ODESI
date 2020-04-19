@@ -28,7 +28,7 @@ settings = Settings.get_settings()
 
 
 def message(data):
-
+	response = "Please issue a command to continue"
 	try:
 		from_client = json.loads(data)
 	except:
