@@ -84,7 +84,7 @@ def get_saved_games(devID,appID,token):
 	save.execute(search,vals)
 	result = len(scoresearch.fetchall())
 	if result == 0:
-		sql = "INSERT INTO `app_data_priv` (`devID`,`appID`,`data`) VALUES (%s,%s,%s,%s,"99")"
+		sql = "INSERT INTO `app_data_priv` (`devID`,`appID`,`data`) VALUES (%s,%s,%s,%s,'99')"
 		vals = (str(devID),str(appID),str(user),str(data))
 		save.execute(sql,vals)	
 		openseed.commit()
