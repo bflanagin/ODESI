@@ -316,7 +316,7 @@ def connection_request(token,requestee,response,appPub):
 
 	return output 
 
-# gets request based on token and limit. Only returns pending requests
+# gets requests based on token and limit. Only returns pending requests
 
 def get_requests(token,count):
 	requests = ""
@@ -328,7 +328,7 @@ def get_requests(token,count):
 		)
 	username = json.loads(Account.user_from_id(token))["user"]
 	mysearch = openseed.cursor()
-	search = "SELECT * FROM connections WHERE userid2 = %s AND response = 1 LIMIT %s"
+	search = "SELECT * FROM connections WHERE userid2 = %s AND response = 1 ORDER BY connect_id ASC LIMIT %s"
 	val = (username, str(count))
 	mysearch.execute(search,val)
 	result = mysearch.fetchall()

@@ -50,7 +50,7 @@ def message(data):
 			elif action == "creator_check":
 				response = Account.creator_check(from_client["hive"])
 			elif action == "create_account":
-				response = Account.create_user(from_client["account"],from_client["passphrase"],from_client["email"])
+				response = Account.create_account(from_client["account"],from_client["passphrase"],from_client["email"])
 			elif action == "link_account":
 				response = Account.Steem.link(from_client["username"],from_client["steemname"])
 				if response:
