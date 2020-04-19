@@ -31,8 +31,4 @@ def index():
 		return Core.message(themessage)
 
 
-
-
-
-
 run(host='0.0.0.0', port=8670)

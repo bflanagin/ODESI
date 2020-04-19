@@ -107,7 +107,7 @@ def message(data):
 				response = Get.search_music(from_client["author"],10000)
 			elif action == "get_hive_account":
 				response = Get.get_account(from_client["account"])
-			elif action == "getfullaccount":
+			elif action == "get_full_account":
 				response = Get.get_full_account(from_client["account"])
 			elif action == "get_new_musicians":
 				response = Music.get_new_artists()
