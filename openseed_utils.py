@@ -152,6 +152,7 @@ def get_image(direct,source,source_type,size):
 		if size == "original":
 			image_url = result[0][7]
 	elif len(result) <= 0:
+		print("recording image "+source)
 		recorded = png_and_pin(source)
 		if recorded != -1:
 			if size == "medium":
@@ -189,6 +190,7 @@ def png_and_pin(url):
 	val = (url,)
 	image.execute(search,val)
 	result = image.fetchall()
+	print("fetching "+url)
 	
 	if len(result) <= 0:
 		if data_check(baseDIR+"/source",url) == False:
