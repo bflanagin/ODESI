@@ -38,6 +38,8 @@ def message(data):
 		if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 			app = from_client["appPub"]
 			dev = from_client["devPub"]
+			
+			
 
 			#####################################################
 			#
