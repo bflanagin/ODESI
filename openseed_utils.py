@@ -151,8 +151,8 @@ def get_image(direct,source,source_type,size):
 			image_url = result[0][3]
 		if size == "original":
 			image_url = result[0][7]
-	elif len(result) <= 0:
-		print("recording image "+source)
+	elif len(result) <= 0 and source != "":
+
 		recorded = png_and_pin(source)
 		if recorded != -1:
 			record = json.loads(recorded)
@@ -196,7 +196,7 @@ def png_and_pin(url):
 	source_hash = ""
 	
 	if len(result) <= 0:
-		print("fetching "+url)
+
 		if data_check(baseDIR+"/source",url) == False:
 			get = subprocess.Popen(['wget','-T 3','-t 1','-P',baseDIR+"/source",'-nc',url],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 			get.wait()
@@ -204,7 +204,7 @@ def png_and_pin(url):
 			if str(stderr).find("Connection timed out") == -1:
 				source = url
 				title = url.split("/")[-1]
-				print("fetched "+title)
+
 				source_hash = to_ipfs(baseDIR+"/source/"+title)
 				checkfile = subprocess.Popen(['file',baseDIR+"/source/"+title],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 				checkfile.wait()
@@ -248,7 +248,6 @@ def png_and_pin(url):
 		else:
 			png_returns = -1
 	else:
-		print("Found image "+result[0][3])
 		png_returns = 1
 		
 	openseed.commit()
