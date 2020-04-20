@@ -155,16 +155,17 @@ def get_image(direct,source,source_type,size):
 		print("recording image "+source)
 		recorded = png_and_pin(source)
 		if recorded != -1:
+			record = json.loads(recorded)
 			if size == "medium":
-				image_url = recorded[5]
+				image_url = record["image"]["medium"]
 			if size == "low":
-				image_url = recorded[4]
+				image_url = record["image"]["low"]
 			if size == "high":
-				image_url = recorded[6]
+				image_url = record["image"]["high"]
 			if size == "thumbnail":
-				image_url = recorded[3]
+				image_url = record["image"]["thumbnail"]
 			if size == "original":
-				image_url = recorded[7]
+				image_url = record["image"]["original"]
 			
 	openseed.close()
 
@@ -247,6 +248,7 @@ def png_and_pin(url):
 		else:
 			png_returns = -1
 	else:
+		print("Found image "+result[0][3])
 		png_returns = 1
 		
 	openseed.commit()
