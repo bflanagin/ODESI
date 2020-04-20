@@ -175,7 +175,7 @@ def get_image(direct,source,source_type,size):
 		else:
 			return image_url
 	else:
-		return '{"image":{"hash":"'+image_url+'","quality":"'+size+'"}}'
+		return '{"image":{"hash":"'+image_url+'","source":"'+source+'","quality":"'+size+'"}}'
 
 def png_and_pin(url):
 	png_returns = -1
