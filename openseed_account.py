@@ -481,14 +481,14 @@ def set_status(appPub,uid,data):
 			valin = (appPub,username,newdat)
 			user.execute(insert,valin)
 
-		update = '{"account":"'+username+'","status":'+newdat+'}'
+		update = '{"set":{"account":"'+username+'","set_status":'+newdat+'}}'
 
 		openseed.commit()
 		user.close()
 		openseed.close()
 
 	else:
-		update = '{"account":"'+username+'","status":"error"}'
+		update = '{"set":{"account":"'+username+'","status":"error"}}'
 
 	return update	
 

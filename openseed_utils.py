@@ -151,19 +151,21 @@ def get_image(direct,source,source_type,size):
 			image_url = result[0][3]
 		if size == "original":
 			image_url = result[0][7]
-	elif len(result) <= 0:
+	elif len(result) <= 0 and source != "":
+
 		recorded = png_and_pin(source)
 		if recorded != -1:
+			record = json.loads(recorded)
 			if size == "medium":
-				image_url = recorded[5]
+				image_url = record["image"]["medium"]
 			if size == "low":
-				image_url = recorded[4]
+				image_url = record["image"]["low"]
 			if size == "high":
-				image_url = recorded[6]
+				image_url = record["image"]["high"]
 			if size == "thumbnail":
-				image_url = recorded[3]
+				image_url = record["image"]["thumbnail"]
 			if size == "original":
-				image_url = recorded[7]
+				image_url = record["image"]["original"]
 			
 	openseed.close()
 
@@ -173,7 +175,7 @@ def get_image(direct,source,source_type,size):
 		else:
 			return image_url
 	else:
-		return image_url
+		return '{"image":{"hash":"'+image_url+'","source":"'+source+'","quality":"'+size+'"}}'
 
 def png_and_pin(url):
 	png_returns = -1
@@ -190,7 +192,11 @@ def png_and_pin(url):
 	image.execute(search,val)
 	result = image.fetchall()
 	
+	from_wget = ""
+	source_hash = ""
+	
 	if len(result) <= 0:
+
 		if data_check(baseDIR+"/source",url) == False:
 			get = subprocess.Popen(['wget','-T 3','-t 1','-P',baseDIR+"/source",'-nc',url],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 			get.wait()
@@ -198,10 +204,12 @@ def png_and_pin(url):
 			if str(stderr).find("Connection timed out") == -1:
 				source = url
 				title = url.split("/")[-1]
+
 				source_hash = to_ipfs(baseDIR+"/source/"+title)
 				checkfile = subprocess.Popen(['file',baseDIR+"/source/"+title],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 				checkfile.wait()
 				stdout, stderr = checkfile.communicate()
+				from_wget = stdout
 		else:
 			source = url
 			title = url
@@ -209,35 +217,36 @@ def png_and_pin(url):
 			checkfile = subprocess.Popen(['file',baseDIR+"/source/"+url],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 			checkfile.wait()
 			stdout, stderr = checkfile.communicate()
+			from_wget = stdout
 
-			if source_hash != "" and str(stdout).find("GIF") == -1:
-				original = subprocess.Popen(['convert',baseDIR+"/source/"+title,baseDIR+"/original/"+source_hash+'.png'])
-				original.wait()
-				original_hash = to_ipfs(baseDIR+"/original/"+source_hash+'.png')
+		if source_hash != "" and str(from_wget).find("GIF") == -1:
+			original = subprocess.Popen(['convert',baseDIR+"/source/"+title,baseDIR+"/original/"+source_hash+'.png'])
+			original.wait()
+			original_hash = to_ipfs(baseDIR+"/original/"+source_hash+'.png')
 
-				high = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '4096x4096',baseDIR+"/high/"+source_hash+'.png'])
-				high.wait()
-				high_hash = to_ipfs(baseDIR+"/high/"+source_hash+'.png')
+			high = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '4096x4096',baseDIR+"/high/"+source_hash+'.png'])
+			high.wait()
+			high_hash = to_ipfs(baseDIR+"/high/"+source_hash+'.png')
 
-				medium = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '2048x2048',baseDIR+"/medium/"+source_hash+'.png'])
-				medium.wait()
-				medium_hash = to_ipfs(baseDIR+"/original/"+source_hash+'.png')
+			medium = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '2048x2048',baseDIR+"/medium/"+source_hash+'.png'])
+			medium.wait()
+			medium_hash = to_ipfs(baseDIR+"/original/"+source_hash+'.png')
 
-				low = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '1024x1024',baseDIR+"/low/"+source_hash+'.png'])
-				low.wait()
-				low_hash = to_ipfs(baseDIR+"/low/"+source_hash+'.png')
+			low = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '1024x1024',baseDIR+"/low/"+source_hash+'.png'])
+			low.wait()
+			low_hash = to_ipfs(baseDIR+"/low/"+source_hash+'.png')
 
-				thumbnail = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '128x128',baseDIR+"/thumbnail/"+source_hash+'.png'])
-				thumbnail.wait()
-				thumbnail_hash = to_ipfs(baseDIR+"/thumbnail/"+source_hash+'.png')
+			thumbnail = subprocess.Popen(['convert',baseDIR+"/source/"+title,'-resize', '128x128',baseDIR+"/thumbnail/"+source_hash+'.png'])
+			thumbnail.wait()
+			thumbnail_hash = to_ipfs(baseDIR+"/thumbnail/"+source_hash+'.png')
 
-				insert = "INSERT INTO `images` (`ipfs`,`source`,`title`,`thumbnail`,`low`,`medium`,`high`,`original`,`version`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,1)"
-				data =  (source_hash,url,title,thumbnail_hash,low_hash,medium_hash,high_hash,original_hash,)
-				image.execute(insert,data)
+			insert = "INSERT INTO `images` (`ipfs`,`source`,`title`,`thumbnail`,`low`,`medium`,`high`,`original`,`version`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,1)"
+			data =  (source_hash,url,title,thumbnail_hash,low_hash,medium_hash,high_hash,original_hash,)
+			image.execute(insert,data)
 		
-				png_returns = '{"image":{"source":"'+source_hash+'","url":"'+url+'","title":"'+title+'","thumbnail":"'+thumbnail_hash+'","low":"'+low_hash+'","medium":"'+medium_hash+'","high":"'+high_hash+'","original":"'+original_hash+'"}}'
-			else:
-				png_returns = -1
+			png_returns = '{"image":{"source":"'+source_hash+'","url":"'+url+'","title":"'+title+'","thumbnail":"'+thumbnail_hash+'","low":"'+low_hash+'","medium":"'+medium_hash+'","high":"'+high_hash+'","original":"'+original_hash+'"}}'
+		else:
+			png_returns = -1
 	else:
 		png_returns = 1
 		

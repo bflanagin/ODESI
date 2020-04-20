@@ -28,7 +28,7 @@ settings = Settings.get_settings()
 
 
 def message(data):
-
+	response = "Please issue a command to continue"
 	try:
 		from_client = json.loads(data)
 	except:
@@ -38,6 +38,8 @@ def message(data):
 		if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 			app = from_client["appPub"]
 			dev = from_client["devPub"]
+			
+			
 
 			#####################################################
 			#
@@ -107,7 +109,7 @@ def message(data):
 				response = Get.search_music(from_client["author"],10000)
 			elif action == "get_hive_account":
 				response = Get.get_account(from_client["account"])
-			elif action == "getfullaccount":
+			elif action == "get_full_account":
 				response = Get.get_full_account(from_client["account"])
 			elif action == "get_new_musicians":
 				response = Music.get_new_artists()
@@ -171,10 +173,10 @@ def message(data):
 
 			# Utils #
 			elif action =="get_image":
-				response = Utils.get_image(False,from_client["image"],from_client["thetype"],from_client["size"])
+				response = Utils.get_image(False,from_client["image"],from_client["thetype"],from_client["quality"])
 				
-			else:
-				response = "App rejected"
+		else:
+			response = "App rejected"
 
 	return response
 
