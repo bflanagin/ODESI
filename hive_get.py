@@ -14,7 +14,7 @@ import openseed_setup as Settings
 import openseed_account as Account
 
 settings = Settings.get_settings()
-thenodes = ['anyx.io','api.steem.house','hive.anyx.io','steemd.minnowsupportproject.org','steemd.privex.io']
+thenodes = ['anyx.io','api.hive.house','hive.anyx.io','hived.minnowsupportproject.org','hived.privex.io']
 s = hive.Hive(nodes=thenodes)
 
 songtype = "NA"
@@ -124,7 +124,7 @@ def search_history(user,limit):
 		database = "openseed"
 		)
  mysearch = openseed.cursor()
- search = "SELECT userId FROM `users` WHERE steem = %s"
+ search = "SELECT userId FROM `users` WHERE hive = %s"
  mysearch.execute(search,(user,))
  result = mysearch.fetchall()
 
@@ -142,7 +142,7 @@ def search_history(user,limit):
        tags = metadata["tags"]
     if len(title) > 2:
     	data = '{"post":{"title":"'+title+'","permlink":"'+permlink+'","tags":"'+str(tags)+'"}}'
-    	Account.update_history(str(result[0][0].replace('\x00',"")),9,"steem",str(data))
+    	Account.update_history(str(result[0][0].replace('\x00',"")),9,"hive",str(data))
     break
 
 
