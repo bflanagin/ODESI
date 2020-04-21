@@ -59,7 +59,7 @@ def like_post(name,post):
 		if already_voted == 0:
 			identifier = ('@'+name+'/'+post)
 			print("voting on ",identifier)	
-			s.commit.vote(identifier, float(upvote_pct), who)
+			h.commit.vote(identifier, float(upvote_pct), who)
 			post_reply(name,post)
 		else:
 			print("Voted already")
@@ -82,11 +82,11 @@ def leaderboard(devID,appID,user,data,hive,postingkey):
 	h.keys = postingkey
 	update = '{"devID":"'+str(devID)+'","appID":"'+str(appID)+'","user":"'+str(user)+'","data":"'+str(data)+'"}'
 	tamount = 0.001
-	s.commit.transfer(to="openseed",amount=tamount,asset='hive',memo=update,account=hive)
+	h.commit.transfer(to="openseed",amount=tamount,asset='hive',memo=update,account=hive)
 
 def payment(hiveaccount,to_account,amount,data,postingkey):
 	if h.wallet.getActiveKeyForAccount(hiveaccount):
-		h.keys = s.wallet.getActiveKeyForAccount(hiveaccount)
+		h.keys = h.wallet.getActiveKeyForAccount(hiveaccount)
 	else:
 		h.wallet.addPrivateKey(postingkey)
 		h.keys = postingkey
@@ -99,6 +99,13 @@ def payment(hiveaccount,to_account,amount,data,postingkey):
 	h.commit.transfer(to=to_account,amount=float(payout),asset=asset,memo=receipt,account=hiveaccount)
 	return('{"sent":"'+to_account+'"}')
 
+def set_allow(hiveaccount, hiveapp):
+
+	return
+
+def remove_allow(hiveaccount, hiveapp):
+
+	return
 
 def flush_account(hiveaccount):
 	h.wallet.removeAccount(hiveaccount)
