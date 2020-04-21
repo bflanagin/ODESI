@@ -3,15 +3,16 @@ import sys
 import mysql.connector
 import hashlib
 from hive import hive
+from hive import wallet
 sys.path.append("..")
 import openseed_setup as Settings
 
 settings = Settings.get_settings()
 thenodes = ['anyx.io','api.hive.house','hive.anyx.io','hived.minnowsupportproject.org','hived.privex.io']
 h = hive.Hive(nodes=thenodes)
-
-h.wallet.unlock(user_passphrase=settings["passphrase"])
-postingKey = h.wallet.getPostingKeyForAccount(settings["hiveaccount"])
+w = wallet.Wallet
+w.unlock(user_passphrase=settings["passphrase"])
+postingKey = w.getPostingKeyForAccount(settings["hiveaccount"])
 h.keys = postingKey
 who = settings["hiveaccount"]
 
@@ -85,10 +86,10 @@ def leaderboard(devID,appID,user,data,hive,postingkey):
 	h.commit.transfer(to="openseed",amount=tamount,asset='hive',memo=update,account=hive)
 
 def payment(hiveaccount,to_account,amount,data,postingkey):
-	if h.wallet.getActiveKeyForAccount(hiveaccount):
-		h.keys = h.wallet.getActiveKeyForAccount(hiveaccount)
+	if w.getActiveKeyForAccount(hiveaccount):
+		h.keys = w.getActiveKeyForAccount(hiveaccount)
 	else:
-		h.wallet.addPrivateKey(postingkey)
+		w.addPrivateKey(postingkey)
 		h.keys = postingkey
 
 	receipt = str(data)+' via Thicket'
@@ -108,6 +109,6 @@ def remove_allow(hiveaccount, hiveapp):
 	return
 
 def flush_account(hiveaccount):
-	h.wallet.removeAccount(hiveaccount)
+	w.removeAccount(hiveaccount)
 	return('{"removed":"'+hiveaccount+'"}')
 
