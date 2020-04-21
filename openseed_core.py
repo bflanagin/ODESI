@@ -53,12 +53,9 @@ def message(data):
 				response = Account.creator_check(from_client["hive"])
 			elif action == "create_account":
 				response = Account.create_account(from_client["account"],from_client["passphrase"],from_client["email"])
-			elif action == "link_account":
-				response = Account.Steem.link(from_client["username"],from_client["steemname"])
-				if response:
-					Submit.memo(from_client["username"],from_client["steemname"],response)
+			
 			elif action == "create_creator_account":
-				response = Account.create_creator(from_client["creatorName"],from_client["contactName"],from_client["contactEmail"],from_client["openseedAccount"])
+				response = Account.create_creator(from_client["creatorName"],from_client["contactName"],from_client["contactEmail"],from_client["openseed"])
 			elif action == "set_profile":
 				response = Account.set_profile(from_client["token"],from_client["data1"],from_client["data2"],
 					from_client["data3"],from_client["data4"],from_client["data5"],from_client["type"])
@@ -83,6 +80,20 @@ def message(data):
 				response = Submit.flush(from_client["hiveaccount"])
 			elif action == "hive_verify_account":
 				response = Account.Steem.verify(from_client["username"],from_client["onetime"])
+			elif action == "get_hive_account":
+				response = Get.get_account(from_client["account"])
+			elif action == "get_full_hive_account":
+				response = Get.get_full_account(from_client["account"])
+			elif action == "get_hive_post":
+				response = Get.get_post(from_client["author"],from_client["permlink"])
+			elif action == "set_posting_right":
+				response = '{"server":"error"}'
+			elif action == "remove_posting_right":
+				response = '{"server":"error"}'
+			elif action == "link_account":
+				response = Account.Steem.link(from_client["username"],from_client["steemname"])
+				if response:
+					Submit.memo(from_client["username"],from_client["steemname"],response)
 
 			#####################################################
 			#
@@ -103,14 +114,8 @@ def message(data):
 
 			elif action == "music":
 				response = Music.get_curated_music_json(from_client["curator"])
-			elif action == "post":
-				response = Get.get_post(from_client["author"],from_client["permlink"])
 			elif action == "artist_search":
 				response = Get.search_music(from_client["author"],10000)
-			elif action == "get_hive_account":
-				response = Get.get_account(from_client["account"])
-			elif action == "get_full_account":
-				response = Get.get_full_account(from_client["account"])
 			elif action == "get_new_musicians":
 				response = Music.get_new_artists()
 			elif action == "get_new_tracks":
