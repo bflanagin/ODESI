@@ -79,7 +79,7 @@ def message(data):
 			elif action == "hive_flush_keys":
 				response = Submit.flush(from_client["hiveaccount"])
 			elif action == "hive_verify_account":
-				response = Account.Steem.verify(from_client["username"],from_client["onetime"])
+				response = Account.hive.verify(from_client["username"],from_client["onetime"])
 			elif action == "get_hive_account":
 				response = Get.get_account(from_client["account"])
 			elif action == "get_full_hive_account":
@@ -91,9 +91,9 @@ def message(data):
 			elif action == "remove_posting_right":
 				response = '{"server":"error"}'
 			elif action == "link_account":
-				response = Account.Steem.link(from_client["username"],from_client["steemname"])
+				response = Account.hive.link(from_client["username"],from_client["hivename"])
 				if response:
-					Submit.memo(from_client["username"],from_client["steemname"],response)
+					Submit.memo(from_client["username"],from_client["hivename"],response)
 
 			#####################################################
 			#
