@@ -102,7 +102,7 @@ def message(data):
 			#####################################################
 
 			elif action == "update_leaderboard":
-				response = Game.update_leaderboard(dev,app,from_client["username"],from_client["data"],from_client["steem"],from_client["postingkey"])
+				response = Game.update_leaderboard(dev,app,from_client["username"],from_client["data"],from_client["hive"],from_client["postingkey"])
 			elif action == "get_leaderboard":
 				response = Game.get_leaderboard(dev,app)
 
