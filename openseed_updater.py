@@ -53,7 +53,7 @@ def update_check(check):
 		print("Updating History")
 		users = openseed.cursor()
 		userList = []
-		search = "SELECT userId,steem FROM `users` WHERE steem IS NOT NULL"
+		search = "SELECT userId,steem FROM `users` WHERE hive IS NOT NULL"
 		users.execute(search)
 		result = users.fetchall()
 		for user in result:
