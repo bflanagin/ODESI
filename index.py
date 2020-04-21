@@ -62,8 +62,8 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
  
 	if action == "accountcheck":
 		print(Account.accountCheck(from_client["username"],from_client["passphrase"]))
-	if action == "steemcheck":
-		print(Account.steem_Check(from_client["steemname"]))
+	if action == "hivecheck":
+		print(Account.hive_Check(from_client["hivename"]))
 	if action == "create":
 		print(Account.create_user(from_client["username"],from_client["passphrase"],from_client["email"]))
 	if action == "set_profile":
@@ -71,9 +71,9 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 			from_client["data2"],from_client["data3"],from_client["data4"],
 			from_client["data5"],from_client["type"]))
 	if action == "link":
-		print(Account.steem_link(from_client["username"]))
+		print(Account.hive_link(from_client["username"]))
 	if action == "verify":
-		print(Account.steem_verify(from_client["username"],from_client["onetime"]))
+		print(Account.hive_verify(from_client["username"],from_client["onetime"]))
 	if action == "account":
 		print(Account.get_account(from_client["token"]))
 	if action == "search":
@@ -158,11 +158,11 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 # Connection Actions
 
 	if action == "hive_connections":
-		print(Connections.get_steem_connections(from_client["steem"]))
+		print(Connections.get_hive_connections(from_client["hive"]))
 	if action == "openseed_connections":
 		print(Connections.get_openseed_connections(from_client["account"],from_client["hive"]))
 	if action == "profile_small":
-		print(Connections.get_account(from_client["steem"]))
+		print(Connections.get_account(from_client["hive"]))
 	if action == "profile":
 		print(Connections.profile(from_client["token"]))
 	if action == "get_profile":

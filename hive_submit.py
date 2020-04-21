@@ -7,7 +7,7 @@ sys.path.append("..")
 import openseed_setup as Settings
 
 settings = Settings.get_settings()
-thenodes = ['anyx.io','api.steem.house','hive.anyx.io','steemd.minnowsupportproject.org','steemd.privex.io']
+thenodes = ['anyx.io','api.hive.house','hive.anyx.io','hived.minnowsupportproject.org','hived.privex.io']
 h = hive.Hive(nodes=thenodes)
 
 h.wallet.unlock(user_passphrase=settings["passphrase"])
@@ -15,18 +15,18 @@ postingKey = h.wallet.getPostingKeyForAccount(settings["hiveaccount"])
 h.keys = postingKey
 who = settings["hiveaccount"]
 
-def memo(username,steemname,code):
+def memo(username,hivename,code):
 	openseed = mysql.connector.connect(
 	host = "localhost",
 	user = settings["dbuser"],
 	password = settings["dbpassword"],
 	database = "openseed"
 	)
-	service_type = "steem"
+	service_type = "hive"
 	codesearch = openseed.cursor()
-	link = "Thank you for registering your steem account on OpenSeed. Please copy and paste this link : http://142.93.27.131:8675/account.py?act=verify&steemname="+str(steemname)+"&username="+str(username)+"&onetime="+str(code)+" into your address bar to finish the process"
+	link = "Thank you for registering your hive account on OpenSeed. Please copy and paste this link : http://142.93.27.131:8675/account.py?act=verify&hivename="+str(hivename)+"&username="+str(username)+"&onetime="+str(code)+" into your address bar to finish the process"
 	tamount = 0.001
-	h.commit.transfer(to=steemname,amount=tamount,asset='STEEM',memo=link,account=who)
+	h.commit.transfer(to=hivename,amount=tamount,asset='hive',memo=link,account=who)
 	update = "UPDATE `onetime` SET `sent` = TRUE WHERE `type` = '"+service_type+"' AND `user` = '"+username+"'"
 	codesearch.execute(update)
 	openseed.commit()
@@ -59,8 +59,8 @@ def like_post(name,post):
 		if already_voted == 0:
 			identifier = ('@'+name+'/'+post)
 			print("voting on ",identifier)	
-			#s.commit.vote(identifier, float(upvote_pct), who)
-			#post_reply(name,post)
+			s.commit.vote(identifier, float(upvote_pct), who)
+			post_reply(name,post)
 		else:
 			print("Voted already")
 
@@ -77,16 +77,16 @@ def openseed_post(author,post,body,title,json):
 	print("adding post")
 	return
 
-def leaderboard(devID,appID,user,data,steem,postingkey):
+def leaderboard(devID,appID,user,data,hive,postingkey):
 	h.wallet.addPrivateKey(postingkey)
 	h.keys = postingkey
 	update = '{"devID":"'+str(devID)+'","appID":"'+str(appID)+'","user":"'+str(user)+'","data":"'+str(data)+'"}'
 	tamount = 0.001
-	s.commit.transfer(to="openseed",amount=tamount,asset='STEEM',memo=update,account=steem)
+	s.commit.transfer(to="openseed",amount=tamount,asset='hive',memo=update,account=hive)
 
-def payment(steemaccount,to_account,amount,data,postingkey):
-	if h.wallet.getActiveKeyForAccount(steemaccount):
-		h.keys = s.wallet.getActiveKeyForAccount(steemaccount)
+def payment(hiveaccount,to_account,amount,data,postingkey):
+	if h.wallet.getActiveKeyForAccount(hiveaccount):
+		h.keys = s.wallet.getActiveKeyForAccount(hiveaccount)
 	else:
 		h.wallet.addPrivateKey(postingkey)
 		h.keys = postingkey
@@ -96,7 +96,7 @@ def payment(steemaccount,to_account,amount,data,postingkey):
 	if amount.split(",")[1].split("]")[0] == 1:
 		asset = 'HBD'
 	payout = amount.split(",")[0].split("[")[1]
-	h.commit.transfer(to=to_account,amount=float(payout),asset=asset,memo=receipt,account=steemaccount)
+	h.commit.transfer(to=to_account,amount=float(payout),asset=asset,memo=receipt,account=hiveaccount)
 	return('{"sent":"'+to_account+'"}')
 
 

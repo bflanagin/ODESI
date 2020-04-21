@@ -50,7 +50,7 @@ def message(data):
 			if action == "account_check":
 				response = Account.accountCheck(from_client["account"],from_client["passphrase"])
 			elif action == "creator_check":
-				response = Account.creator_check(from_client["hive"])
+				response = Account.creator_check(from_client["openseed"])
 			elif action == "create_account":
 				response = Account.create_account(from_client["account"],from_client["passphrase"],from_client["email"])
 			
@@ -79,7 +79,7 @@ def message(data):
 			elif action == "hive_flush_keys":
 				response = Submit.flush(from_client["hiveaccount"])
 			elif action == "hive_verify_account":
-				response = Account.Steem.verify(from_client["username"],from_client["onetime"])
+				response = Account.hive.verify(from_client["username"],from_client["onetime"])
 			elif action == "get_hive_account":
 				response = Get.get_account(from_client["account"])
 			elif action == "get_full_hive_account":
@@ -91,9 +91,9 @@ def message(data):
 			elif action == "remove_posting_right":
 				response = '{"server":"error"}'
 			elif action == "link_account":
-				response = Account.Steem.link(from_client["username"],from_client["steemname"])
+				response = Account.hive.link(from_client["username"],from_client["hivename"])
 				if response:
-					Submit.memo(from_client["username"],from_client["steemname"],response)
+					Submit.memo(from_client["username"],from_client["hivename"],response)
 
 			#####################################################
 			#
@@ -102,7 +102,7 @@ def message(data):
 			#####################################################
 
 			elif action == "update_leaderboard":
-				response = Game.update_leaderboard(dev,app,from_client["username"],from_client["data"],from_client["steem"],from_client["postingkey"])
+				response = Game.update_leaderboard(dev,app,from_client["username"],from_client["data"],from_client["hive"],from_client["postingkey"])
 			elif action == "get_leaderboard":
 				response = Game.get_leaderboard(dev,app)
 

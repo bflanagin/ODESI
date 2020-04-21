@@ -138,16 +138,16 @@ def profile(token):
 		database = "openseed"
 		)
 	profile = '{"profile":"Not found"}'
-	steeminfo = '{}'
+	hiveinfo = '{}'
 	mysearch = openseed.cursor()
 	search = "SELECT data1,data2,data3,data4,data5 FROM `profiles` WHERE `id` = %s"
 	val = (theid,)
 	mysearch.execute(search,val)
 	result = mysearch.fetchall()
 	if result[0][4]:
-		steeminfo = result[0][4]
+		hiveinfo = result[0][4]
 
-	profile = result[0][0]+"','"+result[0][1]+"','"+result[0][2]+"','"+result[0][3]+"','"+steeminfo
+	profile = result[0][0]+"','"+result[0][1]+"','"+result[0][2]+"','"+result[0][3]+"','"+hiveinfo
 	mysearch.close()
 	openseed.close()
 

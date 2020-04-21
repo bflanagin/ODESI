@@ -9,7 +9,7 @@ import subprocess
 sys.path.append("..")
 import openseed_seedgenerator as Seed
 from hive import hive
-thenodes = ['anyx.io','api.steem.house','hive.anyx.io','steemd.minnowsupportproject.org','steemd.privex.io']
+thenodes = ['anyx.io','api.hive.house','hive.anyx.io','hived.minnowsupportproject.org','hived.privex.io']
 s = hive.Hive(nodes=thenodes)
 
 import openseed_setup as Settings
@@ -17,7 +17,7 @@ import openseed_setup as Settings
 settings = Settings.get_settings()
 
 action = ""
-steem = ""
+hive = ""
 accountKey = ""
 devId = ""
 appId = ""
@@ -167,7 +167,7 @@ def accountCheck(username,passphrase):
 		)
 	if check_db(username,"users") == 1:
 		mysearch = openseed.cursor()
-		search = "SELECT userid,email,steem FROM `users` WHERE `username`= %s"
+		search = "SELECT userid,email,hive FROM `users` WHERE `username`= %s"
 		val = (str(username),)
 		mysearch.execute(search,val)
 		result = mysearch.fetchall()
@@ -299,7 +299,7 @@ def create_creator_account(devName,contactName,contactEmail,account_token):
 		if account != "none":
 			devID = Seed.generate_id(devName,contactName,contactEmail,account)
 			pubID = Seed.generate_publicid(devID)
-			sql = "INSERT INTO `developers` (`devID`,`publicID`,`devName`,`contactName`,`contactEmail`,`steem`) VALUES (%s,%s,%s,%s,%s,%s)"
+			sql = "INSERT INTO `developers` (`devID`,`publicID`,`devName`,`contactName`,`contactEmail`,`hive`) VALUES (%s,%s,%s,%s,%s,%s)"
 			val = (str(devID),str(pubID),str(devName),str(contactName),str(contactEmail),str(account)) 
 			mycursor.execute(sql,val)	
 			openseed.commit()
@@ -322,7 +322,7 @@ def creator_check(account):
 		database = "openseed"
 		)
 		mysearch = openseed.cursor()
-		search = "SELECT devID,publicID FROM `developers` WHERE `steem` LIKE %s"
+		search = "SELECT devID,publicID FROM `developers` WHERE `openseed` LIKE %s"
 		val = (str(account),)
 		mysearch.execute(search,val)
 		result = mysearch.fetchall()
@@ -581,10 +581,10 @@ def openseed_search(data):
 	no_use_list = ["email",":","name","profession","company"]
 	if username not in no_use_list:
 		mysearch = openseed.cursor()
-		steemsearch = "SELECT userid FROM `users` WHERE steem LIKE %s"
+		hivesearch = "SELECT userid FROM `users` WHERE hive LIKE %s"
 		val = ("%"+data+"%",)
-		mysearch.execute(steemsearch,val)
-		steem = mysearch.fetchall()
+		mysearch.execute(hivesearch,val)
+		hive = mysearch.fetchall()
 		usersearch = "SELECT id,data1,data5 FROM `profiles` WHERE data1 LIKE %s"
 		mysearch.execute(usersearch,val)
 		users = mysearch.fetchall()
@@ -593,13 +593,13 @@ def openseed_search(data):
 				userid = u[0]
 				accountname = user_from_id(userid)
 				userProfile = u[1]
-				steemProfile = '{}'
+				hiveProfile = '{}'
 				if len(u[2]) > 2:
-					steemProfile = u[2]
+					hiveProfile = u[2]
 				if searchlist == "":
-					searchlist = '{"account":"'+accountname+'","profile":'+userProfile+',"steem":'+steemProfile+'}'
+					searchlist = '{"account":"'+accountname+'","profile":'+userProfile+',"hive":'+hiveProfile+'}'
 				else:
-					searchlist = searchlist+',{"account":"'+accountname+'","profile":'+userProfile+',"steem":'+steemProfile+'}'
+					searchlist = searchlist+',{"account":"'+accountname+'","profile":'+userProfile+',"hive":'+hiveProfile+'}'
 		mysearch.close()
 		openseed.close()
 	
@@ -618,11 +618,11 @@ def gps_search(username,cords):
 	no_use_list = ["eee:eee"]
 	if username not in no_use_list:
 		mysearch = openseed.cursor()
-		steemsearch = "SELECT data FROM `logins` WHERE username = %s"
+		hivesearch = "SELECT data FROM `logins` WHERE username = %s"
 		user_lat = 0.00
 		user_log = 0.00
 		val = (username,)
-		mysearch.execute(steemsearch,val)
+		mysearch.execute(hivesearch,val)
 		user = mysearch.fetchall()
 		udat = json.loads(user[0][0])
 
@@ -658,14 +658,14 @@ def gps_search(username,cords):
 					profile = mysearch.fetchall()
 					if len(profile) == 1:
 						userProfile = profile[0][1]
-						steemProfile = profile[0][2]
+						hiveProfile = profile[0][2]
 					else:
 						userProfile = '{}'
-						steemProfile = '{}'
+						hiveProfile = '{}'
 					if searchlist == "":
-						searchlist = '{"account":"'+u[0]+'","profile":'+userProfile+',"steem":'+steemProfile+'}'
+						searchlist = '{"account":"'+u[0]+'","profile":'+userProfile+',"hive":'+hiveProfile+'}'
 					else:
-						searchlist = searchlist+',{"account":"'+u[0]+'","profile":'+userProfile+',"steem":'+steemProfile+'}'
+						searchlist = searchlist+',{"account":"'+u[0]+'","profile":'+userProfile+',"hive":'+hiveProfile+'}'
 
 		mysearch.close()
 		openseed.close()
@@ -674,8 +674,8 @@ def gps_search(username,cords):
 
 
 
-class Steem:
-	def link(username,steemname):
+class hive:
+	def link(username,hivename):
 		openseed = mysql.connector.connect(
 			host = "localhost",
 			user = settings["dbuser"],
@@ -690,13 +690,13 @@ class Steem:
 		user = str(mycursor.fetchall())
 		user = user.split("'")
 
-		code = Seed.generate_userid(username,"terminal","steem")
+		code = Seed.generate_userid(username,"terminal","hive")
 		search = "SELECT * FROM `onetime` WHERE `onetimecode`=%s"
 		sval = (str(code),)
 		mycursor.execute(search)
 		result = len(mycursor.fetchall())
 		if result != 1:
-			sql = "INSERT INTO `onetime` (`user`,`onetimecode`,`type`) VALUES (%s,%s,'steem')"
+			sql = "INSERT INTO `onetime` (`user`,`onetimecode`,`type`) VALUES (%s,%s,'hive')"
 		val = (str(username),str(code))
 		mycursor.execute(sql)	
 		openseed.commit()
@@ -713,8 +713,8 @@ class Steem:
 		)
 		sql = ""
 		mycursor = openseed.cursor()
-		code = Seed.generate_userid(username,random.random(),"steem")
-		search = "SELECT * FROM `onetime` WHERE `onetimecode`=%s AND `type` = 'steem'"
+		code = Seed.generate_userid(username,random.random(),"hive")
+		search = "SELECT * FROM `onetime` WHERE `onetimecode`=%s AND `type` = 'hive'"
 		sval = (str(code),)
 		mycursor.execute(search,sval)
 		result = len(mycursor.fetchall())
@@ -734,15 +734,15 @@ class Steem:
 		s.wallet.unlock(user_passphrase=settings["passphrase"])
 		user = s.get_account(username)
 		keyArray = s.wallet.getPublicKeys()
-		username_from_steem = user["name"]
-		pubkey_from_steem = user["posting"]["key_auths"][0][0]
-		if pubkey_from_steem in keyArray and username == username_from_steem:
+		username_from_hive = user["name"]
+		pubkey_from_hive = user["posting"]["key_auths"][0][0]
+		if pubkey_from_hive in keyArray and username == username_from_hive:
 			if save == 1:
 				return '{"server":"saved"}'
 			else:
 				s.wallet.removeAccount(username)
 				return '{"server":"accepted"}'
-		elif username == username_from_steem:
+		elif username == username_from_hive:
 			s.wallet.addPrivateKey(key)
 			return '{"server":"added"}'
 		else:

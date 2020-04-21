@@ -53,7 +53,7 @@ def update_check(check):
 		print("Updating History")
 		users = openseed.cursor()
 		userList = []
-		search = "SELECT userId,steem FROM `users` WHERE steem IS NOT NULL"
+		search = "SELECT userId,hive FROM `users` WHERE hive IS NOT NULL"
 		users.execute(search)
 		result = users.fetchall()
 		for user in result:
@@ -132,7 +132,7 @@ def update_check(check):
 		users = openseed.cursor()
 		search = "SELECT * FROM `users` WHERE 1"
 		users.execute(search)
-		update = "UPDATE `users` SET userid = %s, userPub = %s, username = %s, email = %s , steem = %s, verified = %s WHERE userNum = %s"
+		update = "UPDATE `users` SET userid = %s, userPub = %s, username = %s, email = %s , hive = %s, verified = %s WHERE userNum = %s"
 		result = users.fetchall()
 		for user in result:
 			print(user)
