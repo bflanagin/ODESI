@@ -322,7 +322,7 @@ def creator_check(account):
 		database = "openseed"
 		)
 		mysearch = openseed.cursor()
-		search = "SELECT devID,publicID FROM `developers` WHERE `hive` LIKE %s"
+		search = "SELECT devID,publicID FROM `developers` WHERE `openseed` LIKE %s"
 		val = (str(account),)
 		mysearch.execute(search,val)
 		result = mysearch.fetchall()
