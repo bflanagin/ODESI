@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import subprocess
 import sys
 import mysql.connector
 import hashlib
