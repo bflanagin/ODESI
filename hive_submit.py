@@ -136,13 +136,13 @@ def openseed_interconnect(account,postkey,storekeys):
 
 def check_verified(openseed,hive):
 	
-	openseed = mysql.connector.connect(
+	db = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
 		password = settings["dbpassword"],
 		database = "openseed"
 		)
-	mycursor = openseed.cursor()
+	mycursor = db.cursor()
 	
 	find_openseed = "SELECT username,hive FROM `users` WHERE username = %s"
 	openseed_val = (openseed,)
@@ -153,7 +153,7 @@ def check_verified(openseed,hive):
 	hive_val = (hive,)
 	mycursor.execute(find_hive,hive_val)
 	hive_result = mycursor.fetchall()	
-	openseed.close()
+	db.close()
 	
 	return '{"openseed":'+len(openseed_result)+',"hive":"'+len(hive_result)+'"}'
 
