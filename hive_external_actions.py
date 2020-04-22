@@ -15,17 +15,18 @@ def store_key(account,key):
 	process.stdin.write(str(key+"\n").encode("utf8"))
 	process.stdin.write(str(settings["passphrase"]+"\n").encode("utf8"))
 	process.stdin.close()
-	for line in process.stdout:
-		print(line)
+	#stdout, stderr = process.communicate()
+	#print(stdout)
 
 def import_account(account,masterpass):
 	process = subprocess.Popen(['hivepy', 'importaccount', account], stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-	process.stdin.write(str(masterpass+"\n").encode("utf8"))
-	process.stdin.write(str(settings["passphrase"]+"\n").encode("utf8"))
-	process.stdin.close()
-	for line in process.stdout:
-		print(line)
-		
+	#process.stdin.write(str(masterpass+"\n").encode("utf8"))
+	#process.stdin.write(str(settings["passphrase"]+"\n").encode("utf8"))
+	#process.stdin.close()
+	stdout, stderr = process.communicate(masterpass)
+	stdout, stderr = process.communicate(settings["passphrase"])
+	print(stdout)
+	
 def flush_keys(account):
 	keys = find_keys_by_accountname(account)
 	for key in keys:
