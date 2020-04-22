@@ -58,7 +58,7 @@ def get_hive_connections(account):
 
 	return(connections)
 
-def get_openseed_connections(account,external = True):
+def get_openseed_connections(account,external = False):
 	connections = '{"connections":"none"}'
 	ac = 0
 	accounts = ""
@@ -174,26 +174,26 @@ def user_profile(username):
 		data3 = '"None"'
 		data4 = '"None"'
 		data5 = '"None"'
-
-		if(result[0][0] != "None"):
-			data1 = result[0][0]
+		if len(result) == 1:
+			if(result[0][0] != "None"):
+				data1 = result[0][0]
  
-		if(result[0][1] != "None"):
-			data2 = result[0][1]
+			if(result[0][1] != "None"):
+				data2 = result[0][1]
  
-		if(result[0][2] != "None"):
-			data3 = result[0][2]
+			if(result[0][2] != "None"):
+				data3 = result[0][2]
  
-		if(result[0][3] != "None"):
-			data4 = result[0][3]
+			if(result[0][3] != "None"):
+				data4 = result[0][3]
  
-		if(result[0][4] != "None"):
-			if(len(result[0][4]) > 1):
-				data5 = str(result[0][4]).replace(',"is_public":true',"").replace(',"redirect_uris":["http://142.93.27.131:8675/steemconnect/verify.py"]',"")
+			if(result[0][4] != "None"):
+				if(len(result[0][4]) > 1):
+					data5 = str(result[0][4]).replace(',"is_public":true',"").replace(',"redirect_uris":["http://142.93.27.131:8675/steemconnect/verify.py"]',"")
+				else:
+					data5 = '{}'
 			else:
 				data5 = '{}'
-		else:
-			data5 = '{}'
 
 		profile = '"profile":{"openseed":'+data1.replace("\n","")+',"extended":'+data2.replace("\n","")+',"appdata":'+data3.replace("\n","")+',"misc":'+data4.replace("\n","")+',"imports":'+data5.replace("\n","")+'}'
 
