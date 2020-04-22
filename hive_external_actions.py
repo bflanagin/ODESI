@@ -23,8 +23,8 @@ def import_account(account,masterpass):
 	#process.stdin.write(str(masterpass+"\n").encode("utf8"))
 	#process.stdin.write(str(settings["passphrase"]+"\n").encode("utf8"))
 	#process.stdin.close()
-	stdout, stderr = process.communicate(masterpass)
-	stdout, stderr = process.communicate(settings["passphrase"])
+	stdout, stderr = process.communicate(masterpass.encode("utf8"))
+	stdout, stderr = process.communicate(settings["passphrase"].encode("utf8"))
 	print(stdout)
 	
 def flush_keys(account):
