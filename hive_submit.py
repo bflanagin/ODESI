@@ -144,18 +144,18 @@ def check_verified(openseed,hive):
 		)
 	mycursor = openseed.cursor()
 	
-	find_openseed = "SELECT username,hive FROM `users` WHERE username= %s"
+	find_openseed = "SELECT username,hive FROM `users` WHERE username = %s"
 	openseed_val = (openseed,)
 	mycursor.execute(find_openseed,openseed_val)
 	
-	openseed = mycursor.fetchall()
-	find_hive = "SELECT username,hive FROM `users` WHERE hive= %s"
+	openseed_result = mycursor.fetchall()
+	find_hive = "SELECT username,hive FROM `users` WHERE hive = %s"
 	hive_val = (hive,)
 	mycursor.execute(find_hive,hive_val)
-	hive = mycursor.fetchall()	
+	hive_result = mycursor.fetchall()	
 	openseed.close()
 	
-	return '{"openseed":'+len(openseed)+',"hive":"'+len(hive)+'"}'
+	return '{"openseed":'+len(openseed_result)+',"hive":"'+len(hive_result)+'"}'
 
 def find_keys_by_accountname(account):
 
