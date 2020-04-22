@@ -7,19 +7,19 @@ sys.path.append("..")
 import openseed_setup as Settings
 
 
-def hive_store_key(account,key)
+def hive_store_key(account,key):
 
 	process = subprocess.Popen(['hivepy', 'pin', 'ls', '--type', 'recursive', thehash], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 	process.wait()
 	stdout, stderr = process.communicate()
 	
-def hive_flush_keys(account)
+def hive_flush_keys(account):
 
 	process = subprocess.Popen(['hivepy', 'pin', 'ls', '--type', 'recursive', thehash], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 	process.wait()
 	stdout, stderr = process.communicate()
 
-def hive_allow_app(account,app,allowed)
+def hive_allow_app(account,app,allowed):
 
 	process = subprocess.Popen(['hivepy', 'pin', 'ls', '--type', 'recursive', thehash], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 	process.wait()
