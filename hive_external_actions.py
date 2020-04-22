@@ -51,9 +51,9 @@ def find_keys_by_accountname(account):
 	stdout, stderr = process.communicate()
 	keys = []
 	for line in str(stdout).split("\n"):
-		print(line)
 		if line.find("|") != -1:
 			if line.find(account) != -1:
+				print(line)
 				keys.append(line.split("|")[3].strip())
 	return keys
 
