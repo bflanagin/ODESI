@@ -66,7 +66,7 @@ def like_post(name,post):
 			identifier = ('@'+name+'/'+post)
 			print("voting on ",identifier)	
 			h.commit.vote(identifier, float(upvote_pct), who)
-			post_reply(name,post)
+			#post_reply(name,post)
 		else:
 			print("Voted already")
 
