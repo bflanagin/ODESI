@@ -46,7 +46,7 @@ def hive_openseed_interconnect(account,postkey):
 	stdout, stderr = process.communicate()
 	
 def find_keys_by_accountname(account):
-	process = subprocess.Popen(['hivepy', 'listaccounts',], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	process = subprocess.Popen(['hivepy', 'listaccounts'], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 	process.wait()
 	stdout, stderr = process.communicate()
 	keys = []
