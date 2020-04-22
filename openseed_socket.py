@@ -6,8 +6,9 @@ import mysql.connector
 import socketserver
 import openseed_account as Account
 import hive_get as Get
-import hive_submit as Submit
-import leaderboard as LeaderBoard
+#import hive_submit as Submit
+import hive_external_actions as Submit
+#import leaderboard as LeaderBoard
 import openseed_music as Music
 import openseed_connections as Connections
 import openseed_chat as Chat
