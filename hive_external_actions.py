@@ -7,16 +7,23 @@ import os
 sys.path.append("..")
 import openseed_setup as Settings
 
+settings = Settings.get_settings()
 
 def store_key(account,key):
 
-	process = subprocess.Popen(['hivepy', 'addkey', key], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	process = subprocess.Popen(['hivepy', 'addkey'], stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	process.stdin.write(key+"\n")
+	process.stdin.write(settings["passphrase"]+"\n")
+	process.stdin.close()
 	process.wait()
 	stdout, stderr = process.communicate()
 	print(stdout)
 
 def import_account(acount,masterpass):
-	process = subprocess.Popen(['echo',masterpass,'|','hivepy', 'importaccount', account], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	process = subprocess.Popen(['hivepy', 'importaccount', account], stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	process.stdin.write(masterpass+"\n")
+	process.stdin.write(settings["passphrase"]+"\n")
+	process.stdin.close()
 	process.wait()
 	stdout, stderr = process.communicate()
 	print(stdout)
@@ -24,10 +31,12 @@ def import_account(acount,masterpass):
 def flush_keys(account):
 	keys = find_keys_by_accountname(account)
 	for key in keys:
-		process = subprocess.Popen(['echo','Y','|','hivepy', 'delkey', key], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-	process.wait()
-	stdout, stderr = process.communicate()
-	print(stdout)
+		process = subprocess.Popen(['hivepy', 'delkey', key], stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+		process.stdin.write("Y\n")
+		process.stdin.close()
+		process.wait()
+		stdout, stderr = process.communicate()
+		print(stdout)
 
 def allow_app(account,app,allowed):
 	if allowed == "posting" or allowed == "active":
