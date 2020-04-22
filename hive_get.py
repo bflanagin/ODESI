@@ -8,7 +8,7 @@ import mysql.connector
 import json
 from hive import hive
 import openseed_music as Music
-#import hive_submit as Submit
+import hive_submit as Submit
 import openseed_ipfs as IPFS
 import openseed_setup as Settings
 import openseed_account as Account

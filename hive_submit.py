@@ -4,6 +4,7 @@ import mysql.connector
 import hashlib
 from hive import hive
 from hive import wallet
+import openseed_account as Account
 sys.path.append("..")
 import openseed_setup as Settings
 
@@ -103,15 +104,67 @@ def payment(hiveaccount,to_account,amount,data,postingkey):
 	h.commit.transfer(to=to_account,amount=float(payout),asset=asset,memo=receipt,account=hiveaccount)
 	return('{"sent":"'+to_account+'"}')
 
-def set_allow(hiveaccount, hiveapp):
+def check_account(account,postkey):
+	var hiveaccount = Submit.w.getAccountFromPrivateKey(fix_thy_self,postkey)
+	if account == hiveaccount:
+		return 1
+	else:
+		return 0
+	
+def store_key(account,key):
+
+	return
+	
+def import_account(account,masterpass):
 
 	return
 
-def remove_allow(hiveaccount, hiveapp):
+def openseed_interconnect(account,postkey,storekeys):
+
+	if check_account(account,postkey) == 1:
+		exists = Account.check_db(account,"users")
+		if exists !=0:
+			print("user exists")
+			print("setting checking if hive account is connected")
+			verifing = json.loads(check_verified(account,account))
+			print(verifing)
+			
+			
+
+	return
+
+def check_verified(openseed,hive):
+	
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+	mycursor = openseed.cursor()
+	
+	find_openseed = "SELECT username,hive FROM `users` WHERE username=%s"
+	mycursor.execute(find_openseed)
+	openseed = mycursor.fetchall()
+	find_hive = "SELECT username,hive FROM `users` WHERE hive=%s"
+	mycursor.execute(find_hive)
+	hive = mycursor.fetchall()	
+	
+	return '{"openseed":'+len(openseed)+',"hive":"'+len(hive)+'"}'
+
+def find_keys_by_accountname(account):
+
+	return
+
+def set_allow(account, hiveapp):
+	
+	return
+
+def remove_allow(account, hiveapp):
 
 	return
 
 def flush_account(hiveaccount):
-	w.removeAccount(hiveaccount)
+	w.removeAccount(fix_thy_self,hiveaccount)
 	return('{"removed":"'+hiveaccount+'"}')
 
