@@ -12,19 +12,21 @@ settings = Settings.get_settings()
 def store_key(account,key):
 
 	process = subprocess.Popen(['hivepy', 'addkey'], stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-	process.stdin.write(str(key+"\n").encode("utf8"))
-	process.stdin.write(str(settings["passphrase"]+"\n").encode("utf8"))
+	process.stdin.write(str(key+"\n").encode())
+	process.stdin.write(str(settings["passphrase"]+"\n").encode())
 	process.stdin.close()
 	#stdout, stderr = process.communicate()
 	#print(stdout)
 
 def import_account(account,masterpass):
 	process = subprocess.Popen(['hivepy', 'importaccount', account], stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-	#process.stdin.write(str(masterpass+"\n").encode("utf8"))
-	#process.stdin.write(str(settings["passphrase"]+"\n").encode("utf8"))
-	#process.stdin.close()
-	stdout, stderr = process.communicate(masterpass.encode("utf8"))
-	stdout, stderr = process.communicate(settings["passphrase"].encode("utf8"))
+	stdout, stderr = process.communicate(masterpass.encode())
+	print(stdout)
+	stdout, stderr = process.communicate(settings["passphrase"].encode())
+	print(stdout)
+	stdout, stderr = process.communicate(masterpass.encode())
+	print(stdout)
+	stdout, stderr = process.communicate(settings["passphrase"].encode())
 	print(stdout)
 	
 def flush_keys(account):
