@@ -145,10 +145,10 @@ def check_verified(openseed,hive):
 	mycursor = openseed.cursor()
 	
 	find_openseed = "SELECT username,hive FROM `users` WHERE username=%s"
-	mycursor.execute(find_openseed)
+	mycursor.execute(find_openseed,)
 	openseed = mycursor.fetchall()
 	find_hive = "SELECT username,hive FROM `users` WHERE hive=%s"
-	mycursor.execute(find_hive)
+	mycursor.execute(find_hive,)
 	hive = mycursor.fetchall()	
 	
 	return '{"openseed":'+len(openseed)+',"hive":"'+len(hive)+'"}'
