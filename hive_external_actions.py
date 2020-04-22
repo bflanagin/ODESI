@@ -18,7 +18,7 @@ def store_key(account,key):
 	for line in process.stdout:
 		print(line)
 
-def import_account(acount,masterpass):
+def import_account(account,masterpass):
 	process = subprocess.Popen(['hivepy', 'importaccount', account], stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 	process.stdin.write(str(masterpass+"\n").encode("utf8"))
 	process.stdin.write(str(settings["passphrase"]+"\n").encode("utf8"))
