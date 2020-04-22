@@ -11,8 +11,11 @@ settings = Settings.get_settings()
 thenodes = ['anyx.io','api.hive.house','hive.anyx.io','hived.minnowsupportproject.org','hived.privex.io']
 h = hive.Hive(nodes=thenodes)
 w = wallet.Wallet
-w.unlock(self,user_passphrase=settings["passphrase"])
-postingKey = w.getPostingKeyForAccount(self,settings["hiveaccount"])
+fix_thy_self = wallet.Wallet()
+
+w.unlock(fix_thy_self,user_passphrase=settings["passphrase"])
+
+postingKey = w.getPostingKeyForAccount(fix_thy_self,settings["hiveaccount"])
 h.keys = postingKey
 who = settings["hiveaccount"]
 
