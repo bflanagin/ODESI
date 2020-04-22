@@ -105,7 +105,7 @@ def payment(hiveaccount,to_account,amount,data,postingkey):
 	return('{"sent":"'+to_account+'"}')
 
 def check_account(account,postkey):
-	hiveaccount = Submit.w.getAccountFromPrivateKey(fix_thy_self,postkey)
+	hiveaccount = w.getAccountFromPrivateKey(fix_thy_self,postkey)
 	if account == hiveaccount:
 		return 1
 	else:
