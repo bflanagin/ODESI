@@ -120,14 +120,14 @@ def import_account(account,masterpass):
 
 	return
 
-def openseed_interconnect(account,postkey,storekeys):
+def openseed_interconnect(openseed,account,postkey,storekeys):
 
 	if check_account(account,postkey) == 1:
 		exists = Account.check_db(account,"users")
 		if exists !=0:
 			print("user exists")
 			print("setting checking if hive account is connected")
-			verifing = json.loads(check_verified(account,account))
+			verifing = json.loads(check_verified(openseed,account))
 			print(verifing)
 			
 			
@@ -155,7 +155,7 @@ def check_verified(openseed,hive):
 	hive_result = mycursor.fetchall()	
 	db.close()
 	
-	return '{"openseed":'+str(len(openseed_result))+',"hive":"'+str(len(hive_result))+'"}'
+	return '{"openseed":'+str(len(openseed_result))+',"hive":'+str(len(hive_result))+'}'
 
 def find_keys_by_accountname(account):
 
