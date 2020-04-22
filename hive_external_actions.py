@@ -37,3 +37,8 @@ def hive_verify_user(account,postingkey):
 	process.wait()
 	stdout, stderr = process.communicate()
 
+def hive_openseed_interconnect(account,postkey):
+
+	process = subprocess.Popen(['hivepy', 'pin', 'ls', '--type', 'recursive', thehash], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	process.wait()
+	stdout, stderr = process.communicate()

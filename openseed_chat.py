@@ -274,7 +274,7 @@ def send_chat(userid,chatroom,data,appPub):
 	if len(theRoom) > 3:
 		username = json.loads(Account.user_from_id(userid))["user"]
 		response = '{"chat_response":{"speaker":"server","message":"denied"}}'
-		if username:
+		if username and username != None and username != "none":
 			response = '{"chat_response":{"speaker":"server","message":"No data"}}'
 			openseed = mysql.connector.connect(
 				host = "localhost",
@@ -292,7 +292,7 @@ def send_chat(userid,chatroom,data,appPub):
 				openseed.close()
 				response = '{"chat_response":{"speaker":"'+username+'","room":"'+theRoom+'","message":"received"}}'
 		else:
-			response = '{"chat_response":{"speaker":"server","message":"denied"}}'
+			response = '{"chat_response":{"speaker":"server","message":"couldn\'t determine speaker"}}'
 	else:
 		response = '{"chat_response":{"speaker":"server","message":"no room found at '+chatroom+'"}}'
 
