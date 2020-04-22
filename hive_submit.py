@@ -155,7 +155,7 @@ def check_verified(openseed,hive):
 	hive_result = mycursor.fetchall()	
 	db.close()
 	
-	return '{"openseed":'+len(openseed_result)+',"hive":"'+len(hive_result)+'"}'
+	return '{"openseed":'+str(len(openseed_result))+',"hive":"'+str(len(hive_result))+'"}'
 
 def find_keys_by_accountname(account):
 
