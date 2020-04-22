@@ -22,7 +22,7 @@ def import_account(account,masterpass):
 	#print(stdout)
 	#stdout, stderr = process.communicate(input=str(settings["passphrase"]+"\n").encode())
 	#print(stdout)
-	process = subprocess.run(['hivepy', 'importaccount', account], stdout=subprocess.PIPE input=masterpass+"\n"+settings["passphrase"]+"\n", encoding='ascii')
+	process = subprocess.run(['hivepy', 'importaccount', account], stdout=subprocess.PIPE, input=masterpass+"\n"+settings["passphrase"]+"\n", encoding='ascii')
 	print(process.returncode)
 	print(process.stdout)
 
