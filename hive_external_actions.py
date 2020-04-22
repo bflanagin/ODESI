@@ -12,14 +12,12 @@ settings = Settings.get_settings()
 def store_key(account,key):
 
 	process = subprocess.Popen(['hivepy', 'addkey'], stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-	process.stdin.write(input=str(key+"\n").encode(),time=15)
-	process.stdin.write(input=str(settings["passphrase"]+"\n").encode(),time=15)
-	process.stdin.close()
-	#stdout, stderr = process.communicate()
-	#print(stdout)
+	process.communicate(input=str(key+"\n").encode(),time=15)
+	process.communicate(input=str(settings["passphrase"]+"\n").encode(),time=15)
+
 
 def import_account(account,masterpass):
-	process = subprocess.Popen(['hivepy', 'importaccount', account], stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	process = subprocess.Popen(['hivepy', 'importaccount', account], stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
 	stdout, stderr = process.communicate(input=str(masterpass+"\n").encode(),timeout=15)
 	print(stdout)
 	stdout, stderr = process.communicate(input=str(settings["passphrase"]+"\n").encode(),time=15)
