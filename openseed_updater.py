@@ -8,7 +8,6 @@ import mysql.connector
 import socketserver
 import openseed_account as Account
 import openseed_hive as Hive
-import leaderboard as LeaderBoard
 import openseed_music as Music
 import openseed_utils as Utils
 import json
