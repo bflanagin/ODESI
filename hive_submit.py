@@ -135,7 +135,7 @@ def openseed_interconnect(openseed,account,postkey,storekeys):
 			elif verifing["openseed"] == 1 and verifing["hive"] == 0:
 				if update_account(openseed,account) == 1:
 					h.keys = postkey
-					h.commit.allow("openseed",permission="posting",account)
+					h.commit.allow("openseed",account)
 					if storekeys == True:
 						store_key(account,postkey)
 					return '{"interconnect":"connected","account_auth":"openseed","keystored":'+storekeys+'}'
