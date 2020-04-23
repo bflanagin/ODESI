@@ -129,19 +129,16 @@ def openseed_interconnect(openseed,acc,postkey,storekeys):
 			print("checking if hive account is connected to an openseed account")
 			verifing = json.loads(check_verified(openseed,acc))
 			if verifing["openseed"] == 1 and verifing["openseed"] == verifing["hive"]:
-				return '{"interconnect":"connected","account_auth":"openseed","keystored":'+storekeys+'}'
+				return '{"interconnect":"connected","account_auth":"openseed","keystored":'+str(storekeys)+'}'
 			elif verifing["openseed"] == 0 and verifing["hive"] == 1:
-				return '{"interconnect":"Hive account in use","account_auth":"error","keystored":False}'
+				return '{"interconnect":"Hive account in use","account_auth":"error","keystored":false}'
 			elif verifing["openseed"] == 1 and verifing["hive"] == 0:
 				if update_account(openseed,acc) == 1:
-					store_key(acc,postkey)
-					postingKey = w.getPostingKeyForAccount(fix_thy_self,acc)
-					h.keys = postingKey
-					who = acc
-					h.commit.allow("openseed",permission="posting",account=acc)
+					if store_key(acc,postkey) == 1:
+						set_delegation(acc,"openseed")
 					if storekeys == False:
 						flush_account(acc)
-					return '{"interconnect":"connected","account_auth":"openseed","keystored":'+storekeys+'}'
+					return '{"interconnect":"connected","account_auth":"openseed","keystored":'+str(storekeys)+'}'
 					
 
 def check_verified(openseed,hive):
@@ -171,13 +168,21 @@ def find_keys_by_accountname(account):
 
 	return
 
-def set_allow(account, hiveapp):
+def set_delegation(acc, hiveapp):
+	postingKey = w.getPostingKeyForAccount(fix_thy_self,acc)
+	h.keys = postingKey
+	who = acc
+	h.commit.allow("openseed",permission="posting",account=acc)
 	
-	return
+	return 1
 
-def remove_allow(account, hiveapp):
-
-	return
+def remove_delegation(acc, hiveapp):
+	postingKey = w.getPostingKeyForAccount(fix_thy_self,acc)
+	h.keys = postingKey
+	who = acc
+	h.commit.disallow(hiveapp,permission="posting",account=acc)
+	
+	return 1
 
 def flush_account(hiveaccount):
 	w.removeAccount(fix_thy_self,hiveaccount)
