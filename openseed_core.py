@@ -17,7 +17,6 @@ import openseed_game as Game
 import openseed_chat as Chat
 import onetime as OneTime
 import openseed_hive as Hive
-#import hive_external_actions as Submit
 
 
 import json
