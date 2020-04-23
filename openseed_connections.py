@@ -79,6 +79,7 @@ def get_openseed_connections(account,external = False):
 				connections = '{"total":'+str(ac)+',"connections":['+accounts.replace("'","\'")+','+hive_connections.replace("'","\'")+']}'
 		else:
 			connections = '{"total":'+str(ac)+',"connections":['+accounts.replace("'","\'")+']}'
+	print(connections)
 	try:
 		json.loads(connections)
 	except:
