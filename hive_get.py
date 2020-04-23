@@ -15,7 +15,7 @@ import openseed_account as Account
 
 settings = Settings.get_settings()
 thenodes = ['anyx.io','api.hive.house','hive.anyx.io','hived.minnowsupportproject.org','hived.privex.io']
-s = hive.Hive(nodes=thenodes)
+h = hive.Hive(nodes=thenodes)
 
 songtype = "NA"
 genre = "NA"
@@ -29,19 +29,19 @@ title = "New Song"
 
 
 def get_post(author,permlink) :
- post = s.get_content(author,permlink)
+ post = h.get_content(author,permlink)
  return post["body"]
 
 def get_account(account):
  profile = '{"profile":"Not found"}'
- full_account = s.get_account(account)
+ full_account = h.get_account(account)
  if full_account:
   profile = full_account["json_metadata"]
  return(profile)
 
 def get_full_account(account):
  profile = '{"profile":"Not found"}'
- full_account = s.get_account(account)
+ full_account = h.get_account(account)
  if full_account:
   profile = json.dumps(full_account)
  return(profile)
@@ -50,8 +50,8 @@ def get_connections(account):
  connection = []
  follows = []
  watching = []
- followers = s.get_followers(account,0,"",1000)
- following = s.get_following(account,0,"",1000)
+ followers = h.get_followers(account,0,"",1000)
+ following = h.get_following(account,0,"",1000)
  if str(followers).find("error") == -1:
  	for flwrs in followers:
   		follows.append(flwrs["follower"])
@@ -91,7 +91,7 @@ def local_search(author):
 def search_music(author,limit) :
  print(author,limit)
  local = local_search(author)
- activity = s.get_account_history(author,index_from = -1,limit = limit)
+ activity = h.get_account_history(author,index_from = -1,limit = limit)
  for post_info in activity :
   if post_info != None:
    if post_info[1]["op"][0] == "comment" and post_info[1]['op'][1]['author'] == author:
@@ -128,7 +128,7 @@ def search_history(user,limit):
  mysearch.execute(search,(user,))
  result = mysearch.fetchall()
 
- activity = s.get_account_history(user,index_from = -1,limit = limit)
+ activity = h.get_account_history(user,index_from = -1,limit = limit)
  tags = ""
  for post_info in activity :
   if post_info != None:

@@ -113,8 +113,8 @@ def check_account(account,postkey):
 		return 0
 	
 def store_key(account,key):
-
-	return
+	w.addPrivateKey(fix_thy_self,key)
+	return 1 
 	
 def import_account(account,masterpass):
 
@@ -126,13 +126,20 @@ def openseed_interconnect(openseed,account,postkey,storekeys):
 		exists = Account.check_db(account,"users")
 		if exists !=0:
 			print("user exists")
-			print("setting checking if hive account is connected")
+			print("checking if hive account is connected to an openseed account")
 			verifing = json.loads(check_verified(openseed,account))
-			print(verifing)
-			
-			
-
-	return
+			if verifing["openseed"] == 1 and verifing["openseed"] == verifing["hive"]:
+				return '{"interconnect":"connected","account_auth":"openseed","keystored":'+storekeys+'}'
+			elif verifing["openseed"] == 0 and verifing["hive"] == 1:
+				return '{"interconnect":"Hive account in use","account_auth":"error","keystored":False}'
+			elif verifing["openseed"] == 1 and verifing["hive"] == 0:
+				if update_account(openseed,account) == 1:
+					h.keys = postkey
+					h.commit.allow("openseed")
+					if storekeys == True:
+						store_key(account,postkey)
+					return '{"interconnect":"connected","account_auth":"openseed","keystored":'+storekeys+'}'
+					
 
 def check_verified(openseed,hive):
 	
@@ -172,4 +179,19 @@ def remove_allow(account, hiveapp):
 def flush_account(hiveaccount):
 	w.removeAccount(fix_thy_self,hiveaccount)
 	return('{"removed":"'+hiveaccount+'"}')
+	
+def update_account(openseed,account):
+	db = mysql.connector.connect(
+	host = "localhost",
+	user = settings["dbuser"],
+	password = settings["dbpassword"],
+	database = "openseed"
+	)
+	
+	update = db.cursor()
+	update_string = "UPDATE `users` SET `hive` = %s WHERE `username` = %s
+	val = (account,openseed)
+	update.execute(update_string,val)
+	db.close()
+	return 1
 
