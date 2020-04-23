@@ -673,7 +673,7 @@ def gps_search(username,cords):
 	return '{"gps":['+searchlist+']}'
 
 
-get_profile(account):
+def get_profile(account):
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
