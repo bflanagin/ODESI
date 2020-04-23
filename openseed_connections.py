@@ -11,52 +11,12 @@ from hive import hive
 import openseed_account as Account
 import openseed_setup as Settings
 import openseed_chat as Chat
-#import hive_get as HiveGet
+import openseed_hive as Hive
 
 settings = Settings.get_settings()
 
 thenodes = ['anyx.io','api.steem.house','hive.anyx.io','steemd.minnowsupportproject.org','steemd.privex.io']
 h = hive.Hive(nodes=thenodes)
-
-def get_hive_connections(account):
-	connections = []
-	follows = []
-	watching = []
-	followers = h.get_followers(account,0,"",1000)
-	following = h.get_following(account,0,"",1000)
-	if str(followers).find("error") == -1:
-		for flwrs in followers:
-			follows.append(flwrs["follower"])
-	if str(following).find("error") == -1:
-		for flws in following:
-			watching.append(flws["following"])
-
-	for er in follows:
-		for ing in watching:
-			if er == ing:
-				hiveaccount = json.loads(get_account(er))
-				if "profile" in hiveaccount and hiveaccount["profile"] != "Not found":
-					theName = er
-					theAbout = ""
-					theProfileImg = ""
-					theBannerImg = ""
-					
-					if "name" in hiveaccount["profile"]:
-						theName = hiveaccount["profile"]["name"]
-					if "about" in hiveaccount["profile"]:
-						theAbout = hiveaccount["profile"]["about"]
-					if "profile_image" in hiveaccount["profile"]:
-						theProfileImg = hiveaccount["profile"]["profile_image"]
-					if "cover_image" in hiveaccount["profile"]:
-						theBannerImg = hiveaccount["profile"]["cover_image"]
-
-					data1 = '{"name":"'+theName+'","email":"","phone":"","profession":"","company":""}'
-					data2 = '{"about":"","profile_img":"'+theProfileImg+'","banner":"'+theBannerImg+'"}'
-					blank_p = '"profile":{"openseed":'+data1+',"extended":{},"appdata":{},"misc":{},"imports":{}}'
-					connections.append('{"username":"'+er+'","linked":"1",'+blank_p+'}')
-
-
-	return(connections)
 
 def get_openseed_connections(account,external = False):
 	connections = '{"connections":"none"}'
@@ -97,7 +57,7 @@ def get_openseed_connections(account,external = False):
 	if external == False:
 		connections = '{"total":'+str(ac)+',"connections":['+accounts.replace("'","\'")+']}'
 	else:
-		hive = get_hive_connections(account)
+		hive = Hive.get_connections(account)
 		hive_connections = ""
 		if len(hive) > 0:
 			ac += len(hive)
