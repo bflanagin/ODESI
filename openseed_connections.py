@@ -57,25 +57,26 @@ def get_openseed_connections(account,external = False):
 	if external == False:
 		connections = '{"total":'+str(ac)+',"connections":['+accounts.replace("'","\'")+']}'
 	else:
-		
-		hive = Hive.get_connections(account)
-		hive_connections = ""
-		if len(hive) > 0:
-			ac += len(hive)
-			for i in hive:
-				try:
-					json.loads(i)
-				except:
-					pass
-				else:
-					stuff = json.loads(i)
-					if "username" in stuff and stuff["username"] not in accounts:
-						if hive_connections == "":
-							hive_connections = i
-						else:
-							hive_connections = hive_connections+","+i
+		hiveaccount = json.loads(Hive.check_verified(account))["hive"]
+		if hiveaccount != "not connected"
+			hive = Hive.get_connections(hiveaccount)
+			hive_connections = ""
+			if len(hive) > 0:
+				ac += len(hive)
+				for i in hive:
+					try:
+						json.loads(i)
+					except:
+						pass
+					else:
+						stuff = json.loads(i)
+						if "username" in stuff and stuff["username"] not in accounts:
+							if hive_connections == "":
+								hive_connections = i
+							else:
+								hive_connections = hive_connections+","+i
 
-					connections = '{"total":'+str(ac)+',"connections":['+accounts.replace("'","\'")+','+hive_connections.replace("'","\'")+']}'
+				connections = '{"total":'+str(ac)+',"connections":['+accounts.replace("'","\'")+','+hive_connections.replace("'","\'")+']}'
 		else:
 			connections = '{"total":'+str(ac)+',"connections":['+accounts.replace("'","\'")+']}'
 	try:
