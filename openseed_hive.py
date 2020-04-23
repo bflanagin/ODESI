@@ -57,6 +57,8 @@ title = "New Song"
 #
 ##############################
 
+
+
 def get_post(author,permlink) :
 	post = h.get_content(author,permlink)
 	return post["body"]
@@ -302,7 +304,9 @@ def openseed_interconnect(openseed,acc,postkey,storekeys):
 
 def import_profile(account,hiveaccount):
 
-	raw = json.loads(get_account(hiveaccount))
+	openseed = json.loads(
+
+	hive = json.loads(get_account(hiveaccount))
 	
 	print(raw)
 

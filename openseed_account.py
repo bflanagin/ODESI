@@ -673,6 +673,55 @@ def gps_search(username,cords):
 	return '{"gps":['+searchlist+']}'
 
 
+get_profile(account):
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+	profile = '"profile":{}'
+	theid = json.loads(Account.id_from_user(username))["id"]
+
+	if theid != "none":
+		search = "SELECT data1,data2,data3,data4,data5 FROM `profiles` WHERE `id` = %s"
+		sval = (theid,)
+		mysearch = openseed.cursor()
+		mysearch.execute(search,sval)
+		result = mysearch.fetchall()
+		data1 = '"None"'
+		data2 = '"None"'
+		data3 = '"None"'
+		data4 = '"None"'
+		data5 = '"None"'
+		if len(result) == 1:
+			if(result[0][0] != "None"):
+				data1 = result[0][0]
+ 
+			if(result[0][1] != "None"):
+				data2 = result[0][1]
+ 
+			if(result[0][2] != "None"):
+				data3 = result[0][2]
+ 
+			if(result[0][3] != "None"):
+				data4 = result[0][3]
+ 
+			if(result[0][4] != "None"):
+				if(len(result[0][4]) > 1):
+					data5 = str(result[0][4]).replace(',"is_public":true',"").replace(',"redirect_uris":["http://142.93.27.131:8675/steemconnect/verify.py"]',"")
+				else:
+					data5 = '{}'
+			else:
+				data5 = '{}'
+
+		profile = '"profile":{"openseed":'+data1.replace("\n","")+',"extended":'+data2.replace("\n","")+',"appdata":'+data3.replace("\n","")+',"misc":'+data4.replace("\n","")+',"imports":'+data5.replace("\n","")+'}'
+
+		mysearch.close()
+	openseed.close()
+
+	return(profile)
+
 
 class hive:
 	def link(username,hivename):
