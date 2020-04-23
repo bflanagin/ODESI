@@ -189,7 +189,7 @@ def update_account(openseed,account):
 	)
 	
 	update = db.cursor()
-	update_string = "UPDATE `users` SET `hive` = %s WHERE `username` = %s
+	update_string = "UPDATE `users` SET `hive` = %s WHERE `username` = %s"
 	val = (account,openseed)
 	update.execute(update_string,val)
 	db.close()
