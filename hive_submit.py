@@ -83,13 +83,6 @@ def openseed_post(author,post,body,title,json):
 	print("adding post")
 	return
 
-def leaderboard(devID,appID,user,data,hive,postingkey):
-	h.wallet.addPrivateKey(postingkey)
-	h.keys = postingkey
-	update = '{"devID":"'+str(devID)+'","appID":"'+str(appID)+'","user":"'+str(user)+'","data":"'+str(data)+'"}'
-	tamount = 0.001
-	h.commit.transfer(to="openseed",amount=tamount,asset='hive',memo=update,account=hive)
-
 def payment(hiveaccount,to_account,amount,data,postingkey):
 	if w.getActiveKeyForAccount(hiveaccount):
 		h.keys = w.getActiveKeyForAccount(hiveaccount)
@@ -97,7 +90,7 @@ def payment(hiveaccount,to_account,amount,data,postingkey):
 		w.addPrivateKey(postingkey)
 		h.keys = postingkey
 
-	receipt = str(data)+' via Thicket'
+	receipt = str(data)+' via OpenSeed'
 	asset = 'HIVE'
 	if amount.split(",")[1].split("]")[0] == 1:
 		asset = 'HBD'
@@ -172,9 +165,9 @@ def set_delegation(acc, hiveapp):
 	postingKey = w.getPostingKeyForAccount(fix_thy_self,acc)
 	h.keys = postingKey
 	who = acc
-	h.commit.allow("openseed",permission="posting",account=acc)
+	h.commit.allow(hiveapp,permission="posting",account=acc)
 	
-	return 1
+	return '{delegation:{"account":"'+acc+'","rights":"posting","to":"'+hiveapp+'"}'
 
 def remove_delegation(acc, hiveapp):
 	postingKey = w.getPostingKeyForAccount(fix_thy_self,acc)
@@ -182,7 +175,7 @@ def remove_delegation(acc, hiveapp):
 	who = acc
 	h.commit.disallow(hiveapp,permission="posting",account=acc)
 	
-	return 1
+	return '{delegation:{"account":"'+acc+'","rights":"removed","to":"'+hiveapp+'"}'
 
 def flush_account(hiveaccount):
 	w.removeAccount(fix_thy_self,hiveaccount)
