@@ -141,7 +141,6 @@ def search_music(author,limit) :
 										img = metadata["audio"]["files"]["cover"]
 										genre = metadata["audio"]["genre"]
 										IPFS.pin_and_record(ipfs,artist,title,permlink,img,songtype,genre,songtags,duration)
-										#print("found audio "+title)
 	return(local)
 
 def search_history(user,limit):
@@ -231,7 +230,6 @@ def like_post(name,post):
 			identifier = ('@'+name+'/'+post)
 			print("voting on ",identifier)	
 			h.commit.vote(identifier, float(upvote_pct), who)
-			#post_reply(name,post)
 		else:
 			print("Voted already")
 
@@ -275,7 +273,7 @@ def store_key(account,key):
 	return 1 
 	
 def import_account(account,masterpass):
-
+	
 	return
 
 def openseed_interconnect(openseed,acc,postkey,storekeys):
@@ -298,7 +296,17 @@ def openseed_interconnect(openseed,acc,postkey,storekeys):
 						flush_account(acc)
 					return '{"interconnect":"connected","account_auth":"openseed","keystored":'+str(storekeys)+'}'
 			else:
-				import_account(acc)
+				new = json.loads(Account.external_user(acc,postkey,"hive"))
+				Account.create_default_profile(new["token"],new["username"],"")
+				update_account(new["username"],new["username"])
+
+def import_profile(account,hiveaccount):
+
+	raw = json.loads(get_account(hiveaccount))
+	
+	print(raw)
+
+	return			
 					
 
 def check_verified(openseed,hive):
@@ -328,7 +336,7 @@ def find_keys_by_accountname(account):
 
 	return
 
-def set_delegation(acc, hiveapp):
+def set_delegation(acc, hiveapp, privatekey=""):
 	postingKey = w.getPostingKeyForAccount(fix_thy_self,acc)
 	h.keys = postingKey
 	who = acc
@@ -336,7 +344,7 @@ def set_delegation(acc, hiveapp):
 	
 	return '{delegation:{"account":"'+acc+'","rights":"posting","to":"'+hiveapp+'"}'
 
-def remove_delegation(acc, hiveapp):
+def remove_delegation(acc, hiveapp, privatekey=""):
 	postingKey = w.getPostingKeyForAccount(fix_thy_self,acc)
 	h.keys = postingKey
 	who = acc
