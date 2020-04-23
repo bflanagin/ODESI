@@ -75,8 +75,10 @@ def get_openseed_connections(account,external = False):
 								hive_connections = i
 							else:
 								hive_connections = hive_connections+","+i
-
-				connections = '{"total":'+str(ac)+',"connections":['+accounts.replace("'","\'")+','+hive_connections.replace("'","\'")+']}'
+				if len(accounts) > 0:
+					connections = '{"total":'+str(ac)+',"connections":['+accounts.replace("'","\'")+','+hive_connections.replace("'","\'")+']}'
+				else:
+					connections = '{"total":'+str(ac)+',"connections":['+hive_connections.replace("'","\'")+']}'
 		else:
 			connections = '{"total":'+str(ac)+',"connections":['+accounts.replace("'","\'")+']}'
 	print(connections)
