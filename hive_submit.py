@@ -127,7 +127,7 @@ def openseed_interconnect(openseed,acc,postkey,storekeys):
 		if exists !=0:
 			print("user exists")
 			print("checking if hive account is connected to an openseed account")
-			verifing = json.loads(check_verified(openseed,account))
+			verifing = json.loads(check_verified(openseed,acc))
 			if verifing["openseed"] == 1 and verifing["openseed"] == verifing["hive"]:
 				return '{"interconnect":"connected","account_auth":"openseed","keystored":'+storekeys+'}'
 			elif verifing["openseed"] == 0 and verifing["hive"] == 1:
