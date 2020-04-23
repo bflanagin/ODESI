@@ -24,10 +24,10 @@ def get_hive_connections(account):
 	watching = []
 	followers = h.get_followers(account,0,"",1000)
 	following = h.get_following(account,0,"",1000)
-	if str(followers.keys()).find("error") == -1:
+	if str(followers).find("error") == -1:
 		for flwrs in followers:
 			follows.append(flwrs["follower"])
-	if str(following.keys()).find("error") == -1:
+	if str(following).find("error") == -1:
 		for flws in following:
 			watching.append(flws["following"])
 
