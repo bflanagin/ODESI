@@ -4,21 +4,7 @@ import sys
 sys.path.append("..")
 import mysql.connector
 import socketserver
-import openseed_account as Account
-import hive_get as Get
-#import hive_submit as Submit
-import hive_external_actions as Submit
-#import leaderboard as LeaderBoard
-import openseed_music as Music
-import openseed_connections as Connections
-import openseed_chat as Chat
-import onetime as OneTime
-import openseed_utils as Utils
 import openseed_core as Core
-import openseed_setup as Settings
-
-settings = Settings.get_settings()
-
 import json
 
 import socketserver
