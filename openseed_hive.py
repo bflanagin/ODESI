@@ -366,9 +366,9 @@ def check_verified(openseed):
 	openseed_result = mycursor.fetchall()
 
 	if len(openseed_result) != 0:
-		return '{"openseed":'+openseed+',"hive":"'+openseed_result[0][1]+'"}'
+		return '{"openseed":"'+openseed+'","hive":"'+openseed_result[0][1]+'"}'
 	else:
-		return	'{"openseed":'+openseed+',"hive":"not connected"}'
+		return	'{"openseed":"'+openseed+'","hive":"not connected"}'
 
 def check_link(openseed,hive):
 	
