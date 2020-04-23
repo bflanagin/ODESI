@@ -57,6 +57,7 @@ def get_openseed_connections(account,external = False):
 	if external == False:
 		connections = '{"total":'+str(ac)+',"connections":['+accounts.replace("'","\'")+']}'
 	else:
+		
 		hive = Hive.get_connections(account)
 		hive_connections = ""
 		if len(hive) > 0:

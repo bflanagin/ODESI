@@ -325,7 +325,7 @@ def openseed_interconnect(openseed,acc,postkey,storekeys):
 
 def import_profile(account,hiveaccount):
 
-	openseed = json.loads(
+	openseed = json.loads(Accout.get_profile(account))
 
 	hive = json.loads(get_account(hiveaccount))
 	
