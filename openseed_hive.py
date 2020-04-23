@@ -297,6 +297,8 @@ def openseed_interconnect(openseed,acc,postkey,storekeys):
 					if storekeys == False:
 						flush_account(acc)
 					return '{"interconnect":"connected","account_auth":"openseed","keystored":'+str(storekeys)+'}'
+			else:
+				
 					
 
 def check_verified(openseed,hive):

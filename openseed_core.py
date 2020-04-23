@@ -84,7 +84,7 @@ def message(data):
 			elif action == "get_full_hive_account":
 				response = Hive.get_full_account(from_client["account"])
 			elif action == "get_hive_post":
-				response = Get.get_post(from_client["author"],from_client["permlink"])
+				response = Hive.get_post(from_client["author"],from_client["permlink"])
 			elif action == "set_posting_right":
 				response = '{"server":"error"}'
 			elif action == "remove_posting_right":
