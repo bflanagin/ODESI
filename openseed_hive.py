@@ -306,7 +306,7 @@ def openseed_interconnect(openseed,acc,postkey,storekeys):
 		if exists !=0:
 			print("user exists")
 			print("checking if hive account is connected to an openseed account")
-			verifing = json.loads(check_verified(openseed,acc))
+			verifing = json.loads(check_link(openseed,acc))
 			if verifing["openseed"] == 1 and verifing["openseed"] == verifing["hive"]:
 				return '{"interconnect":"connected","account_auth":"openseed","keystored":'+str(storekeys)+'}'
 			elif verifing["openseed"] == 0 and verifing["hive"] == 1:
@@ -332,9 +332,45 @@ def import_profile(account,hiveaccount):
 	print(hive)
 
 	return			
-					
 
-def check_verified(openseed,hive):
+def check_in_use(hiveaccount):
+	db = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+	mycursor = db.cursor()
+	
+	find_hive = "SELECT username,hive FROM `users` WHERE hive = %s"
+	hive_val = (hive,)
+	mycursor.execute(find_hive,hive_val)
+	hive_result = mycursor.fetchall()	
+	db.close()
+	
+	return '{"hive_account":'+hiveaccount+',"in_use":'+str(len(hive_result))+'}'		
+	
+def check_verified(openseed):
+	
+	db = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+	mycursor = db.cursor()
+	
+	find_openseed = "SELECT username,hive FROM `users` WHERE username = %s AND hive IS NOT NULL"
+	openseed_val = (openseed,)
+	mycursor.execute(find_openseed,openseed_val)
+	openseed_result = mycursor.fetchall()
+
+	if len(openseed_result) != 0:
+		return '{"openseed":'+openseed+',"hive":"'+openseed_result[0][1]+'"}'
+	else:
+		return	'{"openseed":'+openseed+',"hive":"not connected"}'
+
+def check_link(openseed,hive):
 	
 	db = mysql.connector.connect(
 		host = "localhost",
