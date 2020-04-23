@@ -299,8 +299,8 @@ def import_account(account,masterpass):
 	
 	return
 
-def openseed_interconnect(openseed,acc,postkey,storekeys):
-
+def openseed_interconnect(openseed,acc,postkey,storekeys,importprofile):
+	token = ""
 	if check_account(acc,postkey) == 1:
 		exists = Account.check_db(acc,"users")
 		if exists !=0:
@@ -308,10 +308,12 @@ def openseed_interconnect(openseed,acc,postkey,storekeys):
 			print("checking if hive account is connected to an openseed account")
 			verifing = json.loads(check_link(openseed,acc))
 			if verifing["openseed"] == 1 and verifing["openseed"] == verifing["hive"]:
+				token = json.loads(Account.id_from_user(openseed))["user"]
 				return '{"interconnect":"connected","account_auth":"openseed","keystored":'+str(storekeys)+'}'
 			elif verifing["openseed"] == 0 and verifing["hive"] == 1:
 				return '{"interconnect":"Hive account in use","account_auth":"error","keystored":false}'
 			elif verifing["openseed"] == 1 and verifing["hive"] == 0:
+				token = json.loads(Account.id_from_user(openseed))["user"]
 				if update_account(openseed,acc) == 1:
 					if store_key(acc,postkey) == 1:
 						set_delegation(acc,"openseed")
@@ -321,13 +323,18 @@ def openseed_interconnect(openseed,acc,postkey,storekeys):
 			else:
 				new = json.loads(Account.external_user(acc,postkey,"hive"))
 				Account.create_default_profile(new["token"],new["username"],"")
+				token = new["token"]
 				update_account(new["username"],new["username"])
+				
+			if importprofile == True and token != "":
+				import_profile(token,acc)
 
 def import_profile(account,hiveaccount):
 
-	openseed = json.loads(Accout.get_profile(account))
-
 	hive = json.loads(get_account(hiveaccount))
+	print(hive)
+	
+	#Account.set_profile(account,data1,data2,data3,data4,data5,thetype=1)
 	
 	print(hive)
 
