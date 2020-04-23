@@ -16,9 +16,8 @@ import openseed_setup as Settings
 import openseed_game as Game
 import openseed_chat as Chat
 import onetime as OneTime
-import hive_get as Get
-#import hive_submit as Submit
-import hive_external_actions as Submit
+import openseed_hive as Hive
+#import hive_external_actions as Submit
 
 
 import json
@@ -76,15 +75,15 @@ def message(data):
 			#####################################################
 
 			elif action == "hive_send_payment":
-				response = Submit.payment(from_client["hiveaccount"],from_client["to"],from_client["amount"],from_client["for"],from_client["postingkey"])
+				response = Hive.payment(from_client["hiveaccount"],from_client["to"],from_client["amount"],from_client["for"],from_client["postingkey"])
 			elif action == "hive_flush_keys":
-				response = Submit.flush(from_client["hiveaccount"])
+				response = Hive.flush_account(from_client["hiveaccount"])
 			elif action == "hive_verify_account":
 				response = Account.hive.verify(from_client["username"],from_client["onetime"])
 			elif action == "get_hive_account":
-				response = Get.get_account(from_client["account"])
+				response = Hive.get_account(from_client["account"])
 			elif action == "get_full_hive_account":
-				response = Get.get_full_account(from_client["account"])
+				response = Hive.get_full_account(from_client["account"])
 			elif action == "get_hive_post":
 				response = Get.get_post(from_client["author"],from_client["permlink"])
 			elif action == "set_posting_right":
@@ -94,7 +93,7 @@ def message(data):
 			elif action == "link_account":
 				response = Account.hive.link(from_client["username"],from_client["hivename"])
 				if response:
-					Submit.memo(from_client["username"],from_client["hivename"],response)
+					Hive.memo(from_client["username"],from_client["hivename"],response)
 
 			#####################################################
 			#

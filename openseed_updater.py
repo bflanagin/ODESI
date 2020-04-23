@@ -7,8 +7,7 @@ sys.path.append("..")
 import mysql.connector
 import socketserver
 import openseed_account as Account
-import hive_get as Get
-import hive_submit as Submit
+import openseed_hive as Hive
 import leaderboard as LeaderBoard
 import openseed_music as Music
 import openseed_utils as Utils
@@ -44,7 +43,7 @@ def update_check(check):
 		result = music.fetchall()
 		for artist in result:
 			if str(artists).find(artist[0]) == -1:
-				Get.search_music(artist[0],500)
+				Hive.search_music(artist[0],500)
 				artists.append(artist[0])
 		music.close()
 		return(1)
@@ -58,7 +57,7 @@ def update_check(check):
 		result = users.fetchall()
 		for user in result:
 			if str(userList).find(user[1]) == -1:
-				Get.search_history(user[1],100)
+				Hive.search_history(user[1],100)
 				userList.append(user[1])
 		users.close()
 		return(1)
