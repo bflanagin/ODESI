@@ -118,7 +118,7 @@ def local_search(author):
 
 
 def search_music(author,limit) :
-	print(author,limit)
+	#print(author,limit)
 	local = local_search(author)
 	activity = h.get_account_history(author,index_from = -1,limit = limit)
 	for post_info in activity :
@@ -142,7 +142,7 @@ def search_music(author,limit) :
 										img = metadata["audio"]["files"]["cover"]
 										genre = metadata["audio"]["genre"]
 										IPFS.pin_and_record(ipfs,artist,title,permlink,img,songtype,genre,songtags,duration)
-										print("found audio "+title)
+										#print("found audio "+title)
 	return(local)
 
 def search_history(user,limit):

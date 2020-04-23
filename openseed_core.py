@@ -115,7 +115,7 @@ def message(data):
 			elif action == "music":
 				response = Music.get_curated_music_json(from_client["curator"])
 			elif action == "artist_search":
-				response = Get.search_music(from_client["author"],10000)
+				response = Hive.search_music(from_client["author"],10000)
 			elif action == "get_new_musicians":
 				response = Music.get_new_artists()
 			elif action == "get_new_tracks":
