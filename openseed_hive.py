@@ -308,7 +308,7 @@ def openseed_interconnect(openseed,acc,postkey,storekeys,importprofile):
 			print("checking if hive account is connected to an openseed account")
 			verifing = json.loads(check_link(openseed,acc))
 			if verifing["openseed"] == 1 and verifing["openseed"] == verifing["hive"]:
-				token = json.loads(Account.id_from_user(openseed))["user"]
+				token = json.loads(Account.id_from_user(openseed))["id"]
 				return '{"interconnect":"connected","account_auth":"openseed","keystored":'+str(storekeys)+'}'
 			elif verifing["openseed"] == 0 and verifing["hive"] == 1:
 				return '{"interconnect":"Hive account in use","account_auth":"error","keystored":false}'
@@ -329,14 +329,26 @@ def openseed_interconnect(openseed,acc,postkey,storekeys,importprofile):
 			if importprofile == True and token != "":
 				import_profile(token,acc)
 
-def import_profile(account,hiveaccount):
+def import_profile(token,hiveaccount):
+
+	openseed = json.loads("{"+get_profile(json.loads(Account.user_from_id(token))["user"])+'}')
+	print(openseed)
+	name = ""
+	banner = ""
+	profile_image = ""
+	about = ""
+	email = ""
+	phone = ""
+	profession = ""
+	company = ""
+	
+	data1 = '{"name":"'+username+'","email":"'+email+'","phone":"'++'","profession":"'++'","company":"'++'"}'
+	data2 = '{"about":"'+about+'","profile_img":"'+profile_image+'","banner":"'+banner+'"}'
 
 	hive = json.loads(get_account(hiveaccount))
 	print(hive)
 	
 	#Account.set_profile(account,data1,data2,data3,data4,data5,thetype=1)
-	
-	print(hive)
 
 	return			
 
