@@ -329,7 +329,7 @@ def import_profile(account,hiveaccount):
 
 	hive = json.loads(get_account(hiveaccount))
 	
-	print(raw)
+	print(hive)
 
 	return			
 					
