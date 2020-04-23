@@ -58,7 +58,7 @@ def get_openseed_connections(account,external = False):
 		connections = '{"total":'+str(ac)+',"connections":['+accounts.replace("'","\'")+']}'
 	else:
 		hiveaccount = json.loads(Hive.check_verified(account))["hive"]
-		if hiveaccount != "not connected"
+		if hiveaccount != "not connected":
 			hive = Hive.get_connections(hiveaccount)
 			hive_connections = ""
 			if len(hive) > 0:
