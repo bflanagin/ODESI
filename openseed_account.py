@@ -722,6 +722,39 @@ def get_profile(account):
 
 	return(profile)
 
+def user_profile_lite(username):
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+	profile = '"profile":{}'
+	theid = json.loads(Account.id_from_user(username))["id"]
+
+	if theid != "none":
+		search = "SELECT data1,data2,data3,data4,data5 FROM `profiles` WHERE `id` = %s"
+		sval = (theid,)
+		mysearch = openseed.cursor()
+		mysearch.execute(search,sval)
+		result = mysearch.fetchall()
+		data1 = '"None"'
+		data2 = '"None"'
+
+		if(result[0][0] != "None"):
+			data1 = result[0][0]
+ 
+		if(result[0][1] != "None"):
+			data2 = result[0][1]
+
+		profile = '"profile":{"openseed":'+data1.replace("\n","")+',"extended":'+data2.replace("\n","")+'}'
+	
+
+		mysearch.close()
+	openseed.close()
+
+	return(profile)
+
 
 class hive:
 	def link(username,hivename):
