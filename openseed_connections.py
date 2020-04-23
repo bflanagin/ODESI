@@ -42,18 +42,18 @@ def get_openseed_connections(account,external = False):
 		for u in exists1:
 			cname = str(u[0])
 			if accounts == "":
-				accounts = '{"username":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(Account.get_profile(str(cname)))+'}'
+				accounts = '{"username":"'+str(cname)+'","linked":'+str(u[1])+','+str(Account.get_profile(str(cname)))+'}'
 			else:
-				accounts = accounts+',{"username":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(Account.get_profile(str(cname)))+'}'
+				accounts = accounts+',{"username":"'+str(cname)+'","linked":'+str(u[1])+','+str(Account.get_profile(str(cname)))+'}'
 
 	if len(exists2) != 0:
 		ac += len(exists2)
 		for u in exists2:
 			cname = str(u[0])
 			if accounts == "":
-				accounts = '{"username":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(Account.get_profile(str(cname)))+'}'
+				accounts = '{"username":"'+str(cname)+'","linked":'+str(u[1])+','+str(Account.get_profile(str(cname)))+'}'
 			else:
-				accounts = accounts+',{"username":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(Account.get_profile(str(cname)))+'}'
+				accounts = accounts+',{"username":"'+str(cname)+'","linked":'+str(u[1])+','+str(Account.get_profile(str(cname)))+'}'
 	if external == False:
 		connections = '{"total":'+str(ac)+',"connections":['+accounts.replace("'","\'")+']}'
 	else:
