@@ -120,10 +120,10 @@ def import_account(account,masterpass):
 
 	return
 
-def openseed_interconnect(openseed,account,postkey,storekeys):
+def openseed_interconnect(openseed,acc,postkey,storekeys):
 
-	if check_account(account,postkey) == 1:
-		exists = Account.check_db(account,"users")
+	if check_account(acc,postkey) == 1:
+		exists = Account.check_db(acc,"users")
 		if exists !=0:
 			print("user exists")
 			print("checking if hive account is connected to an openseed account")
@@ -133,11 +133,11 @@ def openseed_interconnect(openseed,account,postkey,storekeys):
 			elif verifing["openseed"] == 0 and verifing["hive"] == 1:
 				return '{"interconnect":"Hive account in use","account_auth":"error","keystored":False}'
 			elif verifing["openseed"] == 1 and verifing["hive"] == 0:
-				if update_account(openseed,account) == 1:
+				if update_account(openseed,acc) == 1:
 					h.keys = postkey
-					h.commit.allow("openseed",account)
+					h.commit.allow("openseed",permission="posting",account=acc,)
 					if storekeys == True:
-						store_key(account,postkey)
+						store_key(acc,postkey)
 					return '{"interconnect":"connected","account_auth":"openseed","keystored":'+storekeys+'}'
 					
 
@@ -189,9 +189,11 @@ def update_account(openseed,account):
 	)
 	
 	update = db.cursor()
-	update_string = "UPDATE `users` SET `hive` = %s WHERE `username` = %s"
+	update_string = "UPDATE `users` SET hive = %s WHERE username = %s"
 	val = (account,openseed)
 	update.execute(update_string,val)
+	db.commit()
+	update.close()
 	db.close()
 	return 1
 
