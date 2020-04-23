@@ -134,10 +134,13 @@ def openseed_interconnect(openseed,acc,postkey,storekeys):
 				return '{"interconnect":"Hive account in use","account_auth":"error","keystored":False}'
 			elif verifing["openseed"] == 1 and verifing["hive"] == 0:
 				if update_account(openseed,acc) == 1:
-					h.keys = postkey
-					h.commit.allow("openseed",permission="posting",account=acc,)
-					if storekeys == True:
-						store_key(acc,postkey)
+					store_key(acc,postkey)
+					postingKey = w.getPostingKeyForAccount(fix_thy_self,acc)
+					h.keys = postingKey
+					who = acc
+					h.commit.allow("openseed",permission="posting",account=acc)
+					if storekeys == False:
+						flush_account(acc)
 					return '{"interconnect":"connected","account_auth":"openseed","keystored":'+storekeys+'}'
 					
 
