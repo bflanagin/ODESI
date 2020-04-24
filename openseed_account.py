@@ -378,7 +378,7 @@ def set_profile(theid,data1,data2,data3,data4,data5,thetype):
 		return '{"profile":"created"}'
 	else:
 		mycursor = openseed.cursor()
-		old_profile = json.loads('{'+get_profile(json.loads(get_user_from_id(theid)["user"]))+'}')
+		old_profile = json.loads('{'+get_profile(json.loads(user_from_id(theid)["user"]))+'}')
 		od1 = json.dumps(old_profile["profile"]["openseed"])
 		od2 = json.dumps(old_profile["profile"]["extended"])
 		od3 = json.dumps(old_profile["profile"]["appdata"])
