@@ -313,7 +313,7 @@ def openseed_interconnect(openseed,acc,postkey,storekeys,importprofile):
 			elif verifing["openseed"] == 0 and verifing["hive"] == 1:
 				return '{"interconnect":"Hive account in use","account_auth":"error","keystored":false}'
 			elif verifing["openseed"] == 1 and verifing["hive"] == 0:
-				token = json.loads(Account.id_from_user(openseed))["user"]
+				token = json.loads(Account.id_from_user(openseed))["id"]
 				if update_account(openseed,acc) == 1:
 					if store_key(acc,postkey) == 1:
 						set_delegation(acc,"openseed")
