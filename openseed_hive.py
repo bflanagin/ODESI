@@ -68,14 +68,14 @@ def get_account(account):
 	full_account = h.get_account(account)
 	if full_account:
 		profile = full_account["json_metadata"]
-	return(profile)
+	return('{"hive":'+profile+'}')
 
 def get_full_account(account):
 	profile = '{"profile":"Not found"}'
 	full_account = h.get_account(account)
 	if full_account:
 		profile = json.dumps(full_account)
-	return(profile)
+	return('{"hive":'+profile+'}')
 
 def get_connections(account):
 	connections = []
