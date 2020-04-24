@@ -301,6 +301,7 @@ def import_account(account,masterpass):
 
 def openseed_interconnect(openseed,acc,postkey,storekeys,importprofile):
 	token = ""
+	response = '{"interconnect":"error","account_auth":"error","keystored":False}'
 	if check_account(acc,postkey) == 1:
 		exists = Account.check_db(acc,"users")
 		if exists !=0:
@@ -309,9 +310,9 @@ def openseed_interconnect(openseed,acc,postkey,storekeys,importprofile):
 			verifing = json.loads(check_link(openseed,acc))
 			if verifing["openseed"] == 1 and verifing["openseed"] == verifing["hive"]:
 				token = json.loads(Account.id_from_user(openseed))["id"]
-				return '{"interconnect":"connected","account_auth":"openseed","keystored":'+str(storekeys)+'}'
+				response = '{"interconnect":"connected","account_auth":"openseed","keystored":'+str(storekeys)+'}'
 			elif verifing["openseed"] == 0 and verifing["hive"] == 1:
-				return '{"interconnect":"Hive account in use","account_auth":"error","keystored":false}'
+				response = '{"interconnect":"Hive account in use","account_auth":"error","keystored":false}'
 			elif verifing["openseed"] == 1 and verifing["hive"] == 0:
 				token = json.loads(Account.id_from_user(openseed))["id"]
 				if update_account(openseed,acc) == 1:
@@ -319,7 +320,7 @@ def openseed_interconnect(openseed,acc,postkey,storekeys,importprofile):
 						set_delegation(acc,"openseed")
 					if storekeys == False:
 						flush_account(acc)
-					return '{"interconnect":"connected","account_auth":"openseed","keystored":'+str(storekeys)+'}'
+					response = '{"interconnect":"connected","account_auth":"openseed","keystored":'+str(storekeys)+'}'
 		else:
 			new = json.loads(Account.external_user(acc,postkey,"hive"))
 			Account.create_default_profile(new["token"],new["username"],"")
@@ -328,6 +329,8 @@ def openseed_interconnect(openseed,acc,postkey,storekeys,importprofile):
 				
 		if importprofile == True and token != "":
 			import_profile(token,acc)
+			
+	return response
 
 def import_profile(token,hiveaccount):
 
