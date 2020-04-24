@@ -358,7 +358,7 @@ def import_profile(token,hiveaccount):
 		about = pfile["about"]
 	if "profile_image" in pfile:
 		profile_image = pfile["profile_image"]
-	if "cover_image" in pfile"
+	if "cover_image" in pfile:
 		banner = pfile["cover_image"]
 		
 	
