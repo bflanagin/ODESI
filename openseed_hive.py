@@ -320,14 +320,14 @@ def openseed_interconnect(openseed,acc,postkey,storekeys,importprofile):
 					if storekeys == False:
 						flush_account(acc)
 					return '{"interconnect":"connected","account_auth":"openseed","keystored":'+str(storekeys)+'}'
-			else:
-				new = json.loads(Account.external_user(acc,postkey,"hive"))
-				Account.create_default_profile(new["token"],new["username"],"")
-				token = new["token"]
-				update_account(new["username"],new["username"])
+		else:
+			new = json.loads(Account.external_user(acc,postkey,"hive"))
+			Account.create_default_profile(new["token"],new["username"],"")
+			token = new["token"]
+			update_account(new["username"],new["username"])
 				
-			if importprofile == True and token != "":
-				import_profile(token,acc)
+		if importprofile == True and token != "":
+			import_profile(token,acc)
 
 def import_profile(token,hiveaccount):
 

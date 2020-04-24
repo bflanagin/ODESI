@@ -391,8 +391,10 @@ def set_profile(theid,data1,data2,data3,data4,data5,thetype):
 		up5 = od5
 		
 		if data1 != "":
+			print("updating block 1")
 			up1 = data1
 		if data2 != "":
+			print("updating block 1")
 			up2 = data2
 		if data3 != "":
 			up3 = data3
