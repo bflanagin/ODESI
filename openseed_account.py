@@ -415,7 +415,7 @@ def set_profile(theid,data1,data2,data3,data4,data5,thetype):
 def get_status(account):
 	
 	dat = '{"chat":"offline"}'
-	status = '{"account":"none","date":"none","data":'+dat+'}'
+	status = '{"status":{"account":"none","date":"none","data":'+dat+'}}'
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
