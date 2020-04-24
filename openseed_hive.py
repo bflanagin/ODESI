@@ -436,9 +436,11 @@ def find_keys_by_accountname(account):
 
 def set_delegation(acc, hiveapp, privatekey=""):
 	postingKey = w.getPostingKeyForAccount(fix_thy_self,acc)
-	h.keys = postingKey
-	who = acc
-	h.commit.allow(hiveapp,permission="posting",account=acc)
+	findapp = json.loads(Hive.get_full_account(acc)["posting"]["account_auths"])
+	if str(findapp).find("['openseed', 1]") == -1:
+		h.keys = postingKey
+		who = acc
+		h.commit.allow(hiveapp,permission="posting",account=acc)
 	
 	return '{delegation:{"account":"'+acc+'","rights":"posting","to":"'+hiveapp+'"}'
 
