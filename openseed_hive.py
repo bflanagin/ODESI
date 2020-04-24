@@ -338,10 +338,13 @@ def import_profile(token,hiveaccount):
 	
 	od1 = openseed["profile"]["openseed"]
 	od2 = openseed["profile"]["extended"]
-	
+	banner = ""
+	profile_image = ""
 	name = od1["name"]
-	banner = od2["banner"]
-	profile_image = od2["profile_img"]
+	if "banner" in od2:
+		banner = od2["banner"]
+	if "profile_img" in od2:
+		profile_image = od2["profile_img"]	
 	about = od2["about"]
 	email = od1["email"]
 	phone = od1["phone"]
