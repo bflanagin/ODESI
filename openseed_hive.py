@@ -331,7 +331,7 @@ def openseed_interconnect(openseed,acc,postkey,storekeys,importprofile):
 
 def import_profile(token,hiveaccount):
 
-	openseed = json.loads("{"+get_profile(json.loads(Account.user_from_id(token))["user"])+'}')
+	openseed = json.loads("{"+Account.get_profile(json.loads(Account.user_from_id(token))["user"])+'}')
 	print(openseed)
 	name = ""
 	banner = ""
