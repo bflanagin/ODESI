@@ -336,8 +336,8 @@ def import_profile(token,hiveaccount):
 
 	openseed = json.loads("{"+Account.get_profile(json.loads(Account.user_from_id(token))["user"])+'}')
 	
-	od1 = json.dumps(openseed["profile"]["openseed"])
-	od2 = json.dumps(openseed["profile"]["extended"])
+	od1 = openseed["profile"]["openseed"]
+	od2 = openseed["profile"]["extended"]
 	
 	name = od1["name"]
 	banner = od2["banner"]
