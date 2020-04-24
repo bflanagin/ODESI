@@ -367,7 +367,6 @@ def set_profile(theid,data1,data2,data3,data4,data5,thetype):
 		password = settings["dbpassword"],
 		database = "openseed"
 		)
-
 	if check_db(theid,"profiles") <= 0:
 		mycursor = openseed.cursor()
 		sql = "INSERT INTO `profiles` (`id`,`data1`,`data2`,`data3`,`data4`,`data5`,`type`) VALUES (%s,%s,%s,%s,%s,%s,%s)"
@@ -379,8 +378,32 @@ def set_profile(theid,data1,data2,data3,data4,data5,thetype):
 		return '{"profile":"created"}'
 	else:
 		mycursor = openseed.cursor()
+		old_profile = json.loads('{'+get_profile(json.loads(get_user_from_id(theid)["user"]))+'}')
+		od1 = json.dumps(old_profile["profile"]["openseed"])
+		od2 = json.dumps(old_profile["profile"]["extended"])
+		od3 = json.dumps(old_profile["profile"]["appdata"])
+		od4 = json.dumps(old_profile["profile"]["misc"])
+		od5 = json.dumps(old_pofile["profile"]["import"])
+		up1 = od1
+		up2 = od2
+		up3 = od3
+		up4 = od4
+		up5 = od5
+		
+		if data1 != "":
+			up1 = data1
+		if data2 != "":
+			up2 = data2
+		if data3 != "":
+			up3 = data3
+		if data4 != "":
+			up4 = data4
+		if data5 != "":
+			up5 = data5
+		
+			
 		sql = "UPDATE `profiles` SET data1 = %s, data2 = %s, data3 = %s, data4 = %s, data5 = %s WHERE id = %s"
-		val = (str(data1),str(data2),str(data3),str(data4),str(data5),str(theid))
+		val = (str(up1),str(up2),str(up3),str(up4),str(up5),str(theid))
 		mycursor.execute(sql,val)	
 		openseed.commit()
 		mycursor.close()

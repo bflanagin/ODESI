@@ -332,23 +332,41 @@ def openseed_interconnect(openseed,acc,postkey,storekeys,importprofile):
 def import_profile(token,hiveaccount):
 
 	openseed = json.loads("{"+Account.get_profile(json.loads(Account.user_from_id(token))["user"])+'}')
-	print(openseed)
-	name = ""
-	banner = ""
-	profile_image = ""
-	about = ""
-	email = ""
-	phone = ""
-	profession = ""
-	company = ""
 	
-	data1 = '{"name":"'+name+'","email":"'+email+'","phone":"'++'","profession":"'++'","company":"'++'"}'
+	od1 = json.dumps(openseed["profile"]["openseed"])
+	od2 = json.dumps(openseed["profile"]["extended"])
+	
+	name = od1["name"]
+	banner = od2["banner"]
+	profile_image = od2["profile_img"]
+	about = od2["about"]
+	email = od1["email"]
+	phone = od1["phone"]
+	profession = od1["profession"]
+	company = od1["company"]
+	
+	hive = json.loads(get_account(hiveaccount))
+	pfile = ""
+	if "profile" in hive:
+		pfile = hive["profile"]
+	if "app" in hive:
+		pfile = hive["app"]["profile"]
+		
+	if "name" in pfile:
+		name = pfile["name"]
+	if "about" in pfile:
+		about = pfile["about"]
+	if "profile_image" in pfile:
+		profile_image = pfile["profile_image"]
+	if "cover_image" in pfile"
+		banner = pfile["cover_image"]
+		
+	
+	data1 = '{"name":"'+name+'","email":"'+email+'","phone":"'+phone+'","profession":"'+profession+'","company":"'+company+'"}'
 	data2 = '{"about":"'+about+'","profile_img":"'+profile_image+'","banner":"'+banner+'"}'
 
-	hive = json.loads(get_account(hiveaccount))
-	print(hive)
 	
-	#Account.set_profile(account,data1,data2,data3,data4,data5,thetype=1)
+	Account.set_profile(token,data1,data2,"","","",1)
 
 	return			
 
