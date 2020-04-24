@@ -383,7 +383,7 @@ def set_profile(theid,data1,data2,data3,data4,data5,thetype):
 		od2 = json.dumps(old_profile["profile"]["extended"])
 		od3 = json.dumps(old_profile["profile"]["appdata"])
 		od4 = json.dumps(old_profile["profile"]["misc"])
-		od5 = json.dumps(old_pofile["profile"]["import"])
+		od5 = json.dumps(old_profile["profile"]["import"])
 		up1 = od1
 		up2 = od2
 		up3 = od3
