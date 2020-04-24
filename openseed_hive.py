@@ -342,7 +342,7 @@ def import_profile(token,hiveaccount):
 	profession = ""
 	company = ""
 	
-	data1 = '{"name":"'+username+'","email":"'+email+'","phone":"'++'","profession":"'++'","company":"'++'"}'
+	data1 = '{"name":"'+name+'","email":"'+email+'","phone":"'++'","profession":"'++'","company":"'++'"}'
 	data2 = '{"about":"'+about+'","profile_img":"'+profile_image+'","banner":"'+banner+'"}'
 
 	hive = json.loads(get_account(hiveaccount))

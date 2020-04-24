@@ -681,7 +681,7 @@ def get_profile(account):
 		database = "openseed"
 		)
 	profile = '"profile":{}'
-	theid = json.loads(id_from_user(username))["id"]
+	theid = json.loads(id_from_user(account))["id"]
 
 	if theid != "none":
 		search = "SELECT data1,data2,data3,data4,data5 FROM `profiles` WHERE `id` = %s"
