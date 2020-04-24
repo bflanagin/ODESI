@@ -7,9 +7,7 @@ sys.path.append("..")
 import openseed_account as Account
 import openseed_setup as Settings
 import openseed_utils as Utils
-#import hive_get as Get
-#import hive_submit as Submit
-#import leaderboard as LeaderBoard
+import openseed_hive as Hive
 import openseed_seedgenerator as Seeds
 import openseed_music as Music
 import openseed_connections as Connections
@@ -70,10 +68,10 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 		print(Account.set_profile(from_client["token"],from_client["data1"],
 			from_client["data2"],from_client["data3"],from_client["data4"],
 			from_client["data5"],from_client["type"]))
-	if action == "link":
-		print(Account.hive_link(from_client["username"]))
-	if action == "verify":
-		print(Account.hive_verify(from_client["username"],from_client["onetime"]))
+	#if action == "link":
+	#	print(Account.hive_link(from_client["username"]))
+	#if action == "verify":
+	#	print(Account.hive_verify(from_client["username"],from_client["onetime"]))
 	if action == "account":
 		print(Account.get_account(from_client["token"]))
 	if action == "search":
