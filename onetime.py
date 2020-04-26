@@ -124,6 +124,6 @@ def get_key(thetype,register,room):
 	openseed.commit()
 	mysearch.close()
 	openseed.close()
-	return '{"key":"'+str(code)+'"}'
+	return '{"key":'+str(code)+'}'
 
 
