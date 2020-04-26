@@ -180,6 +180,8 @@ def message(data):
 			# Utils #
 			elif action =="get_image":
 				response = Utils.get_image(False,from_client["image"],from_client["thetype"],from_client["quality"])
+			else:
+				response = '{"server":"Please read documentation on accepted commands"}'
 				
 		else:
 			response = "App rejected"

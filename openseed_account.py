@@ -740,14 +740,14 @@ def get_profile(account):
 			else:
 				data5 = '{}'
 
-		profile = '"profile":{"openseed":'+data1.replace("\n","")+',"extended":'+data2.replace("\n","")+',"appdata":'+data3.replace("\n","")+',"misc":'+data4.replace("\n","")+',"imports":'+data5.replace("\n","")+'}'
+		profile = '"profile":{"account":"'+account+'","openseed":'+data1.replace("\n","")+',"extended":'+data2.replace("\n","")+',"appdata":'+data3.replace("\n","")+',"misc":'+data4.replace("\n","")+',"imports":'+data5.replace("\n","")+'}'
 
 		mysearch.close()
 	openseed.close()
 
 	return(profile)
 
-def user_profile_lite(username):
+def user_profile_lite(account):
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
@@ -755,7 +755,7 @@ def user_profile_lite(username):
 		database = "openseed"
 		)
 	profile = '"profile":{}'
-	theid = json.loads(id_from_user(username))["id"]
+	theid = json.loads(id_from_user(account))["id"]
 
 	if theid != "none":
 		search = "SELECT data1,data2,data3,data4,data5 FROM `profiles` WHERE `id` = %s"
@@ -772,7 +772,7 @@ def user_profile_lite(username):
 		if(result[0][1] != "None"):
 			data2 = result[0][1]
 
-		profile = '"profile":{"openseed":'+data1.replace("\n","")+',"extended":'+data2.replace("\n","")+'}'
+		profile = '"profile":{"account":"'+account+'","openseed":'+data1.replace("\n","")+',"extended":'+data2.replace("\n","")+'}'
 	
 
 		mysearch.close()
