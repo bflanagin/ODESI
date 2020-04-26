@@ -15,7 +15,7 @@ class TCPHandler(socketserver.BaseRequestHandler):
 		self.data = self.request.recv(131072).strip()
 
 		response = Core.message(self.data)
-
+		print(response)
 		self.request.sendall(response.encode("utf8"))
 
 if __name__=="__main__":
