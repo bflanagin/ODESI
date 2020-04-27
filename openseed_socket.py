@@ -12,7 +12,7 @@ import openseed_account as Account
 import socketserver
 
 def recvall(sock):
-    BUFF_SIZE = 1024 # 4 KiB
+    BUFF_SIZE = 4096 # 4 KiB
     data = b''
     while True:
         part = sock.recv(BUFF_SIZE)
@@ -28,18 +28,20 @@ class TCPHandler(socketserver.BaseRequestHandler):
 		self.data = recvall(self.request).strip()
 		
 		if self.data.decode().find("msg=") !=-1:
-			appId = self.data.decode().split("msg=")[1].split("::")[0]
+			appId = self.data.decode().split("msg=")[1].split("<::>")[0]
 			key = Account.get_priv_from_pub(appId,"App")
-			message = self.data.decode().split("msg=")[1].split("::")[1]
-			decrypted = Seed.simp_decrypt(key,message)
-			print(message)
-			#print("From: "+decrypted)
-			#response = Core.message(message)
-			response = Core.message(decrypted)
-			#print("Returning: "+response)
-			encrypt = Seed.simp_crypt(key,response)
-			#self.request.sendall(encrypt.encode("utf8"))
-			self.request.sendall(response.encode("utf8"))
+			message = self.data.decode().split("msg=")[1].split("<::>")[1]
+			if len(self.data.decode().split("msg=")[1].split("<::>")) == 3:
+				decrypted = Seed.simp_decrypt(key,message)
+				#print("From: "+decrypted)
+				#response = Core.message(message)
+				response = Core.message(decrypted)
+				#print("Returning: "+response)
+				encrypt = Seed.simp_crypt(key,response)
+				#self.request.sendall(encrypt.encode("utf8"))
+				self.request.sendall(response.encode("utf8"))
+			else:
+				self.request.sendall(str('{"server":"error"}').encode("utf8"))
 		else:
 			response = Core.message(self.data)
 			self.request.sendall(response.encode("utf8"))
