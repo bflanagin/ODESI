@@ -41,7 +41,11 @@ def do_upload():
 		name, ext = os.path.splitext(thefile.filename)
 		save_path = get_save_path_for_category(cat)
 		thefile.save(save_path) # appends upload.filename automatically
-		info = Utils.png_and_pin(thefile.filename)
+		if cat == "image":
+			info = Utils.png_and_pin(thefile.filename)
+		else:
+			info = thefile.filename
+			
 		return info 
 	else:
 		return 'error'
