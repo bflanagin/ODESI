@@ -25,7 +25,7 @@ def recvall(sock):
 class TCPHandler(socketserver.BaseRequestHandler):
 	def handle(self):
 		response = "no response"
-		self.data = recvall(self)
+		self.data = recvall(self.request)
 		
 		if self.data.decode().find("msg=") !=-1:
 			appId = self.data.decode().split("msg=")[1].split("::")[0]
