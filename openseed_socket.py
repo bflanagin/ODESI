@@ -25,15 +25,16 @@ def recvall(sock):
 class TCPHandler(socketserver.BaseRequestHandler):
 	def handle(self):
 		response = "no response"
-		self.data = recvall(self.request)
+		self.data = recvall(self.request).strip()
 		
 		if self.data.decode().find("msg=") !=-1:
 			appId = self.data.decode().split("msg=")[1].split("::")[0]
 			key = Account.get_priv_from_pub(appId,"App")
 			message = self.data.decode().split("msg=")[1].split("::")[1]
 			decrypted = Seed.simp_decrypt(key,message)
-			print(decrypted)
+			print("From: "+decrypted)
 			response = Core.message(decrypted)
+			print("Returning: "+response)
 			encrypt = Seed.simp_crypt(key,response)
 			self.request.sendall(str(appId+"::"+encrypt+"::"+appId).encode("utf8"))
 			#self.request.sendall(response.encode("utf8"))
