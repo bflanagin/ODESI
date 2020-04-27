@@ -37,7 +37,7 @@ def message(data):
 		if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 			app = from_client["appPub"]
 			dev = from_client["devPub"]
-			appkey = Account.get_priv_from_pub(appId,"App")
+			
 			
 
 			#####################################################
@@ -63,7 +63,7 @@ def message(data):
 			elif action == "set_status":
 				response = Account.set_status(from_client["appPub"],from_client["token"],from_client["status"])
 			elif action == "get_history":
-				response = Seed.simp_crypt(appkey,Account.get_history(from_client["account"],from_client["apprange"],from_client["count"]))
+				response = Account.get_history(from_client["account"],from_client["apprange"],from_client["count"])
 			elif action == "update_history":
 				response = Account.update_history(from_client["account"],from_client["type"],from_client["appPub"],from_client["data"])
 
@@ -114,21 +114,21 @@ def message(data):
 			#####################################################
 
 			elif action == "music":
-				response = Seed.simp_crypt(appkey,Music.get_curated_music_json(from_client["curator"]))
+				response = Music.get_curated_music_json(from_client["curator"])
 			elif action == "artist_search":
-				response = Seed.simp_crypt(appkey,Hive.search_music(from_client["author"],10000))
+				response = Hive.search_music(from_client["author"],10000)
 			elif action == "get_new_musicians":
-				response = Seed.simp_crypt(appkey,Music.get_new_artists())
+				response = Music.get_new_artists()
 			elif action == "get_new_tracks":
-				response = Seed.simp_crypt(appkey,Music.get_new_tracks_json())
+				response = Music.get_new_tracks_json()
 			elif action == "get_genres":
-				response = Seed.simp_crypt(appkey,Music.get_genres())
+				response = Music.get_genres()
 			elif action == "get_genre":
-				response = Seed.simp_crypt(appkey,Music.get_genre_tracks_json(from_client["genre"],from_client["count"]))
+				response = Music.get_genre_tracks_json(from_client["genre"],from_client["count"])
 			elif action == "get_artist_tracks":
-				response = Seed.simp_crypt(appkey,Music.get_artist_tracks_json(from_client["author"],from_client["count"]))
+				response = Music.get_artist_tracks_json(from_client["author"],from_client["count"])
 			elif action == "get_tracks":
-				response = Seed.simp_crypt(appkey,Music.get_tracks_json(from_client["start"],from_client["count"]))
+				response = Music.get_tracks_json(from_client["start"],from_client["count"])
 
 			#####################################################
 			#
