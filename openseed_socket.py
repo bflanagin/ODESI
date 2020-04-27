@@ -22,7 +22,7 @@ class TCPHandler(socketserver.BaseRequestHandler):
 			decrypted = Seed.simp_decrypt(key,message)
 			response = Core.message(decrypted)
 			encrypt = Seed.simp_crypt(key,response)
-			self.request.sendall(encrypt.encode("utf8"))
+			self.request.sendall(str(appId+"::"+encrypt+"::"+appId).encode("utf8"))
 			#self.request.sendall(response.encode("utf8"))
 		else:
 			print("Not encrypted")
