@@ -32,13 +32,13 @@ class TCPHandler(socketserver.BaseRequestHandler):
 			key = Account.get_priv_from_pub(appId,"App")
 			message = self.data.decode().split("msg=")[1].split("::")[1]
 			decrypted = Seed.simp_decrypt(key,message)
-			print("From: "+decrypted)
+			#print("From: "+decrypted)
 			#response = Core.message(message)
 			response = Core.message(decrypted)
 			#print("Returning: "+response)
 			encrypt = Seed.simp_crypt(key,response)
-			#self.request.sendall(str(appId+"::"+encrypt+"::"+appId).encode("utf8"))
-			self.request.sendall(response.encode("utf8"))
+			self.request.sendall(encrypt.encode("utf8"))
+			#self.request.sendall(response.encode("utf8"))
 		else:
 			response = Core.message(self.data)
 			self.request.sendall(response.encode("utf8"))
