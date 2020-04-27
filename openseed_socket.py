@@ -6,6 +6,8 @@ import mysql.connector
 import socketserver
 import openseed_core as Core
 import json
+import openseed_seedgenerator as Seed
+import openseed_account as Account
 
 import socketserver
 
@@ -13,9 +15,11 @@ class TCPHandler(socketserver.BaseRequestHandler):
 	def handle(self):
 		response = ""
 		self.data = self.request.recv(131072).strip()
-
-		response = Core.message(self.data)
-		self.request.sendall(response.encode("utf8"))
+		if self.data.find("msg=") !=-1:
+			appId = self.data.split("msg=")[1].split("::")[0]
+			key = Accout.get_priv_from_pub(appId)
+			response = Core.message(Seed.simp_decrypt(key,self.data.split("msg=")[1].split("::")[1]))
+			self.request.sendall(response.encode("utf8"))
 
 if __name__=="__main__":
 	HOST, PORT = "0.0.0.0",8688
