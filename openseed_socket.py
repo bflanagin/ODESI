@@ -29,11 +29,11 @@ class TCPHandler(socketserver.BaseRequestHandler):
 		
 		if self.data.decode().find("msg=") !=-1:
 			appId = self.data.decode().split("msg=")[1].split("::")[0]
-			key = Account.get_priv_from_pub(appId,"App")
+			#key = Account.get_priv_from_pub(appId,"App")
 			message = self.data.decode().split("msg=")[1].split("::")[1]
-			decrypted = Seed.simp_decrypt(key,message)
-			print("From: "+decrypted)
-			response = Core.message(decrypted)
+			#decrypted = Seed.simp_decrypt(key,message)
+			#print("From: "+decrypted)
+			response = Core.message(message)
 			print("Returning: "+response)
 			encrypt = Seed.simp_crypt(key,response)
 			self.request.sendall(str(appId+"::"+encrypt+"::"+appId).encode("utf8"))
