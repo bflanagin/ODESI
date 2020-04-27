@@ -87,7 +87,7 @@ def check_devID(name):
 	openseed.close()
 	return result
 
-def get_priv_from_pub(name):
+def get_priv_from_pub(name,pubType = "Dev"):
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
@@ -96,6 +96,8 @@ def get_priv_from_pub(name):
 		)
 	mysearch = openseed.cursor()
 	search = "SELECT devID FROM `developers` WHERE `publicID`= %s"
+	if pubType == "App":
+		search = "SELECT appID FROM `applications` WHERE `publicID`= %s"
 	val = (str(name),)
 	mysearch.execute(search,val)
 	result = mysearch.fetchall()
