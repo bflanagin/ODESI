@@ -19,7 +19,7 @@ class TCPHandler(socketserver.BaseRequestHandler):
 			appId = self.data.decode().split("msg=")[1].split("::")[0]
 			key = Account.get_priv_from_pub(appId,"App")
 			message = self.data.decode().split("msg=")[1].split("::")[1]
-			decrypted = Seed.simp_decrypt(key,message)
+			decrypted = Seed.simp_decrypt(key.substr(0,32),message)
 			print(decrypted)
 			response = Core.message(decrypted)
 			#print(response)
