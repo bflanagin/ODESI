@@ -19,11 +19,9 @@ class TCPHandler(socketserver.BaseRequestHandler):
 			appId = self.data.decode().split("msg=")[1].split("::")[0]
 			key = Account.get_priv_from_pub(appId,"App")
 			message = self.data.decode().split("msg=")[1].split("::")[1]
-			decrypted = Seed.simp_decrypt(key[0:32],message)
+			decrypted = Seed.simp_decrypt(key,message)
 			response = Core.message(decrypted)
-			encrypt = Seed.simp_crypt(key[0:32],response)
-			print(Seed.simp_decrypt(key[0:32],encrypt))
-			
+			encrypt = Seed.simp_crypt(key,response)
 			self.request.sendall(encrypt.encode("utf8"))
 			#self.request.sendall(response.encode("utf8"))
 		else:
