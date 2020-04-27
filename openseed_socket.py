@@ -39,6 +39,8 @@ class TCPHandler(socketserver.BaseRequestHandler):
 			self.request.sendall(str(appId+"::"+encrypt+"::"+appId).encode("utf8"))
 			#self.request.sendall(response.encode("utf8"))
 		else:
+			response = Core.message(self.data)
+			self.request.sendall(response.encode("utf8"))
 			print("Not encrypted")
 
 if __name__=="__main__":
