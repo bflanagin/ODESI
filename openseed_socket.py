@@ -15,10 +15,10 @@ class TCPHandler(socketserver.BaseRequestHandler):
 	def handle(self):
 		response = ""
 		self.data = self.request.recv(131072).strip()
-		if self.data.find("msg=") !=-1:
-			appId = self.data.split("msg=")[1].split("::")[0]
+		if self.data.decode().find("msg=") !=-1:
+			appId = self.data.decode().split("msg=")[1].split("::")[0]
 			key = Accout.get_priv_from_pub(appId)
-			response = Core.message(Seed.simp_decrypt(key,self.data.split("msg=")[1].split("::")[1]))
+			response = Core.message(Seed.simp_decrypt(key,self.data.decode().split("msg=")[1].split("::")[1]))
 			self.request.sendall(response.encode("utf8"))
 
 if __name__=="__main__":
