@@ -41,7 +41,6 @@ class TCPHandler(socketserver.BaseRequestHandler):
 		else:
 			response = Core.message(self.data)
 			self.request.sendall(response.encode("utf8"))
-			print("Not encrypted")
 
 if __name__=="__main__":
 	HOST, PORT = "0.0.0.0",8688
