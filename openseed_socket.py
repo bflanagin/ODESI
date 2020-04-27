@@ -11,10 +11,22 @@ import openseed_account as Account
 
 import socketserver
 
+def recvall(sock):
+    BUFF_SIZE = 4096 # 4 KiB
+    data = b''
+    while True:
+        part = sock.recv(BUFF_SIZE)
+        data += part
+        if len(part) < BUFF_SIZE:
+            # either 0 or end of data
+            break
+    return data
+
 class TCPHandler(socketserver.BaseRequestHandler):
 	def handle(self):
 		response = "no response"
-		self.data = self.request.recv(131072).strip()
+		self.data = recvall(self)
+		
 		if self.data.decode().find("msg=") !=-1:
 			appId = self.data.decode().split("msg=")[1].split("::")[0]
 			key = Account.get_priv_from_pub(appId,"App")
