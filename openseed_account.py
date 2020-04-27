@@ -367,7 +367,6 @@ def set_profile(theid,data1,data2,data3,data4,data5,thetype):
 		password = settings["dbpassword"],
 		database = "openseed"
 		)
-
 	if check_db(theid,"profiles") <= 0:
 		mycursor = openseed.cursor()
 		sql = "INSERT INTO `profiles` (`id`,`data1`,`data2`,`data3`,`data4`,`data5`,`type`) VALUES (%s,%s,%s,%s,%s,%s,%s)"
@@ -379,8 +378,34 @@ def set_profile(theid,data1,data2,data3,data4,data5,thetype):
 		return '{"profile":"created"}'
 	else:
 		mycursor = openseed.cursor()
+		old_profile = json.loads('{'+get_profile(json.loads(user_from_id(theid))["user"])+'}')
+		od1 = json.dumps(old_profile["profile"]["openseed"])
+		od2 = json.dumps(old_profile["profile"]["extended"])
+		od3 = json.dumps(old_profile["profile"]["appdata"])
+		od4 = json.dumps(old_profile["profile"]["misc"])
+		od5 = json.dumps(old_profile["profile"]["imports"])
+		up1 = od1
+		up2 = od2
+		up3 = od3
+		up4 = od4
+		up5 = od5
+		
+		if data1 != "":
+			
+			up1 = data1
+		if data2 != "":
+			
+			up2 = data2
+		if data3 != "":
+			up3 = data3
+		if data4 != "":
+			up4 = data4
+		if data5 != "":
+			up5 = data5
+		
+			
 		sql = "UPDATE `profiles` SET data1 = %s, data2 = %s, data3 = %s, data4 = %s, data5 = %s WHERE id = %s"
-		val = (str(data1),str(data2),str(data3),str(data4),str(data5),str(theid))
+		val = (str(up1),str(up2),str(up3),str(up4),str(up5),str(theid))
 		mycursor.execute(sql,val)	
 		openseed.commit()
 		mycursor.close()
@@ -390,7 +415,7 @@ def set_profile(theid,data1,data2,data3,data4,data5,thetype):
 def get_status(account):
 	
 	dat = '{"chat":"offline"}'
-	status = '{"account":"none","date":"none","data":'+dat+'}'
+	status = '{"status":{"account":"none","date":"none","data":'+dat+'}}'
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
@@ -672,6 +697,88 @@ def gps_search(username,cords):
 	
 	return '{"gps":['+searchlist+']}'
 
+
+def get_profile(account):
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+	profile = '"profile":{}'
+	theid = json.loads(id_from_user(account))["id"]
+
+	if theid != "none":
+		search = "SELECT data1,data2,data3,data4,data5 FROM `profiles` WHERE `id` = %s"
+		sval = (theid,)
+		mysearch = openseed.cursor()
+		mysearch.execute(search,sval)
+		result = mysearch.fetchall()
+		data1 = '"None"'
+		data2 = '"None"'
+		data3 = '"None"'
+		data4 = '"None"'
+		data5 = '"None"'
+		if len(result) == 1:
+			if(result[0][0] != "None"):
+				data1 = result[0][0]
+ 
+			if(result[0][1] != "None"):
+				data2 = result[0][1]
+ 
+			if(result[0][2] != "None"):
+				data3 = result[0][2]
+ 
+			if(result[0][3] != "None"):
+				data4 = result[0][3]
+ 
+			if(result[0][4] != "None"):
+				if(len(result[0][4]) > 1):
+					data5 = str(result[0][4]).replace(',"is_public":true',"").replace(',"redirect_uris":["http://142.93.27.131:8675/steemconnect/verify.py"]',"")
+				else:
+					data5 = '{}'
+			else:
+				data5 = '{}'
+
+		profile = '"profile":{"username":"'+account+'","openseed":'+data1.replace("\n","")+',"extended":'+data2.replace("\n","")+',"appdata":'+data3.replace("\n","")+',"misc":'+data4.replace("\n","")+',"imports":'+data5.replace("\n","")+'}'
+
+		mysearch.close()
+	openseed.close()
+
+	return(profile)
+
+def user_profile_lite(account):
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+	profile = '"profile":{}'
+	theid = json.loads(id_from_user(account))["id"]
+
+	if theid != "none":
+		search = "SELECT data1,data2,data3,data4,data5 FROM `profiles` WHERE `id` = %s"
+		sval = (theid,)
+		mysearch = openseed.cursor()
+		mysearch.execute(search,sval)
+		result = mysearch.fetchall()
+		data1 = '"None"'
+		data2 = '"None"'
+
+		if(result[0][0] != "None"):
+			data1 = result[0][0]
+ 
+		if(result[0][1] != "None"):
+			data2 = result[0][1]
+
+		profile = '"profile":{"username":"'+account+'","openseed":'+data1.replace("\n","")+',"extended":'+data2.replace("\n","")+'}'
+	
+
+		mysearch.close()
+	openseed.close()
+
+	return(profile)
 
 
 class hive:

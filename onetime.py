@@ -113,17 +113,17 @@ def get_key(thetype,register,room):
 			if len(result1) == 1:
 				reg = result[0][0]
 			if reg != register:
-				code = result[0][1]
+				code = '{"room":"'+room+'","code":"'+result[0][1]+'"}'
 			else:
-				code = result[0][1]
+				code = '{"room":"'+room+'","code":"'+result[0][1]+'"}'
 		else:
-			code = "denied"
+			code = '{"room":"denied","code":"denied"}'
 	else:
-		code = "denied"
+		code = '{"room":"denied","code":"denied"}'
 
 	openseed.commit()
 	mysearch.close()
 	openseed.close()
-	return '{"key":"'+str(code)+'"}'
+	return '{"key":'+str(code)+'}'
 
 

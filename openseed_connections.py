@@ -11,52 +11,12 @@ from hive import hive
 import openseed_account as Account
 import openseed_setup as Settings
 import openseed_chat as Chat
-#import hive_get as HiveGet
+import openseed_hive as Hive
 
 settings = Settings.get_settings()
 
 thenodes = ['anyx.io','api.steem.house','hive.anyx.io','steemd.minnowsupportproject.org','steemd.privex.io']
 h = hive.Hive(nodes=thenodes)
-
-def get_hive_connections(account):
-	connections = []
-	follows = []
-	watching = []
-	followers = h.get_followers(account,0,"",1000)
-	following = h.get_following(account,0,"",1000)
-	if str(followers[0].keys()).find("error") == -1:
-		for flwrs in followers:
-			follows.append(flwrs["follower"])
-	if str(following[0].keys()).find("error") == -1:
-		for flws in following:
-			watching.append(flws["following"])
-
-	for er in follows:
-		for ing in watching:
-			if er == ing:
-				hiveaccount = json.loads(get_account(er))
-				if "profile" in hiveaccount and hiveaccount["profile"] != "Not found":
-					theName = er
-					theAbout = ""
-					theProfileImg = ""
-					theBannerImg = ""
-					
-					if "name" in hiveaccount["profile"]:
-						theName = hiveaccount["profile"]["name"]
-					if "about" in hiveaccount["profile"]:
-						theAbout = hiveaccount["profile"]["about"]
-					if "profile_image" in hiveaccount["profile"]:
-						theProfileImg = hiveaccount["profile"]["profile_image"]
-					if "cover_image" in hiveaccount["profile"]:
-						theBannerImg = hiveaccount["profile"]["cover_image"]
-
-					data1 = '{"name":"'+theName+'","email":"","phone":"","profession":"","company":""}'
-					data2 = '{"about":"","profile_img":"'+theProfileImg+'","banner":"'+theBannerImg+'"}'
-					blank_p = '"profile":{"openseed":'+data1+',"extended":{},"appdata":{},"misc":{},"imports":{}}'
-					connections.append('{"username":"'+er+'","linked":"1",'+blank_p+'}')
-
-
-	return(connections)
 
 def get_openseed_connections(account,external = False):
 	connections = '{"connections":"none"}'
@@ -76,44 +36,49 @@ def get_openseed_connections(account,external = False):
 	exists1 = request_search.fetchall()
 	request_search.execute(search2,vals)
 	exists2 = request_search.fetchall()
+	
 	if len(exists1) != 0:
 		ac += len(exists1)
 		for u in exists1:
 			cname = str(u[0])
 			if accounts == "":
-				accounts = '{"username":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile(str(cname)))+'}'
+				accounts = '{"username":"'+str(cname)+'","linked":'+str(u[1])+','+str(Account.get_profile(str(cname)))+'}'
 			else:
-				accounts = accounts+',{"username":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile(str(cname)))+'}'
+				accounts = accounts+',{"username":"'+str(cname)+'","linked":'+str(u[1])+','+str(Account.get_profile(str(cname)))+'}'
 
 	if len(exists2) != 0:
 		ac += len(exists2)
 		for u in exists2:
 			cname = str(u[0])
 			if accounts == "":
-				accounts = '{"username":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile(str(cname)))+'}'
+				accounts = '{"username":"'+str(cname)+'","linked":'+str(u[1])+','+str(Account.get_profile(str(cname)))+'}'
 			else:
-				accounts = accounts+',{"username":"'+str(cname)+'","linked":"'+str(u[1])+'",'+str(user_profile(str(cname)))+'}'
+				accounts = accounts+',{"username":"'+str(cname)+'","linked":'+str(u[1])+','+str(Account.get_profile(str(cname)))+'}'
 	if external == False:
 		connections = '{"total":'+str(ac)+',"connections":['+accounts.replace("'","\'")+']}'
 	else:
-		hive = get_hive_connections(account)
-		hive_connections = ""
-		if len(hive) > 0:
-			ac += len(hive)
-			for i in hive:
-				try:
-					json.loads(i)
-				except:
-					pass
-				else:
-					stuff = json.loads(i)
-					if "username" in stuff and stuff["username"] not in accounts:
-						if hive_connections == "":
-							hive_connections = i
-						else:
-							hive_connections = hive_connections+","+i
-
+		hiveaccount = json.loads(Hive.check_verified(account))["hive"]
+		if hiveaccount != "not connected":
+			hive = Hive.get_connections(hiveaccount)
+			hive_connections = ""
+			if len(hive) > 0:
+				ac += len(hive)
+				for i in hive:
+					try:
+						json.loads(i)
+					except:
+						pass
+					else:
+						stuff = json.loads(i)
+						if "username" in stuff and stuff["username"] not in accounts:
+							if hive_connections == "":
+								hive_connections = i
+							else:
+								hive_connections = hive_connections+","+i
+				if len(accounts) > 0:
 					connections = '{"total":'+str(ac)+',"connections":['+accounts.replace("'","\'")+','+hive_connections.replace("'","\'")+']}'
+				else:
+					connections = '{"total":'+str(ac)+',"connections":['+hive_connections.replace("'","\'")+']}'
 		else:
 			connections = '{"total":'+str(ac)+',"connections":['+accounts.replace("'","\'")+']}'
 	try:
@@ -153,88 +118,57 @@ def profile(token):
 
 	return(profile)
 
-def user_profile(username):
-	openseed = mysql.connector.connect(
-		host = "localhost",
-		user = settings["dbuser"],
-		password = settings["dbpassword"],
-		database = "openseed"
-		)
-	profile = '"profile":{}'
-	theid = json.loads(Account.id_from_user(username))["id"]
+#def user_profile(username):
+#	openseed = mysql.connector.connect(
+#		host = "localhost",
+#		user = settings["dbuser"],
+#		password = settings["dbpassword"],
+#		database = "openseed"
+#		)
+#	profile = '"profile":{}'
+#	theid = json.loads(Account.id_from_user(username))["id"]
 
-	if theid != "none":
-		search = "SELECT data1,data2,data3,data4,data5 FROM `profiles` WHERE `id` = %s"
-		sval = (theid,)
-		mysearch = openseed.cursor()
-		mysearch.execute(search,sval)
-		result = mysearch.fetchall()
-		data1 = '"None"'
-		data2 = '"None"'
-		data3 = '"None"'
-		data4 = '"None"'
-		data5 = '"None"'
-		if len(result) == 1:
-			if(result[0][0] != "None"):
-				data1 = result[0][0]
+#	if theid != "none":
+#		search = "SELECT data1,data2,data3,data4,data5 FROM `profiles` WHERE `id` = %s"
+#		sval = (theid,)
+#		mysearch = openseed.cursor()
+#		mysearch.execute(search,sval)
+#		result = mysearch.fetchall()
+#		data1 = '"None"'
+#		data2 = '"None"'
+#		data3 = '"None"'
+#		data4 = '"None"'
+#		data5 = '"None"'
+#		if len(result) == 1:
+#			if(result[0][0] != "None"):
+#				data1 = result[0][0]
  
-			if(result[0][1] != "None"):
-				data2 = result[0][1]
+#			if(result[0][1] != "None"):
+#				data2 = result[0][1]
  
-			if(result[0][2] != "None"):
-				data3 = result[0][2]
+#			if(result[0][2] != "None"):
+#				data3 = result[0][2]
  
-			if(result[0][3] != "None"):
-				data4 = result[0][3]
- 
-			if(result[0][4] != "None"):
-				if(len(result[0][4]) > 1):
-					data5 = str(result[0][4]).replace(',"is_public":true',"").replace(',"redirect_uris":["http://142.93.27.131:8675/steemconnect/verify.py"]',"")
-				else:
-					data5 = '{}'
-			else:
-				data5 = '{}'
+#			if(result[0][3] != "None"):
+#				data4 = result[0][3]
 
-		profile = '"profile":{"openseed":'+data1.replace("\n","")+',"extended":'+data2.replace("\n","")+',"appdata":'+data3.replace("\n","")+',"misc":'+data4.replace("\n","")+',"imports":'+data5.replace("\n","")+'}'
+#			if(result[0][4] != "None"):
+#				if(len(result[0][4]) > 1):
+#					data5 = str(result[0][4]).replace(',"is_public":true',"").replace(',"redirect_uris":["http://142.93.27.131:8675/steemconnect/verify.py"]',"")
+#				else:
+#					data5 = '{}'
+#			else:
+#				data5 = '{}'
 
-		mysearch.close()
-	openseed.close()
+#		profile = '"profile":{"openseed":'+data1.replace("\n","")+',"extended":'+data2.replace("\n","")+',"appdata":'+data3.replace("\n","")+',"misc":'+data4.replace("\n","")+',"imports":'+data5.replace("\n","")+'}'
 
-	return(profile)
+#		mysearch.close()
+#	openseed.close()
+
+#	return(profile)
 
 
-def user_profile_lite(username):
-	openseed = mysql.connector.connect(
-		host = "localhost",
-		user = settings["dbuser"],
-		password = settings["dbpassword"],
-		database = "openseed"
-		)
-	profile = '"profile":{}'
-	theid = json.loads(Account.id_from_user(username))["id"]
 
-	if theid != "none":
-		search = "SELECT data1,data2,data3,data4,data5 FROM `profiles` WHERE `id` = %s"
-		sval = (theid,)
-		mysearch = openseed.cursor()
-		mysearch.execute(search,sval)
-		result = mysearch.fetchall()
-		data1 = '"None"'
-		data2 = '"None"'
-
-		if(result[0][0] != "None"):
-			data1 = result[0][0]
- 
-		if(result[0][1] != "None"):
-			data2 = result[0][1]
-
-		profile = '"profile":{"openseed":'+data1.replace("\n","")+',"extended":'+data2.replace("\n","")+'}'
-	
-
-		mysearch.close()
-	openseed.close()
-
-	return(profile)
  
 # Requests have three states 1 pending 2 accepted 0 denied. 
 

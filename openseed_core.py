@@ -79,7 +79,7 @@ def message(data):
 				response = Hive.flush_account(from_client["hiveaccount"])
 			elif action == "hive_login":
 				response = Hive.openseed_interconnect(from_client["hiveaccount"],from_client["hiveaccount"],from_client["postingkey"],from_client["storekey"])
-			elif acction == "hive_connect":
+			elif action == "hive_connect":
 				response = Hive.openseed_interconnect(from_client["account"],from_client["hiveaccount"],from_client["postingkey"],from_client["storekey"])
 			elif action == "get_hive_account":
 				response = Hive.get_account(from_client["account"])
@@ -139,7 +139,7 @@ def message(data):
 			elif action == "get_connections":
 				response = Connections.get_openseed_connections(from_client["account"],from_client["hive"])
 			elif action == "get_profile":
-				response = "{"+Connections.user_profile(from_client["account"])+"}"
+				response = "{"+Account.get_profile(from_client["account"])+"}"
 			elif action == "get_requests":
 				response = Connections.get_requests(from_client["token"],from_client["count"])
 			elif action == "send_request":
@@ -180,6 +180,8 @@ def message(data):
 			# Utils #
 			elif action =="get_image":
 				response = Utils.get_image(False,from_client["image"],from_client["thetype"],from_client["quality"])
+			else:
+				response = '{"server":"Please read documentation on accepted commands"}'
 				
 		else:
 			response = "App rejected"

@@ -57,6 +57,8 @@ title = "New Song"
 #
 ##############################
 
+
+
 def get_post(author,permlink) :
 	post = h.get_content(author,permlink)
 	return post["body"]
@@ -66,17 +68,17 @@ def get_account(account):
 	full_account = h.get_account(account)
 	if full_account:
 		profile = full_account["json_metadata"]
-	return(profile)
+	return('{"username":"'+account+'","hive":'+profile+'}')
 
 def get_full_account(account):
 	profile = '{"profile":"Not found"}'
 	full_account = h.get_account(account)
 	if full_account:
 		profile = json.dumps(full_account)
-	return(profile)
+	return('{"username":"'+account+'","hive":'+profile+'}')
 
 def get_connections(account):
-	connection = []
+	connections = []
 	follows = []
 	watching = []
 	followers = h.get_followers(account,0,"",1000)
@@ -91,8 +93,29 @@ def get_connections(account):
 	for er in follows:
 		for ing in watching:
 			if er == ing:
-				connection.append('connection:'+er)
-	return(json.dumps(connection))
+				hiveaccount = json.loads(get_account(er))
+				if "profile" in hiveaccount and hiveaccount["profile"] != "Not found":
+					theName = er
+					theAbout = ""
+					theProfileImg = ""
+					theBannerImg = ""
+					
+					if "name" in hiveaccount["profile"]:
+						theName = hiveaccount["profile"]["name"]
+					if "about" in hiveaccount["profile"]:
+						theAbout = hiveaccount["profile"]["about"]
+					if "profile_image" in hiveaccount["profile"]:
+						theProfileImg = hiveaccount["profile"]["profile_image"]
+					if "cover_image" in hiveaccount["profile"]:
+						theBannerImg = hiveaccount["profile"]["cover_image"]
+
+					data1 = '{"name":"'+theName+'","email":"","phone":"","profession":"","company":""}'
+					data2 = '{"about":"","profile_img":"'+theProfileImg+'","banner":"'+theBannerImg+'"}'
+					blank_p = '"profile":{"openseed":'+data1+',"extended":{},"appdata":{},"misc":{},"imports":{}}'
+					connections.append('{"username":"'+er+'","linked":1,'+blank_p+'}')
+
+
+	return(connections)
 
 
 ## Music specific functions (should be moved at some point ##
@@ -276,40 +299,121 @@ def import_account(account,masterpass):
 	
 	return
 
-def openseed_interconnect(openseed,acc,postkey,storekeys):
-
+def openseed_interconnect(openseed,acc,postkey,storekeys,importprofile):
+	token = ""
+	response = '{"interconnect":"error","account_auth":"error","keystored":False}'
 	if check_account(acc,postkey) == 1:
 		exists = Account.check_db(acc,"users")
 		if exists !=0:
 			print("user exists")
 			print("checking if hive account is connected to an openseed account")
-			verifing = json.loads(check_verified(openseed,acc))
+			verifing = json.loads(check_link(openseed,acc))
 			if verifing["openseed"] == 1 and verifing["openseed"] == verifing["hive"]:
-				return '{"interconnect":"connected","account_auth":"openseed","keystored":'+str(storekeys)+'}'
+				token = json.loads(Account.id_from_user(openseed))["id"]
+				response = '{"interconnect":"connected","account_auth":"openseed","keystored":'+str(storekeys)+'}'
 			elif verifing["openseed"] == 0 and verifing["hive"] == 1:
-				return '{"interconnect":"Hive account in use","account_auth":"error","keystored":false}'
+				response = '{"interconnect":"Hive account in use","account_auth":"error","keystored":false}'
 			elif verifing["openseed"] == 1 and verifing["hive"] == 0:
+				token = json.loads(Account.id_from_user(openseed))["id"]
 				if update_account(openseed,acc) == 1:
 					if store_key(acc,postkey) == 1:
 						set_delegation(acc,"openseed")
 					if storekeys == False:
 						flush_account(acc)
-					return '{"interconnect":"connected","account_auth":"openseed","keystored":'+str(storekeys)+'}'
-			else:
-				new = json.loads(Account.external_user(acc,postkey,"hive"))
-				Account.create_default_profile(new["token"],new["username"],"")
-				update_account(new["username"],new["username"])
+					response = '{"interconnect":"connected","account_auth":"openseed","keystored":'+str(storekeys)+'}'
+		else:
+			new = json.loads(Account.external_user(acc,postkey,"hive"))
+			Account.create_default_profile(new["token"],new["username"],"")
+			token = new["token"]
+			update_account(new["username"],new["username"])
+				
+		if importprofile == True and token != "":
+			import_profile(token,acc)
+			
+	return response
 
-def import_profile(account,hiveaccount):
+def import_profile(token,hiveaccount):
 
-	raw = json.loads(get_account(hiveaccount))
+	openseed = json.loads("{"+Account.get_profile(json.loads(Account.user_from_id(token))["user"])+'}')
 	
-	print(raw)
+	od1 = openseed["profile"]["openseed"]
+	od2 = openseed["profile"]["extended"]
+	banner = ""
+	profile_image = ""
+	name = od1["name"]
+	if "banner" in od2:
+		banner = od2["banner"]
+	if "profile_img" in od2:
+		profile_image = od2["profile_img"]	
+	about = od2["about"]
+	email = od1["email"]
+	phone = od1["phone"]
+	profession = od1["profession"]
+	company = od1["company"]
+	
+	hive = json.loads(get_account(hiveaccount))
+	pfile = ""
+	if "profile" in hive:
+		pfile = hive["profile"]
+	if "app" in hive:
+		pfile = hive["app"]["profile"]
+		
+	if "name" in pfile:
+		name = pfile["name"]
+	if "about" in pfile:
+		about = pfile["about"]
+	if "profile_image" in pfile:
+		profile_image = pfile["profile_image"]
+	if "cover_image" in pfile:
+		banner = pfile["cover_image"]
+		
+	
+	data1 = '{"name":"'+name+'","email":"'+email+'","phone":"'+phone+'","profession":"'+profession+'","company":"'+company+'"}'
+	data2 = '{"about":"'+about+'","profile_img":"'+profile_image+'","banner":"'+banner+'"}'
+
+	
+	Account.set_profile(token,data1,data2,"","","",1)
 
 	return			
-					
 
-def check_verified(openseed,hive):
+def check_in_use(hiveaccount):
+	db = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+	mycursor = db.cursor()
+	
+	find_hive = "SELECT username,hive FROM `users` WHERE hive = %s"
+	hive_val = (hive,)
+	mycursor.execute(find_hive,hive_val)
+	hive_result = mycursor.fetchall()	
+	db.close()
+	
+	return '{"hive_account":'+hiveaccount+',"in_use":'+str(len(hive_result))+'}'		
+	
+def check_verified(openseed):
+	
+	db = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+	mycursor = db.cursor()
+	
+	find_openseed = "SELECT username,hive FROM `users` WHERE username = %s AND hive IS NOT NULL"
+	openseed_val = (openseed,)
+	mycursor.execute(find_openseed,openseed_val)
+	openseed_result = mycursor.fetchall()
+
+	if len(openseed_result) != 0:
+		return '{"openseed":"'+openseed+'","hive":"'+openseed_result[0][1]+'"}'
+	else:
+		return	'{"openseed":"'+openseed+'","hive":"not connected"}'
+
+def check_link(openseed,hive):
 	
 	db = mysql.connector.connect(
 		host = "localhost",
@@ -338,9 +442,11 @@ def find_keys_by_accountname(account):
 
 def set_delegation(acc, hiveapp, privatekey=""):
 	postingKey = w.getPostingKeyForAccount(fix_thy_self,acc)
-	h.keys = postingKey
-	who = acc
-	h.commit.allow(hiveapp,permission="posting",account=acc)
+	findapp = json.loads(Hive.get_full_account(acc)["posting"]["account_auths"])
+	if str(findapp).find("['openseed', 1]") == -1:
+		h.keys = postingKey
+		who = acc
+		h.commit.allow(hiveapp,permission="posting",account=acc)
 	
 	return '{delegation:{"account":"'+acc+'","rights":"posting","to":"'+hiveapp+'"}'
 
