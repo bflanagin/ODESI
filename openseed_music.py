@@ -264,17 +264,21 @@ def get_tracks_json(start = 0,count = 0):
 		)
 	num = 0
 	music = openseed.cursor()
-	output = []
+	output = ""
 	search = "SELECT author,title,post,img,ogg,curation,type,genre,tags,duration FROM `audio` WHERE ogg IS NOT NULL AND ogg LIKE '_%' ORDER BY date DESC LIMIT "+str(count)+" OFFSET "+str(start)
 	music.execute(search)
 	result = music.fetchall()
 	for genre in result:
 		if genre:
-			output.append('{"author":"'+genre[0]+'", "title":"'+genre[1]+'", "post":"'+genre[2]+'","img":"'+genre[3]+'","ogg":"'+genre[4]+'","curation":"'+str(genre[5])+'","type":"'+genre[6]+'","genre":"'+genre[7]+'","tags":"'+genre[8]+'","duration":"'+str(genre[9])+'"}')
-		if int(count) != 0:
-			if num == int(count):
-				break
-		num += 1
+			if output == "":
+				output = '{"author":"'+genre[0]+'", "title":"'+genre[1]+'", "post":"'+genre[2]+'","img":"'+genre[3]+'","ogg":"'+genre[4]+'","curation":"'+str(genre[5])+'","type":"'+genre[6]+'","genre":"'+genre[7]+'","tags":"'+genre[8]+'","duration":"'+str(genre[9])+'"}'
+			else:
+				output += ',{"author":"'+genre[0]+'", "title":"'+genre[1]+'", "post":"'+genre[2]+'","img":"'+genre[3]+'","ogg":"'+genre[4]+'","curation":"'+str(genre[5])+'","type":"'+genre[6]+'","genre":"'+genre[7]+'","tags":"'+genre[8]+'","duration":"'+str(genre[9])+'"}'
+				
+		#if int(count) != 0:
+			#if num == int(count):
+				#break
+		#num += 1
 
 	music.close()
 	openseed.close()
