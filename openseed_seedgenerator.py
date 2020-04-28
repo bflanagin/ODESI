@@ -352,12 +352,8 @@ def simp_decrypt(key,raw_data):
 
 	num_array = []
 	for c in key:
-		try:
-			int(c)
-		except:
-			print("")
-		else:
-			num_array.append(c)
+		num_array.append(ord(c))
+	print(num_array)
 
 	key = key.replace("0","q")\
 			.replace("1","a").replace("2","b")\
