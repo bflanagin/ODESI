@@ -64,7 +64,9 @@ class TCPHandler(socketserver.BaseRequestHandler):
 				chunky(encrypt.strip(),self.request)
 				#self.request.sendall(response.encode("utf8"))
 			else:
-				self.request.send(str('{"server":"error"}').encode("utf8"))
+				print('{"server":"error incomplete message"}')
+				print(self.data)
+				self.request.send(str('{"server":"error incomplete message"}').encode("utf8"))
 		else:
 			response = Core.message(self.data)
 			self.request.send(response.encode("utf8"))
