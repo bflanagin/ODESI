@@ -398,7 +398,6 @@ def simp_decrypt(key,raw_data):
 					message = message + data[datanum]
 				else:break
 			datanum = datanum + 1
-		print(message)
 		for c in message.split(" "):
 			try:
 				int(c)

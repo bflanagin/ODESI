@@ -21,6 +21,12 @@ def recvall(sock):
             # either 0 or end of data
             break
     return data
+    
+def chunky(data,sock):
+
+	sock.send(data.encode("utf8"))
+	
+	return
 
 class TCPHandler(socketserver.BaseRequestHandler):
 	def handle(self):
@@ -38,8 +44,8 @@ class TCPHandler(socketserver.BaseRequestHandler):
 				response = Core.message(decrypted)
 				#print("Returning: "+response)
 				encrypt = Seed.simp_crypt(key,response)
-				#print(encrypt)
-				self.request.send(encrypt.encode("utf8"))
+				print("Returning: "+json.loads(Seed.simp_decrypt(key,response))
+				chunky(encrypt.strip(),self.request)
 				#self.request.sendall(response.encode("utf8"))
 			else:
 				self.request.send(str('{"server":"error"}').encode("utf8"))
