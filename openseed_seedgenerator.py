@@ -349,6 +349,12 @@ def simp_crypt(key,raw_data):
 	return secret.replace(" ","zZz")
 
 def simp_decrypt(key,raw_data):
+
+	var num_array = []
+	for c in key:
+		if int(c):
+			num_array.append(c)
+
 	key = key.replace("0","q")\
 			.replace("1","a").replace("2","b")\
 			.replace("3","c").replace("4","d")\
