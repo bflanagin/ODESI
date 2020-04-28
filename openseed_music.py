@@ -172,7 +172,7 @@ def get_new_tracks_json():
 		if str(output).find(str(song)) == -1:
 			dur = ""
 			if song[9] != None:
-				dur = song[9].split(".")[0]+song[9].split(".")[1][0:1]
+				dur = song[9].split(".")[0]+"."+song[9].split(".")[1][0:1]
 				print(dur)
 			else:
 				dur = "0.00"
