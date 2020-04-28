@@ -381,12 +381,10 @@ def simp_decrypt(key,raw_data):
 	for n in num_array:
 		moving = ""
 		if int(n) % 2 == 0:
-			moving = secret_array[-1]
-			secret_array.remove(-1)
+			moving = secret_array.pop(-1)
 			secret_array.insert(0,moving)
 		else:
-			moving = secret_array[0]
-			secret_array.remove(0)
+			moving = secret_array.pop(0)
 			secret_array.append(moving)
 			
 	print(secret_array)
