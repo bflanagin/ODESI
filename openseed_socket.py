@@ -30,13 +30,17 @@ def chunky(data,sock):
 	offset = 0
 	while True:
 		if full_length > BUFF_SIZE:
+			print(utf8[offset:BUFF_SIZE*chunk])
 			sock.send(utf8[offset:BUFF_SIZE*chunk])
 			full_length -= BUFF_SIZE
 		else:
+			print(utf8[offset:full_length])
 			sock.send(utf8[offset:full_length])
 			break
+		
 		chunk += 1
 		offset += BUFF_SIZE+1
+	
 	return
 
 class TCPHandler(socketserver.BaseRequestHandler):
@@ -50,7 +54,7 @@ class TCPHandler(socketserver.BaseRequestHandler):
 			message = self.data.decode().split("msg=")[1].split("<::>")[1]
 			if len(self.data.decode().split("msg=")[1].split("<::>")) == 3:
 				decrypted = Seed.simp_decrypt(key,message)
-				print("From: "+decrypted)
+				#print("From: "+decrypted)
 				#response = Core.message(message)
 				response = Core.message(decrypted)
 				#print("Returning: "+response)
