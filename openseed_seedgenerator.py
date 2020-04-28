@@ -352,8 +352,8 @@ def simp_decrypt(key,raw_data):
 
 	num_array = []
 	for c in key:
-		num_array.append(ord(c))
-	print(num_array)
+		if ord(c) >= 48 and ord(c) <= 57:
+			num_array.append(int(chr(ord(c))))
 
 	key = key.replace("0","q")\
 			.replace("1","a").replace("2","b")\
