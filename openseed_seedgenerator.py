@@ -384,7 +384,7 @@ def simp_decrypt(key,raw_data):
 			moving = secret_array.pop(0)
 			secret_array.append(moving)
 			
-	data = str(secret_array)[1:-1].replace(",","")
+	data = str(secret_array)[1:-1].replace(",","").replace("'","")
 	
 	if key_stretch != "":
 		if len(data) > len(key_stretch):
