@@ -44,7 +44,7 @@ class TCPHandler(socketserver.BaseRequestHandler):
 				response = Core.message(decrypted)
 				#print("Returning: "+response)
 				encrypt = Seed.simp_crypt(key,response)
-				print("Returning: "+json.loads(Seed.simp_decrypt(key,response)))
+				print("Returning: "+Seed.simp_decrypt(key,response))
 				chunky(encrypt.strip(),self.request)
 				#self.request.sendall(response.encode("utf8"))
 			else:
