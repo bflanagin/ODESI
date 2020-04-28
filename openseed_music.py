@@ -247,22 +247,22 @@ def get_genre_tracks_json(genre,count):
 	num = 0
 	for genre in result:
 		if genre:
-			output.append({"author":genre[0],
-					"title": genre[1],
-					"post": genre[2],
-					"img": genre[3],
-					"ogg": genre[4],
-					"curation": genre[5],
-					"type": genre[6],
-					"genre": genre[7],
-					"tags": genre[8],
-					"duration": genre[9]}
+			output.append('{"author":"'+genre[0]+'", \
+					"title":"'+genre[1]+'", \
+					"post":"'+genre[2]+'", \
+					"img":"'+genre[3]+'", \
+					"ogg":"'+genre[4]+'", \
+					"curation":"'+str(genre[5])+'", \
+					"type":"'+genre[6]+'", \
+					"genre":"'+genre[7]+'", \
+					"tags":"'+genre[8]+'", \
+					"duration":"'+str(genre[9])+'"}'
 					)
 
 	music.close()
 	openseed.close()
 
-	response = '{"genre_tracks":{"total":"'+str(len(result))+'","results":'+json.dumps(output)+'}}'
+	response = '{"genre_tracks":{"total":"'+str(len(result))+'","results":'+output+'}}'
 	return response
 
 def get_tracks_json(start = 0,count = 0):
@@ -280,18 +280,16 @@ def get_tracks_json(start = 0,count = 0):
 	result = music.fetchall()
 	for genre in result:
 		if genre:
-			output.append({
-					"author":genre[0],
-					"title": genre[1],
-					"post": genre[2],
-					"img": genre[3],
-					"ogg": genre[4],
-					"curation": genre[5],
-					"type": genre[6],
-					"genre": genre[7],
-					"tags": genre[8],
-					"duration": genre[9]
-					})
+			output.append('{"author":"'+genre[0]+'", \
+					"title":"'+genre[1]+'", \
+					"post":"'+genre[2]+'", \
+					"img":"'+genre[3]+'", \
+					"ogg":"'+genre[4]+'", \
+					"curation":"'+str(genre[5])+'", \
+					"type":"'+genre[6]+'", \
+					"genre":"'+genre[7]+'", \
+					"tags":"'+genre[8]+'", \
+					"duration":"'+str(genre[9])+'"}')
 		if int(count) != 0:
 			if num == int(count):
 				break
@@ -299,5 +297,5 @@ def get_tracks_json(start = 0,count = 0):
 
 	music.close()
 	openseed.close()
-	return '{"tracks":{"total":"'+str(len(result))+'","results":'+json.dumps(output)+'}}'
+	return '{"tracks":{"total":"'+str(len(result))+'","results":'+output+'}}'
 
