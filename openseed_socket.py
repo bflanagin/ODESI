@@ -26,13 +26,17 @@ def chunky(data,sock):
 	BUFF_SIZE = 4096 # 4 KiB
 	utf8 = data.encode("utf8")
 	full_length = len(utf8)
+	chunk = 1
+	offset = 0
 	while True:
 		if full_length > BUFF_SIZE:
-			sock.send(BUFF_SIZE,utf8)
+			sock.send(utf8[offset:BUFF_SIZE*chunk)
 			full_length -= BUFF_SIZE
 		else:
-			sock.send(full_length,utf8)
+			sock.send(utf8[offset:full_length)
 			break
+		chunk += 1
+		offset += BUFF_SIZE+1
 	return
 
 class TCPHandler(socketserver.BaseRequestHandler):
