@@ -185,7 +185,7 @@ def get_new_tracks_json():
 				"type":"'+song[6]+'", \
 				"genre":"'+song[7]+'", \
 				"tags":"'+song[8]+'", \
-				"duration":'+dur+'}')
+				"duration":"'+dur+'"}')
 
 	music.close()
 	openseed.close()
