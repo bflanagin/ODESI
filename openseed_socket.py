@@ -69,7 +69,12 @@ class TCPHandler(socketserver.BaseRequestHandler):
 				self.request.send(str('{"server":"error incomplete message"}').encode("utf8"))
 		else:
 			response = Core.message(self.data)
-			self.request.send(response.encode("utf8"))
+			try:
+				json.loads(response)
+			except:
+				print("not json formated")
+			else:
+				chunky(response.strip(),self.request)
 
 if __name__=="__main__":
 	HOST, PORT = "0.0.0.0",8688
