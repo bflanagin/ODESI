@@ -173,13 +173,13 @@ def get_new_tracks_json():
 		if output.find(str(song)) == -1:
 			dur = "0.00"
 			if song[9] != None:
-				print(song[9].split(".")[0]+"."+song[9].split(".")[1][0:1])
+				dur = song[9].split(".")[0]+"."+song[9].split(".")[1][0:1])
 			else:
 				print(song[9])
 			if output == "":
-				output = '{"author":"'+song[0]+'","title":"'+song[1]+'","post":"'+song[2]+'","img":"'+song[3]+'","ogg":"'+song[4]+'","curation":"'+song[5]+'","type":"'+song[6]+'","genre":"'+song[7]+'","tags":"'+song[8]+'","duration":"0.00"}'
+				output = '{"author":"'+song[0]+'","title":"'+song[1]+'","post":"'+song[2]+'","img":"'+song[3]+'","ogg":"'+song[4]+'","curation":"'+str(song[5])+'","type":"'+song[6]+'","genre":"'+song[7]+'","tags":"'+song[8]+'","duration":"0.00"}'
 			else:
-				output += ',{"author":"'+song[0]+'","title":"'+song[1]+'","post":"'+song[2]+'","img":"'+song[3]+'","ogg":"'+song[4]+'","curation":"'+song[5]+'","type":"'+song[6]+'","genre":"'+song[7]+'","tags":"'+song[8]+'","duration":"0.00"}'
+				output += ',{"author":"'+song[0]+'","title":"'+song[1]+'","post":"'+song[2]+'","img":"'+song[3]+'","ogg":"'+song[4]+'","curation":"'+str(song[5])+'","type":"'+song[6]+'","genre":"'+song[7]+'","tags":"'+song[8]+'","duration":"0.00"}'
 
 	music.close()
 	openseed.close()
