@@ -318,13 +318,13 @@ def simp_crypt(key,raw_data):
 				key_stretch = key_stretch + key
 	
 	#key_stretch = key_stretch[0:len(data)]
-		
+	#salt % 3 == 0 and	
 	
 	while datanum < len(data):
 		keynum = 0
 		while keynum < len(key_stretch):
 			salt = int(round(random.random() * 40))
-			if keynum < len(data) and salt % 3 == 0 and datanum < len(data):
+			if keynum < len(data) and datanum < len(data):
 				if data[datanum] == key_stretch[keynum]:
 					num = keynum
 					while num < len(key_stretch) -1:
