@@ -39,13 +39,13 @@ class TCPHandler(socketserver.BaseRequestHandler):
 				#print("Returning: "+response)
 				encrypt = Seed.simp_crypt(key,response)
 				#print(encrypt)
-				self.request.sendall(encrypt.encode("utf8"))
+				self.request.send(encrypt.encode("utf8"))
 				#self.request.sendall(response.encode("utf8"))
 			else:
-				self.request.sendall(str('{"server":"error"}').encode("utf8"))
+				self.request.send(str('{"server":"error"}').encode("utf8"))
 		else:
 			response = Core.message(self.data)
-			self.request.sendall(response.encode("utf8"))
+			self.request.send(response.encode("utf8"))
 
 if __name__=="__main__":
 	HOST, PORT = "0.0.0.0",8688
