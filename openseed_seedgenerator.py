@@ -379,7 +379,7 @@ def simp_decrypt(key,raw_data):
 	# Second round, shuffle
 	secret_array = data.split(" ")
 	for n in num_array:
-		moving
+		moving = ""
 		if int(n) % 2 == 0:
 			moving = secret_array[-1]
 			secret_array.remove(-1)
