@@ -170,18 +170,18 @@ def get_new_tracks_json():
 	result = music.fetchall()
 	for song in result:
 		if str(output).find(str(song)) == -1:
-			output.append({
-				"author":song[0],
-				"title": song[1],
-				"post": song[2],
-				"img": song[3],
-				"ogg": song[4],
-				"curation": song[5],
-				"type": song[6],
-				"genre": song[7],
-				"tags": song[8],
-				"duration": format(float(song[9]), '.2f')
-				})
+			output.append('{ \
+				"author":"'+song[0]+'", \
+				"title": "'+song[1]+'", \
+				"post": "'+song[2]+'", \
+				"img": "'+song[3]+'", \
+				"ogg": "'+song[4]+'", \
+				"curation": "'+song[5]+'", \
+				"type": "'+song[6]+'", \
+				"genre": "'+song[7]+'", \
+				"tags": "'+song[8]+'", \
+				"duration": '+format(float(song[9]), '.2f') \
+				'}')
 
 	music.close()
 	openseed.close()
