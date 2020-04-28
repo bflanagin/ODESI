@@ -371,6 +371,7 @@ def simp_decrypt(key,raw_data):
 		if len(data) > len(key_stretch):
 			while len(key_stretch) < len(data):
 				key_stretch = key_stretch + key
+		key_stretch = key_stretch[0:len(data)]
 
 		while datanum < len(data):
 			if key_stretch[datanum] != data[datanum]:

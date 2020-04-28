@@ -33,11 +33,12 @@ class TCPHandler(socketserver.BaseRequestHandler):
 			message = self.data.decode().split("msg=")[1].split("<::>")[1]
 			if len(self.data.decode().split("msg=")[1].split("<::>")) == 3:
 				decrypted = Seed.simp_decrypt(key,message)
-				#print("From: "+decrypted)
+				print("From: "+decrypted)
 				#response = Core.message(message)
 				response = Core.message(decrypted)
 				#print("Returning: "+response)
 				encrypt = Seed.simp_crypt(key,response)
+				print(encrypt)
 				self.request.sendall(encrypt.encode("utf8"))
 				#self.request.sendall(response.encode("utf8"))
 			else:
