@@ -30,11 +30,11 @@ def chunky(data,sock):
 	offset = 0
 	while True:
 		if full_length > BUFF_SIZE:
-			print(utf8[offset:BUFF_SIZE*chunk])
+			#print(utf8[offset:BUFF_SIZE*chunk])
 			sock.send(utf8[offset:BUFF_SIZE*chunk])
 			full_length -= BUFF_SIZE
 		else:
-			print(utf8[offset:full_length])
+			#print(utf8[offset:full_length])
 			sock.send(utf8[offset:full_length])
 			break
 		

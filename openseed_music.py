@@ -169,6 +169,7 @@ def get_new_tracks_json():
 	music.execute(search)
 	result = music.fetchall()
 	for song in result:
+		print(song)
 		if output.find(str(song)) == -1:
 			dur = "0.00"
 			if song[9] != None:
