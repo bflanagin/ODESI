@@ -23,11 +23,16 @@ def recvall(sock):
     return data
     
 def chunky(data,sock):
-
+	BUFF_SIZE = 4096 # 4 KiB
 	utf8 = data.encode("utf8")
-	print(len(utf8))
-	sock.send(utf8)
-	
+	full_length = len(utf8)
+	while True:
+		if full_length > BUFF_SIZE
+			sock.send(BUFF_SIZE,utf8)
+			full_length -= BUFF_SIZE
+		else:
+			sock.send(full_length,utf8)
+			break
 	return
 
 class TCPHandler(socketserver.BaseRequestHandler):
