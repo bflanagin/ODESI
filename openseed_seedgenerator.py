@@ -354,6 +354,8 @@ def simp_decrypt(key,raw_data):
 	for c in key:
 		try:
 			int(c)
+		except:
+			print("")
 		else:
 			num_array.append(c)
 
