@@ -374,17 +374,17 @@ def simp_decrypt(key,raw_data):
 	data = raw_data.replace("zZz"," ")
 	
 	# Second round, shuffle
-	secret_array = data.split(" ")
-	for n in num_array:
-		moving = ""
-		if int(n) % 2 == 0:
-			moving = secret_array.pop(-1)
-			secret_array.insert(0,moving)
-		else:
-			moving = secret_array.pop(0)
-			secret_array.append(moving)
+	#secret_array = data.split(" ")
+	#for n in num_array:
+	#	moving = ""
+	#	if int(n) % 2 == 0:
+	#		moving = secret_array.pop(-1)
+	#		secret_array.insert(0,moving)
+	#	else:
+	#		moving = secret_array.pop(0)
+	#		secret_array.append(moving)
 			
-	data = str(secret_array)[1:-1].replace(",","").replace("'","")
+	#data = str(secret_array)[1:-1].replace(",","").replace("'","")
 	
 	if key_stretch != "":
 		if len(data) > len(key_stretch):
