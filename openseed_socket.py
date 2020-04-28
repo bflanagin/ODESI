@@ -27,7 +27,7 @@ def chunky(data,sock):
 	utf8 = data.encode("utf8")
 	full_length = len(utf8)
 	while True:
-		if full_length > BUFF_SIZE
+		if full_length > BUFF_SIZE:
 			sock.send(BUFF_SIZE,utf8)
 			full_length -= BUFF_SIZE
 		else:
