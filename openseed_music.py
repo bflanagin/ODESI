@@ -176,16 +176,7 @@ def get_new_tracks_json():
 			else:
 				print(song[9])
 				
-			output.append('{"author":"'+song[0]+'", \
-				"title":"'+song[1]+'", \
-				"post":"'+song[2]+'", \
-				"img":"'+song[3]+'", \
-				"ogg":"'+song[4]+'", \
-				"curation":"'+song[5]+'", \
-				"type":"'+song[6]+'", \
-				"genre":"'+song[7]+'", \
-				"tags":"'+song[8]+'", \
-				"duration":"'+str(dur)+'"}')
+			output.append('{"author":"'+song[0]+'","title":"'+song[1]+'","post":"'+song[2]+'","img":"'+song[3]+'","ogg":"'+song[4]+'","curation":"'+song[5]+'","type":"'+song[6]+'","genre":"'+song[7]+'","tags":"'+song[8]+'","duration":"0.00"}')
 
 	music.close()
 	openseed.close()
