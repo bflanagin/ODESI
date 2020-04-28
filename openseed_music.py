@@ -164,7 +164,7 @@ def get_new_tracks_json():
 		database = "ipfsstore"
 		)
 	music = openseed.cursor()
-	output = []
+	output = ""
 	search = "SELECT author,title,post,img,ogg,curation,type,genre,tags,duration FROM `audio` WHERE ogg IS NOT NULL AND ogg LIKE '_%' ORDER BY date DESC LIMIT 15"
 	music.execute(search)
 	result = music.fetchall()
@@ -175,12 +175,14 @@ def get_new_tracks_json():
 				print(song[9].split(".")[0]+"."+song[9].split(".")[1][0:1])
 			else:
 				print(song[9])
-				
-			output.append('{"author":"'+song[0]+'","title":"'+song[1]+'","post":"'+song[2]+'","img":"'+song[3]+'","ogg":"'+song[4]+'","curation":"'+song[5]+'","type":"'+song[6]+'","genre":"'+song[7]+'","tags":"'+song[8]+'","duration":"0.00"}')
+			if ouput == "":
+				output = '{"author":"'+song[0]+'","title":"'+song[1]+'","post":"'+song[2]+'","img":"'+song[3]+'","ogg":"'+song[4]+'","curation":"'+song[5]+'","type":"'+song[6]+'","genre":"'+song[7]+'","tags":"'+song[8]+'","duration":"0.00"}'
+			else:
+				output += ',{"author":"'+song[0]+'","title":"'+song[1]+'","post":"'+song[2]+'","img":"'+song[3]+'","ogg":"'+song[4]+'","curation":"'+song[5]+'","type":"'+song[6]+'","genre":"'+song[7]+'","tags":"'+song[8]+'","duration":"0.00"}'
 
 	music.close()
 	openseed.close()
-	return '{"newtracks":'+str(output)+'}'
+	return '{"newtracks":['+output+']}'
 
 
 
