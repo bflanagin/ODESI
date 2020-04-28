@@ -328,10 +328,14 @@ def simp_crypt(key,raw_data):
 	while datanum < len(data):
 		keynum = 0
 		while keynum < len(key_stretch):
-			if keynum > len(num_array):
+			salt = 0
+			if keynum < len(num_array):
+				salt = num_array[keynum]
+			else:
 				num_array += num_array
-			salt = int(num_array[keynum])
-			if keynum < len(data) and salt % 3 == 0 and datanum < len(data):
+				salt = num_array[keynum]
+				
+			if keynum < len(data) and int(salt) % 3 == 0 and datanum < len(data):
 				if data[datanum] == key_stretch[keynum]:
 					num = keynum
 					while num < len(key_stretch) -1:
