@@ -115,7 +115,7 @@ def get_new_artists():
 		)
 	music = openseed.cursor()
 	output = []
-	search = "SELECT author FROM `audio` WHERE ogg IS NOT NULL AND ogg LIKE'_%' ORDER BY date DESC"
+	search = "SELECT author FROM `audio` WHERE ogg IS NOT NULL AND ogg LIKE'_%' ORDER BY date DESC LIMIT 20"
 	music.execute(search)
 	result = music.fetchall()
 	artist_num = 1
@@ -140,7 +140,7 @@ def get_new_tracks():
 		)
 	music = openseed.cursor()
 	output = []
-	search = "SELECT author,title,post,img,ogg,curation,type,genre,tags,duration FROM `audio` WHERE ogg IS NOT NULL AND ogg LIKE '_%' ORDER BY date DESC"
+	search = "SELECT author,title,post,img,ogg,curation,type,genre,tags,duration FROM `audio` WHERE ogg IS NOT NULL AND ogg LIKE '_%' ORDER BY date DESC LIMIT 20"
 	music.execute(search)
 	result = music.fetchall()
 	artist_num = 1
@@ -180,12 +180,12 @@ def get_new_tracks_json():
 				"type": song[6],
 				"genre": song[7],
 				"tags": song[8],
-				"duration": song[9]
+				"duration": format(song[9], '.2f')
 				})
 
 	music.close()
 	openseed.close()
-	return '{"newtracks":'+json.dumps(output)+'}'
+	return '{"newtracks":'+str(output)+'}'
 
 
 
