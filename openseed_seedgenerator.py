@@ -350,7 +350,7 @@ def simp_crypt(key,raw_data):
 
 def simp_decrypt(key,raw_data):
 
-	var num_array = []
+	num_array = []
 	for c in key:
 		if int(c):
 			num_array.append(c)
