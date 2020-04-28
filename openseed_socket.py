@@ -25,7 +25,7 @@ def recvall(sock):
 def chunky(data,sock):
 
 	utf8 = data.encode("utf8")
-	print(utf8)
+	print(len(utf8))
 	sock.send(utf8)
 	
 	return
