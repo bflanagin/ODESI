@@ -355,8 +355,6 @@ def simp_decrypt(key,raw_data):
 		if ord(c) >= 48 and ord(c) <= 57:
 			num_array.append(int(chr(ord(c))))
 			
-	print(num_array)
-
 	key = key.replace("0","q")\
 			.replace("1","a").replace("2","b")\
 			.replace("3","c").replace("4","d")\
@@ -374,7 +372,6 @@ def simp_decrypt(key,raw_data):
 	decoded = ""
 
 	data = raw_data.replace("zZz"," ")
-	print(data)
 	
 	# Second round, shuffle
 	secret_array = data.split(" ")
@@ -401,7 +398,7 @@ def simp_decrypt(key,raw_data):
 					message = message + data[datanum]
 				else:break
 			datanum = datanum + 1
-			
+		print(message)
 		for c in message.split(" "):
 			try:
 				int(c)
