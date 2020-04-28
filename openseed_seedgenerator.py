@@ -352,7 +352,9 @@ def simp_decrypt(key,raw_data):
 
 	num_array = []
 	for c in key:
-		if int(c):
+		try:
+			int(c)
+		else:
 			num_array.append(c)
 
 	key = key.replace("0","q")\
