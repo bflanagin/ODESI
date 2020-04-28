@@ -252,7 +252,7 @@ def get_genre_tracks_json(genre,count):
 	music.close()
 	openseed.close()
 
-	response = '{"genre_tracks":{"total":"'+str(len(result))+'","results":'+str(output).replace("\'")+'}}'
+	response = '{"genre_tracks":{"total":"'+str(len(result))+'","results":'+str(output).replace("\'","")+'}}'
 	return response
 
 def get_tracks_json(start = 0,count = 0):
@@ -282,5 +282,5 @@ def get_tracks_json(start = 0,count = 0):
 
 	music.close()
 	openseed.close()
-	return '{"tracks":{"total":"'+str(len(result))+'","results":'+str(output).replace("\'")+'}}'
+	return '{"tracks":{"total":"'+str(len(result))+'","results":'+str(output).replace("\'","")+'}}'
 
