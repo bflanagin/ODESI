@@ -180,7 +180,7 @@ def get_new_tracks_json():
 				"type": song[6],
 				"genre": song[7],
 				"tags": song[8],
-				"duration": format(song[9], '.2f')
+				"duration": format(float(song[9]), '.2f')
 				})
 
 	music.close()
