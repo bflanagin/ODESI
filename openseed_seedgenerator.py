@@ -354,6 +354,8 @@ def simp_decrypt(key,raw_data):
 	for c in key:
 		if ord(c) >= 48 and ord(c) <= 57:
 			num_array.append(int(chr(ord(c))))
+			
+	print(num_array)
 
 	key = key.replace("0","q")\
 			.replace("1","a").replace("2","b")\
@@ -372,7 +374,23 @@ def simp_decrypt(key,raw_data):
 	decoded = ""
 
 	data = raw_data.replace("zZz"," ")
-
+	print(data)
+	
+	# Second round, shuffle
+	secret_array = data.split(" ")
+	for n in num_array:
+		moving
+		if int(n) % 2 == 0:
+			moving = secret_array[-1]
+			secret_array.remove(-1)
+			secret_array.insert(0,moving)
+		else:
+			moving = secret_array[0]
+			secret_array.remove(0)
+			secret_array.append(moving)
+			
+	print(secret_array)
+	
 	if key_stretch != "":
 		if len(data) > len(key_stretch):
 			while len(key_stretch) < len(data):
