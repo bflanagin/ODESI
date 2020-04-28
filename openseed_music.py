@@ -173,6 +173,7 @@ def get_new_tracks_json():
 			dur = ""
 			if song[9] != None:
 				dur = song[9].split(".")[0]+song[9].split(".")[1][0:1]
+				print(dur)
 			else:
 				dur = "0.00"
 				
@@ -185,7 +186,7 @@ def get_new_tracks_json():
 				"type":"'+song[6]+'", \
 				"genre":"'+song[7]+'", \
 				"tags":"'+song[8]+'", \
-				"duration":"'+dur+'"}')
+				"duration":"'+str(dur)+'"}')
 
 	music.close()
 	openseed.close()
