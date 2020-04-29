@@ -140,6 +140,8 @@ def message(data):
 				response = Connections.get_openseed_connections(from_client["account"],from_client["hive"])
 			elif action == "get_profile":
 				response = "{"+Account.get_profile(from_client["account"])+"}"
+			elif action == "get_profile_lite":
+				response = "{"+Account.user_profile_lite(account)+"}"
 			elif action == "get_requests":
 				response = Connections.get_requests(from_client["token"],from_client["count"])
 			elif action == "send_request":
@@ -180,6 +182,10 @@ def message(data):
 			# Utils #
 			elif action =="get_image":
 				response = Utils.get_image(False,from_client["image"],from_client["thetype"],from_client["quality"])
+			elif action == "gps":
+				response = Account.gps_search(from_client["username"],from_client["cords"])
+			elif action == "search":
+				response = Account.openseed_search(from_client["username"])
 			else:
 				response = '{"server":"Please read documentation on accepted commands"}'
 				
