@@ -77,7 +77,7 @@ if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 	if action == "search":
 		print(Account.openseed_search(from_client["username"]))
 	if action == "gps":
-		print(Account.gps_search(from_client["username"],from_client["cords"]))
+		print(Account.gps_search(from_client["username"],from_client["cords"]))	
 	if action == "get_history":
 		print(Account.get_history(from_client["account"],from_client["apprange"],from_client["count"]))
 	if action == "update_history":
