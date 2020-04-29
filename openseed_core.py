@@ -141,7 +141,7 @@ def message(data):
 			elif action == "get_profile":
 				response = "{"+Account.get_profile(from_client["account"])+"}"
 			elif action == "get_profile_lite":
-				response = "{"+Account.user_profile_lite(account)+"}"
+				response = "{"+Account.user_profile_lite(from_client["account"])+"}"
 			elif action == "get_requests":
 				response = Connections.get_requests(from_client["token"],from_client["count"])
 			elif action == "send_request":
