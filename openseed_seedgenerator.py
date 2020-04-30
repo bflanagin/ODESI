@@ -425,10 +425,10 @@ def simp_decrypt(key,raw_data):
 					split = int(data[datanum])
 					if int(salt) % 2 == 0:
 						split = int(data[datanum]) - int(key_digits[keynum])
-					else:
-						split = int(data[datanum]) / int(key_digits[keynum])
+					#else:
+						#split = int(data[datanum]) / int(key_digits[keynum])
 						
-					message += chr(int(split))
+					message += chr(split)
 				datanum += 1
 			keynum += 1	
 			
