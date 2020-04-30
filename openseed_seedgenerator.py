@@ -437,5 +437,5 @@ def simp_decrypt(key,raw_data):
 				datanum += 1
 			keynum += 1	
 			
-	return message.replace(":percent:","%").replace(":ampersand:","&")
+	return message.replace(":percent:","%").replace(":ampersand:","&").strip()
 	
