@@ -292,9 +292,14 @@ def get_room_key(token,room):
 def simp_crypt(key,raw_data):
 	num_array = []
 	for c in key:
-		if ord(c) >= 48 and ord(c) <= 57:
+		try:
+			int(c)
+		except:
+			pass
+		else:
 			num_array.append(c)
-
+			
+	
 	key = key.replace("0","q")\
 			.replace("1","a").replace("2","b")\
 			.replace("3","c").replace("4","d")\
@@ -305,26 +310,28 @@ def simp_crypt(key,raw_data):
 			.replace(" ","!").replace("/","S")\
 			.replace("=","e").replace(":","c")\
 			.replace("\n","n")
-	secret = ""
-	datanum = 0
-	digits = ""
-	key_stretch = key
-	key_digits = ""
-	data = ""
-	
+	 secret = ""
+	 datanum = 0
+	 digits = ""
+	 key_digits = ""
+	 key_stretch = key
+	 keystring = "" 
+
 	#//lets turn it into integers first//
 	for t in raw_data.replace("%", ":percent:").replace("&", ":ampersand:"):
-		c = ord(t)
+		 c = ord(t)
+		 
 		digits += str(c)+" "
-	
-	data = digits
 		
+	 data = digits
+	
 	if key_stretch != "":
 		if len(data) > len(key_stretch):
 			while len(key_stretch) < len(data):
 				key_stretch = key_stretch + key
+				
+	key_stretch = key_stretch.substr(0,data.length())
 	
-	key_stretch = key_stretch[0:len(data)]
 	data = data.split(" ")
 	
 	for b in key_stretch:
@@ -332,7 +339,7 @@ def simp_crypt(key,raw_data):
 		key_digits += str(i)+" "
 	key_digits = key_digits.split(" ")	
 	
-	while datanum < len(data) -1:
+	while datanum < len(data):
 		keynum = 0
 		while keynum < len(key_stretch):
 			salt = 0
@@ -341,14 +348,14 @@ def simp_crypt(key,raw_data):
 			else:
 				num_array += num_array
 				salt = num_array[keynum]
-			if keynum < len(data) -1 and datanum < len(data) -1:
+			if keynum < len(data) and datanum < len(data):
 				if data[datanum] == key_digits[keynum]:
 					if int(salt) % 2 == 0:
 						secret = secret + chr(int(data[datanum]) - int(salt))
 					else:
 						secret = secret + chr(int(data[datanum]) + int(salt))
 				else:
-					combine = 0
+					 combine = 0
 					if int(salt) % 2 == 0:
 						combine = int(data[datanum]) + int(key_digits[keynum])
 					else:
