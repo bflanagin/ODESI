@@ -310,6 +310,7 @@ def simp_crypt(key,raw_data):
 	digits = ""
 	key_stretch = key
 	key_digits = ""
+	data = ""
 	
 	#//lets turn it into integers first//
 	for t in raw_data.replace("%", ":percent:").replace("&", ":ampersand:"):
@@ -381,6 +382,7 @@ def simp_decrypt(key,raw_data):
 	decoded = ""
 	digits = ""
 	key_digits = ""
+	data = ""
 	
 	for t in raw_data.replace("zZz"," "):
 		c = ord(t)
