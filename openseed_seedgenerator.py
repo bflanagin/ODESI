@@ -424,7 +424,7 @@ def simp_decrypt(key,raw_data):
 				else:
 					split = 42
 					if int(salt) % 2 == 0:		
-						split = data[datanum] - key_digits[keynum]
+						split = int(data[datanum]) - int(key_digits[keynum])
 					#else:
 						#split = int(data[datanum]) / int(key_digits[keynum])
 						
