@@ -390,7 +390,7 @@ def simp_decrypt(key,raw_data):
 		digits += str(c)+" "
 
 	data = digits+str(ord(str(" ")))
-'''	
+	
 	if key_stretch == key:
 		if len(data) > len(key_stretch):
 			while len(key_stretch) < len(data):
@@ -433,4 +433,4 @@ def simp_decrypt(key,raw_data):
 			keynum += 1	
 			
 	return message.replace(":percent:","%").replace(":ampersand:","&")
-'''	
+	
