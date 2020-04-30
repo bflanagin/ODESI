@@ -293,7 +293,7 @@ def simp_crypt(key,raw_data):
 	num_array = []
 	for c in key:
 		if ord(c) >= 48 and ord(c) <= 57:
-			num_array.append(int(chr(ord(c))))
+			num_array.append(ord(c))
 
 	key = key.replace("0","q")\
 			.replace("1","a").replace("2","b")\
@@ -317,7 +317,7 @@ def simp_crypt(key,raw_data):
 		c = ord(t)
 		digits += str(c)+" "
 	
-	data = digits+str(ord(str(" ")))
+	data = digits
 		
 	if key_stretch != "":
 		if len(data) > len(key_stretch):
@@ -364,7 +364,7 @@ def simp_decrypt(key,raw_data):
 	num_array = []
 	for c in key:
 		if ord(c) >= 48 and ord(c) <= 57:
-			num_array.append(int(chr(ord(c))))
+			num_array.append(ord(c))
 			
 	key = key.replace("0","q")\
 			.replace("1","a").replace("2","b")\
@@ -389,7 +389,7 @@ def simp_decrypt(key,raw_data):
 		c = ord(t)
 		digits += str(c)+" "
 
-	data = digits+str(ord(str(" ")))
+	data = digits
 	
 	if key_stretch != "":
 		if len(data) > len(key_stretch):
@@ -426,7 +426,7 @@ def simp_decrypt(key,raw_data):
 					if int(salt) % 2 == 0:		
 						split = int(data[datanum]) - int(key_digits[keynum])
 					else:
-						split = int(int(data[datanum]) - int(key_digits[keynum]))
+						split = int(data[datanum]) - int(key_digits[keynum])
 					try:
 						chr(split)
 					except:
