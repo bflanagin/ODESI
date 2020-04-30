@@ -344,16 +344,16 @@ def simp_crypt(key,raw_data):
 			if keynum < len(data) and datanum < len(data):
 				if data[datanum] == key_digits[keynum]:
 					if int(salt) % 2 == 0:
-						secret = secret + char(int(data[datanum]) - int(salt))
+						secret = secret + chr(int(data[datanum]) - int(salt))
 					else:
-						secret = secret + char(int(data[datanum]) + int(salt))
+						secret = secret + chr(int(data[datanum]) + int(salt))
 				else:
 					combine = 0
 					if int(salt) % 2 == 0:
 						combine = int(data[datanum]) + int(key_digits[keynum])
 					else:
 						combine = int(data[datanum]) * int(key_digits[keynum])
-					secret = secret + char(combine)
+					secret = secret + chr(combine)
 				datanum += 1
 			keynum += 1
 			
