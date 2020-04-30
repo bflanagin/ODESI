@@ -421,14 +421,14 @@ def simp_decrypt(key,raw_data):
 					message += chr(int(data[datanum]) - int(salt))
 				elif int(data[datanum]) + int(salt) == int(key_digits[keynum]):
 						message += chr(int(data[datanum]) + int(salt))
-				else:
-					split = int(data[datanum])
-					if int(salt) % 2 == 0:
-						split = int(data[datanum]) - int(key_digits[keynum])
+				#else:
+					#split = int(data[datanum])
+					#if int(salt) % 2 == 0:
+					#	split = int(data[datanum]) - int(key_digits[keynum])
 					#else:
 						#split = int(data[datanum]) / int(key_digits[keynum])
 						
-					message += chr(split)
+					#message += chr(split)
 				datanum += 1
 			keynum += 1	
 			
