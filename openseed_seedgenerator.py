@@ -310,20 +310,19 @@ def simp_crypt(key,raw_data):
 			.replace(" ","!").replace("/","S")\
 			.replace("=","e").replace(":","c")\
 			.replace("\n","n")
-	 secret = ""
-	 datanum = 0
-	 digits = ""
-	 key_digits = ""
-	 key_stretch = key
-	 keystring = "" 
+	secret = ""
+	datanum = 0
+	digits = ""
+	key_digits = ""
+	key_stretch = key
+	keystring = "" 
 
 	#//lets turn it into integers first//
 	for t in raw_data.replace("%", ":percent:").replace("&", ":ampersand:"):
-		 c = ord(t)
-		 
+		c = ord(t) 
 		digits += str(c)+" "
 		
-	 data = digits
+	data = digits
 	
 	if key_stretch != "":
 		if len(data) > len(key_stretch):
@@ -355,7 +354,7 @@ def simp_crypt(key,raw_data):
 					else:
 						secret = secret + chr(int(data[datanum]) + int(salt))
 				else:
-					 combine = 0
+					combine = 0
 					if int(salt) % 2 == 0:
 						combine = int(data[datanum]) + int(key_digits[keynum])
 					else:
