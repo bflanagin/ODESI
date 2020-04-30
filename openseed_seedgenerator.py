@@ -389,7 +389,7 @@ def simp_decrypt(key,raw_data):
 		c = ord(t)
 		digits += str(c)+" "
 
-	data = digits+str(ord(str(" "))
+	data = digits+str(ord(str(" ")))
 '''	
 	if key_stretch == key:
 		if len(data) > len(key_stretch):
