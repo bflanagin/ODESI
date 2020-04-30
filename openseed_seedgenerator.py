@@ -417,9 +417,6 @@ def simp_decrypt(key,raw_data):
 				salt = num_array[keynum]
 				
 			if keynum < len(data) -1 and datanum < len(data) -1:
-				print(int(data[datanum]))
-				print(int(salt))
-				print(int(key_digits[keynum]))
 				if int(data[datanum]) - int(salt) == int(key_digits[keynum]):
 					message += chr(int(data[datanum]) - int(salt))
 				elif int(data[datanum]) + int(salt) == int(key_digits[keynum]):
