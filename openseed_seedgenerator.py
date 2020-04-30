@@ -365,7 +365,7 @@ def simp_decrypt(key,raw_data):
 	for c in key:
 		if ord(c) >= 48 and ord(c) <= 57:
 			num_array.append(c)
-			
+
 	key = key.replace("0","q")\
 			.replace("1","a").replace("2","b")\
 			.replace("3","c").replace("4","d")\
@@ -417,6 +417,7 @@ def simp_decrypt(key,raw_data):
 				salt = num_array[keynum]
 				
 			if keynum < len(data) and datanum < len(data):
+				print(int(salt))
 				if int(data[datanum]) - int(salt) == int(key_digits[keynum]):
 					message += chr(int(data[datanum]) - int(salt))
 				elif int(data[datanum]) + int(salt) == int(key_digits[keynum]):
