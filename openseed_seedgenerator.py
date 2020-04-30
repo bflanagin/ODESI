@@ -319,7 +319,7 @@ def simp_crypt(key,raw_data):
 	
 	data = digits+str(ord(str(" ")))
 		
-	if key_stretch == key:
+	if key_stretch != "":
 		if len(data) > len(key_stretch):
 			while len(key_stretch) < len(data):
 				key_stretch = key_stretch + key
@@ -391,7 +391,7 @@ def simp_decrypt(key,raw_data):
 
 	data = digits+str(ord(str(" ")))
 	
-	if key_stretch == key:
+	if key_stretch != "":
 		if len(data) > len(key_stretch):
 			while len(key_stretch) < len(data):
 				key_stretch = key_stretch + key
@@ -428,7 +428,7 @@ def simp_decrypt(key,raw_data):
 					#else:
 						#split = int(data[datanum]) / int(key_digits[keynum])
 						
-					message += str(split)
+					message += " "+str(split)
 				datanum += 1
 			keynum += 1	
 			
