@@ -416,7 +416,7 @@ def simp_decrypt(key,raw_data):
 				num_array += num_array
 				salt = num_array[keynum]
 				
-			if keynum < len(data) and datanum < len(data):
+			if keynum < len(data) -1 and datanum < len(data) -1:
 				print(int(data[datanum]))
 				print(int(salt))
 				print(int(key_digits[keynum]))
