@@ -352,7 +352,7 @@ def simp_crypt(key,raw_data):
 					if int(salt) % 2 == 0:
 						combine = int(data[datanum]) + int(key_digits[keynum])
 					else:
-						combine = int(data[datanum]) * int(key_digits[keynum])
+						combine = int(data[datanum]) + int(key_digits[keynum])
 					secret = secret + chr(combine)
 				datanum += 1
 			keynum += 1
@@ -422,11 +422,11 @@ def simp_decrypt(key,raw_data):
 				elif int(data[datanum]) + int(salt) == int(key_digits[keynum]):
 						message += chr(int(data[datanum]) + int(salt))
 				else:
-					split = 42
+					split = ""
 					if int(salt) % 2 == 0:		
 						split = int(data[datanum]) - int(key_digits[keynum])
 					else:
-						split = int(int(data[datanum]) / int(key_digits[keynum]))
+						split = int(int(data[datanum]) - int(key_digits[keynum]))
 					try:
 						chr(split)
 					except:
