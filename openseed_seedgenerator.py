@@ -327,7 +327,7 @@ def simp_crypt(key,raw_data):
 	data = data.split(" ")
 	
 	for b in key_stretch:
-		var i = ord(b)
+		i = ord(b)
 		key_digits += str(i)+" "
 	key_digits = key_digits.split(" ")	
 	
@@ -347,7 +347,7 @@ def simp_crypt(key,raw_data):
 					else:
 						secret = secret + char(int(data[datanum]) + int(salt))
 				else:
-					var combine = 0
+					combine = 0
 					if int(salt) % 2 == 0:
 						combine = int(data[datanum]) + int(key_digits[keynum])
 					else:
@@ -383,7 +383,7 @@ def simp_decrypt(key,raw_data):
 	key_digits = ""
 	
 	for t in raw_data.replace("zZz"," "):
-		var c = ord(t)
+		c = ord(t)
 		digits += str(c)+" "
 
 	data = digits+str(ord(str(" "))
@@ -397,7 +397,7 @@ def simp_decrypt(key,raw_data):
 	data = data.split(" ")
 		
 	for b in key_stretch:
-		var i = ord(b)
+		i = ord(b)
 		key_digits += str(i)+" "
 	
 	key_digits = key_digits.split(" ")
