@@ -427,8 +427,13 @@ def simp_decrypt(key,raw_data):
 						split = int(data[datanum]) - int(key_digits[keynum])
 					else:
 						split = int(int(data[datanum]) / int(key_digits[keynum]))
+					try:
+						chr(split)
+					except:
+						pass
+					else:
+						message += chr(split)
 						
-					message += " "+str(split)
 				datanum += 1
 			keynum += 1	
 			
