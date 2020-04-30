@@ -332,7 +332,7 @@ def simp_crypt(key,raw_data):
 		key_digits += str(i)+" "
 	key_digits = key_digits.split(" ")	
 	
-	while datanum < len(data):
+	while datanum < len(data) -1:
 		keynum = 0
 		while keynum < len(key_stretch):
 			salt = 0
@@ -341,7 +341,7 @@ def simp_crypt(key,raw_data):
 			else:
 				num_array += num_array
 				salt = num_array[keynum]
-			if keynum < len(data) and datanum < len(data):
+			if keynum < len(data) -1 and datanum < len(data) -1:
 				if data[datanum] == key_digits[keynum]:
 					if int(salt) % 2 == 0:
 						secret = secret + chr(int(data[datanum]) - int(salt))
