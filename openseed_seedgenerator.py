@@ -289,6 +289,15 @@ def get_room_key(token,room):
 	return str(code)
 
 
+#!/usr/bin/python
+
+import hashlib
+import sys
+sys.path.append("..")
+import mysql.connector
+import json
+import random
+
 def simp_crypt(key,raw_data):
 	num_array = []
 	for c in key:
@@ -299,16 +308,6 @@ def simp_crypt(key,raw_data):
 		else:
 			num_array.append(c)
 	
-	key = key.replace("0","q")\
-			.replace("1","a").replace("2","b")\
-			.replace("3","c").replace("4","d")\
-			.replace("5","F").replace("6","A")\
-			.replace("7","Z").replace("8","Q")\
-			.replace("9","T").replace("#","G")\
-			.replace("!","B").replace(",","C")\
-			.replace(" ","!").replace("/","S")\
-			.replace("=","e").replace(":","c")\
-			.replace("\n","n")
 	secret = ""
 	datanum = 0
 	digits = ""
@@ -357,7 +356,7 @@ def simp_crypt(key,raw_data):
 					if int(salt) % 2 == 0:
 						combine = int(data[datanum]) + int(key_digits[keynum])
 					else:
-						combine = int(data[datanum]) * int(key_digits[keynum])
+						combine = int(data[datanum]) * int(salt)
 					secret = secret + chr(int(combine))
 				datanum += 1
 			keynum += 1
@@ -372,18 +371,7 @@ def simp_decrypt(key,raw_data):
 			pass
 		else:
 			num_array.append(c)
-			
-	key = key.replace("0","q")\
-			.replace("1","a").replace("2","b")\
-			.replace("3","c").replace("4","d")\
-			.replace("5","F").replace("6","A")\
-			.replace("7","Z").replace("8","Q")\
-			.replace("9","T").replace("#","G")\
-			.replace("!","B").replace(",","C")\
-			.replace(" ","!").replace("/","S")\
-			.replace("=","e").replace(":","c")\
-			.replace("\n","n")
-			
+					
 	key_stretch = key
 	message = ""
 	datanum = 0
@@ -410,7 +398,6 @@ def simp_decrypt(key,raw_data):
 		key_digits += str(i)+" "
 	
 	key_digits = key_digits.split(" ")	
-	
 	while datanum < len(data) - 1:
 		keynum = 0
 		while keynum < len(key_stretch) -1:
@@ -431,10 +418,14 @@ def simp_decrypt(key,raw_data):
 					if int(salt) % 2 == 0:
 						split = int(data[datanum]) - int(key_digits[keynum])
 					else:
-						split = int(data[datanum]) / int(key_digits[keynum])
-						
+						print ("data = ",int(data[datanum]))
+						print ("key  = ",int(key_digits[keynum]))
+						split = int(data[datanum]) / int(salt)
+						print("chr code = ", split)
+					#print(int(split))	
 					message += chr(int(split))
 				datanum += 1
 			keynum += 1
 			
-	return message.replace(":percent:","%").replace(":ampersand:","&")
+	return message.replace(":percent:","%").replace(":ampersand:","&").strip()
+	
