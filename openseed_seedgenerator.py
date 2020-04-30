@@ -309,6 +309,7 @@ def simp_crypt(key,raw_data):
 	datanum = 0
 	digits = ""
 	key_stretch = key
+	key_digits = ""
 	
 	#//lets turn it into integers first//
 	for t in raw_data.replace("%", ":percent:").replace("&", ":ampersand:"):
@@ -322,8 +323,13 @@ def simp_crypt(key,raw_data):
 			while len(key_stretch) < len(data):
 				key_stretch = key_stretch + key
 	
-	#key_stretch = key_stretch[0:len(data)]
-	#	
+	key_stretch = key_stretch[0:len(data)]
+	data = data.split(" ")
+	
+	for b in key_stretch:
+		var i = ord(b)
+		key_digits += str(i)+" "
+	key_digits = key_digits.split(" ")	
 	
 	while datanum < len(data):
 		keynum = 0
@@ -334,28 +340,20 @@ def simp_crypt(key,raw_data):
 			else:
 				num_array += num_array
 				salt = num_array[keynum]
-				
-			if keynum < len(data) and int(salt) % 3 == 0 and datanum < len(data):
-				if data[datanum] == key_stretch[keynum]:
-					num = keynum
-					while num < len(key_stretch) -1:
-						secret = secret + key_stretch[num]
-						num += 1
-						if data[datanum] != key_stretch[num]:
-							keynum = num
-							secret = secret+data[datanum]
-							break
-						else:
-							secret = secret + key_stretch[num]
+			if keynum < len(data) and datanum < len(data):
+				if data[datanum] == key_digits[keynum]:
+					if int(salt) % 2 == 0:
+						secret = secret + char(int(data[datanum]) - int(salt))
+					else:
+						secret = secret + char(int(data[datanum]) + int(salt))
 				else:
-					secret = secret+data[datanum]
+					var combine = 0
+					if int(salt) % 2 == 0:
+						combine = int(data[datanum]) + int(key_digits[keynum])
+					else:
+						combine = int(data[datanum]) * int(key_digits[keynum])
+					secret = secret + char(combine)
 				datanum += 1
-			else:
-				if keynum < len(key_stretch) and key_stretch[keynum]:
-					secret = secret + key_stretch[keynum]
-				else:
-					keynum = 0
-					secret = secret + key_stretch[keynum]
 			keynum += 1
 	return secret.replace(" ","zZz")
 
@@ -381,46 +379,54 @@ def simp_decrypt(key,raw_data):
 	message = ""
 	datanum = 0
 	decoded = ""
-
-	data = raw_data.replace("zZz"," ")
+	digits = ""
+	key_digits = ""
 	
-	# Second round, shuffle
-	#secret_array = data.split(" ")
-	#for n in num_array:
-	#	moving = ""
-	#	if int(n) % 2 == 0:
-	#		moving = secret_array.pop(-1)
-	#		secret_array.insert(0,moving)
-	#	else:
-	#		moving = secret_array.pop(0)
-	#		secret_array.append(moving)
-			
-	#data = str(secret_array)[1:-1].replace(",","").replace("'","")
+	for t in raw_data.replace("zZz"," "):
+		var c = ord(t)
+		digits += str(c)+" "
+
+	data = digits+str(ord(str(" "))
 	
 	if key_stretch != "":
 		if len(data) > len(key_stretch):
 			while len(key_stretch) < len(data):
 				key_stretch = key_stretch + key
-		#key_stretch = key_stretch[0:len(data)]
-
-		while datanum < len(data):
-			if key_stretch[datanum] != data[datanum]:
-				if data[datanum]:
-					message = message + data[datanum]
-				else:break
-			datanum = datanum + 1
-		for c in message.split(" "):
-			try:
-				int(c)
-			except: 
-				decode = "Unable to Decrypt"
-				break
+	key_stretch = key_stretch[0:len(data)]
+		
+	data = data.split(" ")
+		
+	for b in key_stretch:
+		var i = ord(b)
+		key_digits += str(i)+" "
+	
+	key_digits = key_digits.split(" ")
+	
+	while datanum < len(data) - 1:
+		keynum = 0
+		while keynum < len(key_stretch):
+			salt = 0
+			if keynum < len(num_array):
+				salt = num_array[keynum]
 			else:
-				if len(c) <= 3 and len(c) > 0:
-					if int(c) < 255:
-						decoded += chr(int(c))
+				num_array += num_array
+				salt = num_array[keynum]
+				
+			if keynum < len(data) and datanum < len(data):
+				if int(data[datanum]) - int(salt) == int(key_digits[keynum]):
+					message += chr(int(data[datanum]) - int(salt))
+				elif int(data[datanum]) + int(salt) == int(key_digits[keynum]):
+						message += chr(int(data[datanum]) + int(salt))
+				else:
+					split = int(data[datanum])
+					if int(salt) % 2 == 0:
+						split = int(data[datanum]) - int(key_digits[keynum])
 					else:
-						decoded = "Unable to Decrypt"
-
-	return decoded.replace(":percent:","%").replace(":ampersand:","&")
+						split = int(data[datanum]) / int(key_digits[keynum])
+						
+					message += chr(split)
+				datanum += 1
+			keynum += 1	
+			
+	return message.replace(":percent:","%").replace(":ampersand:","&")
 	

@@ -134,7 +134,7 @@ def get_conversations(token):
 
 def get_chat_history(userid,room,count,last):
 	history = []
-	response = '{"chat_history":["none"]}'
+	response = '{"chat_history":[]}'
 	username = json.loads(Account.user_from_id(userid))["user"]
 
 	if room:
