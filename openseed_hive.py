@@ -282,7 +282,7 @@ def payment(hiveaccount,to_account,amount,data,postingkey):
 		asset = 'HBD'
 	payout = amount.split(",")[0].split("[")[1]
 	h.commit.transfer(to=to_account,amount=float(payout),asset=asset,memo=receipt,account=hiveaccount)
-	return('{"sent":"'+to_account+'"}')
+	return('{"payment":{"sent":"'+payout+'","in":"'+asset+'","to:"'+to_account+'"}}')
 
 def check_account(account,postkey):
 	hiveaccount = w.getAccountFromPrivateKey(fix_thy_self,postkey)
