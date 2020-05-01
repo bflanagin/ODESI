@@ -289,45 +289,118 @@ def get_room_key(token,room):
 	return str(code)
 
 
+#!/usr/bin/python
+
+import hashlib
+import sys
+sys.path.append("..")
+import mysql.connector
+import json
+import random
+
 def simp_crypt(key,raw_data):
 	num_array = []
 	for c in key:
-		if ord(c) >= 48 and ord(c) <= 57:
-			num_array.append(int(chr(ord(c))))
-
-	key = key.replace("0","q")\
-			.replace("1","a").replace("2","b")\
-			.replace("3","c").replace("4","d")\
-			.replace("5","F").replace("6","A")\
-			.replace("7","Z").replace("8","Q")\
-			.replace("9","T").replace("#","G")\
-			.replace("!","B").replace(",","C")\
-			.replace(" ","!").replace("/","S")\
-			.replace("=","e").replace(":","c")\
-			.replace("\n","n")
+		try:
+			int(c)
+		except:
+			pass
+		else:
+			num_array.append(c)
+	
 	secret = ""
 	datanum = 0
 	digits = ""
+	key_digits = ""
 	key_stretch = key
-	
+	keystring = "" 
+
 	#//lets turn it into integers first//
 	for t in raw_data.replace("%", ":percent:").replace("&", ":ampersand:"):
 		c = ord(t)
 		digits += str(c)+" "
-	
-	data = digits+str(ord(str(" ")))
 		
+	data = digits
+	
 	if key_stretch != "":
-		if len(data) > len(key_stretch):
-			while len(key_stretch) < len(data):
+		if len(data) -1 > len(key_stretch) -1:
+			while len(key_stretch) -1 < len(data) -1:
 				key_stretch = key_stretch + key
+				
+	key_stretch = key_stretch[0:len(data)]
 	
-	#key_stretch = key_stretch[0:len(data)]
-	#	
+	data = data.split(" ")
 	
-	while datanum < len(data):
+	for b in key_stretch:
+		i = ord(b)
+		key_digits += str(i)+" "
+	key_digits = key_digits.split(" ")	
+	
+	while datanum < len(data)-1:
 		keynum = 0
-		while keynum < len(key_stretch):
+		while keynum < len(key_stretch)-1:
+			salt = 0
+			if keynum < len(num_array):
+				salt = num_array[keynum]
+			else:
+				num_array += num_array
+				salt = num_array[keynum]
+			if keynum < len(data)-1 and datanum < len(data)-1:
+				if data[datanum] == key_digits[keynum]:
+					if int(salt) % 2 == 0:
+						secret = secret + chr(int(data[datanum]) - int(salt))
+					else:
+						secret = secret + chr(int(data[datanum]) + int(salt))
+				else:
+					combine = 0
+					if int(salt) % 2 == 0:
+						combine = int(data[datanum]) + int(key_digits[keynum])
+					else:
+						combine = int(data[datanum]) * int(salt)
+					secret = secret + chr(int(combine))
+				datanum += 1
+			keynum += 1
+	return secret.replace(" ","zZz")
+
+def simp_decrypt(key,raw_data):
+	num_array = []
+	for c in key:
+		try:
+			int(c)
+		except:
+			pass
+		else:
+			num_array.append(c)
+					
+	key_stretch = key
+	message = ""
+	datanum = 0
+	decoded = ""
+	key_digits = ""
+	digits = ""
+	
+	for t in raw_data.replace("zZz"," "):
+		c = ord(t)
+		digits += str(c)+" "
+		
+	data = digits
+	
+	if key_stretch != "":
+		if len(data)-1 > len(key_stretch) -1:
+			while len(key_stretch) -1 < len(data) -1:
+				key_stretch = key_stretch + key
+	key_stretch = key_stretch[0:len(data)]
+	
+	data = data.split(" ")
+	
+	for b in key_stretch:
+		i = ord(b)
+		key_digits += str(i)+" "
+	
+	key_digits = key_digits.split(" ")	
+	while datanum < len(data) - 1:
+		keynum = 0
+		while keynum < len(key_stretch) -1:
 			salt = 0
 			if keynum < len(num_array):
 				salt = num_array[keynum]
@@ -335,92 +408,24 @@ def simp_crypt(key,raw_data):
 				num_array += num_array
 				salt = num_array[keynum]
 				
-			if keynum < len(data) and int(salt) % 3 == 0 and datanum < len(data):
-				if data[datanum] == key_stretch[keynum]:
-					num = keynum
-					while num < len(key_stretch) -1:
-						secret = secret + key_stretch[num]
-						num += 1
-						if data[datanum] != key_stretch[num]:
-							keynum = num
-							secret = secret+data[datanum]
-							break
-						else:
-							secret = secret + key_stretch[num]
+			if keynum < len(data) -1 and datanum < len(data) -1:
+				if int(data[datanum]) - int(salt) == int(key_digits[keynum]):
+					message += chr(int(data[datanum]) - int(salt))
+				elif int(data[datanum]) + int(salt) == int(key_digits[keynum]):
+						message += chr(int(data[datanum]) + int(salt))
 				else:
-					secret = secret+data[datanum]
-				datanum += 1
-			else:
-				if keynum < len(key_stretch) and key_stretch[keynum]:
-					secret = secret + key_stretch[keynum]
-				else:
-					keynum = 0
-					secret = secret + key_stretch[keynum]
-			keynum += 1
-	return secret.replace(" ","zZz")
-
-def simp_decrypt(key,raw_data):
-
-	num_array = []
-	for c in key:
-		if ord(c) >= 48 and ord(c) <= 57:
-			num_array.append(int(chr(ord(c))))
-			
-	key = key.replace("0","q")\
-			.replace("1","a").replace("2","b")\
-			.replace("3","c").replace("4","d")\
-			.replace("5","F").replace("6","A")\
-			.replace("7","Z").replace("8","Q")\
-			.replace("9","T").replace("#","G")\
-			.replace("!","B").replace(",","C")\
-			.replace(" ","!").replace("/","S")\
-			.replace("=","e").replace(":","c")\
-			.replace("\n","n")
-			
-	key_stretch = key
-	message = ""
-	datanum = 0
-	decoded = ""
-
-	data = raw_data.replace("zZz"," ")
-	
-	# Second round, shuffle
-	#secret_array = data.split(" ")
-	#for n in num_array:
-	#	moving = ""
-	#	if int(n) % 2 == 0:
-	#		moving = secret_array.pop(-1)
-	#		secret_array.insert(0,moving)
-	#	else:
-	#		moving = secret_array.pop(0)
-	#		secret_array.append(moving)
-			
-	#data = str(secret_array)[1:-1].replace(",","").replace("'","")
-	
-	if key_stretch != "":
-		if len(data) > len(key_stretch):
-			while len(key_stretch) < len(data):
-				key_stretch = key_stretch + key
-		#key_stretch = key_stretch[0:len(data)]
-
-		while datanum < len(data):
-			if key_stretch[datanum] != data[datanum]:
-				if data[datanum]:
-					message = message + data[datanum]
-				else:break
-			datanum = datanum + 1
-		for c in message.split(" "):
-			try:
-				int(c)
-			except: 
-				decode = "Unable to Decrypt"
-				break
-			else:
-				if len(c) <= 3 and len(c) > 0:
-					if int(c) < 255:
-						decoded += chr(int(c))
+					split = int(data[datanum])
+					if int(salt) % 2 == 0:
+						split = int(data[datanum]) - int(key_digits[keynum])
 					else:
-						decoded = "Unable to Decrypt"
-
-	return decoded.replace(":percent:","%").replace(":ampersand:","&")
+						print ("data = ",int(data[datanum]))
+						print ("key  = ",int(key_digits[keynum]))
+						split = int(data[datanum]) / int(salt)
+						print("chr code = ", split)
+					#print(int(split))	
+					message += chr(int(split))
+				datanum += 1
+			keynum += 1
+			
+	return message.replace(":percent:","%").replace(":ampersand:","&").strip()
 	

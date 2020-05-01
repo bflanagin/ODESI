@@ -77,10 +77,12 @@ def message(data):
 				response = Hive.payment(from_client["hiveaccount"],from_client["to"],from_client["amount"],from_client["for"],from_client["postingkey"])
 			elif action == "hive_flush_keys":
 				response = Hive.flush_account(from_client["hiveaccount"])
+				
 			elif action == "hive_login":
-				response = Hive.openseed_interconnect(from_client["hiveaccount"],from_client["hiveaccount"],from_client["postingkey"],from_client["storekey"])
+				response = Hive.openseed_interconnect(from_client["hiveaccount"],from_client["hiveaccount"],from_client["postingkey"],from_client["storekey"],True)
 			elif action == "hive_connect":
-				response = Hive.openseed_interconnect(from_client["account"],from_client["hiveaccount"],from_client["postingkey"],from_client["storekey"])
+				response = Hive.openseed_interconnect(from_client["account"],from_client["hiveaccount"],from_client["postingkey"],from_client["storekey"],False)
+				
 			elif action == "get_hive_account":
 				response = Hive.get_account(from_client["account"])
 			elif action == "get_full_hive_account":
@@ -178,8 +180,13 @@ def message(data):
 			# Heart Beat #	
 			elif action == "heartbeat":
 				response = "Online"
-
+				
+			#####################################################
+			#
 			# Utils #
+			#
+			#####################################################
+			
 			elif action =="get_image":
 				response = Utils.get_image(False,from_client["image"],from_client["thetype"],from_client["quality"])
 			elif action == "gps":
