@@ -164,9 +164,9 @@ def get_genre_tracks(genre,count):
 	for genre in result:
 		if genre:
 			if output == "":
-				output ='{"author":"'+genre[0]+'","title":"'+genre[1].replace('"','\"').replace("'s ","\'s")+'","post":"'+genre[2]+'","img":"'+genre[3]+'","ogg":"'+genre[4]+'","curation":"'+str(genre[5])+'","type":"'+genre[6]+'","genre":"'+genre[7]+'","tags":'+genre[8].replace("'",'"')+',"duration":"'+str(genre[9])+'"}'
+				output ='{"author":"'+genre[0]+'","title":"'+genre[1].replace('"','\\"').replace("'s ","\\'s")+'","post":"'+genre[2]+'","img":"'+genre[3]+'","ogg":"'+genre[4]+'","curation":"'+str(genre[5])+'","type":"'+genre[6]+'","genre":"'+genre[7]+'","tags":'+genre[8].replace("'",'"')+',"duration":"'+str(genre[9])+'"}'
 			else:
-				output +=',{"author":"'+genre[0]+'","title":"'+genre[1].replace('"','\"').replace('"s ',"'s ")+'","post":"'+genre[2]+'","img":"'+genre[3]+'","ogg":"'+genre[4]+'","curation":"'+str(genre[5])+'","type":"'+genre[6]+'","genre":"'+genre[7]+'","tags":'+genre[8].replace("'",'"')+',"duration":"'+str(genre[9])+'"}'
+				output +=',{"author":"'+genre[0]+'","title":"'+genre[1].replace('"','\\"').replace('"s ',"\\'s ")+'","post":"'+genre[2]+'","img":"'+genre[3]+'","ogg":"'+genre[4]+'","curation":"'+str(genre[5])+'","type":"'+genre[6]+'","genre":"'+genre[7]+'","tags":'+genre[8].replace("'",'"')+',"duration":"'+str(genre[9])+'"}'
 
 	music.close()
 	openseed.close()
