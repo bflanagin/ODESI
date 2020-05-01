@@ -137,7 +137,7 @@ def get_genres():
 	for genre in result:
 		if genre[0]:
 			if str(output).find(genre[0]) == -1:
-				output.append('{"name":'genre[0]',"total":'+get_genre_totals(genre[0])+') 
+				output.append('{"name":'+genre[0]+',"total":'+get_genre_totals(genre[0])+') 
 
 	music.close()
 	openseed.close()
