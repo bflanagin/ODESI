@@ -421,8 +421,7 @@ def simp_decrypt(key,raw_data):
 						print ("data = ",int(data[datanum]))
 						print ("key  = ",int(key_digits[keynum]))
 						split = int(data[datanum]) / int(salt)
-						print("chr code = ", split)
-					#print(int(split))	
+						print("chr code = ", split)	
 					message += chr(int(split))
 				datanum += 1
 			keynum += 1

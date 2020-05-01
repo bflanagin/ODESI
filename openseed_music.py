@@ -137,11 +137,29 @@ def get_genres():
 	for genre in result:
 		if genre[0]:
 			if str(output).find(genre[0]) == -1:
-				output.append(genre[0]) 
+				output.append('{"name":'genre[0]',"total":'+get_genre_totals(genre[0])+') 
 
 	music.close()
 	openseed.close()
 	return '{"genres":'+json.dumps(output)+'}'
+
+def get_genre_totals(genre):
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["ipfsuser"],
+		password = settings["ipfspassword"],
+		database = "ipfsstore"
+		)
+	music = openseed.cursor()
+	output = []
+	search = "SELECT genre FROM `audio` WHERE genre = %s AND ogg IS NOT NULL AND ogg LIKE '_%' ORDER BY date DESC"
+	vals = (genre,)
+	music.execute(search,vals)
+	result = music.fetchall()
+	
+	music.close()
+	openseed.close()
+	return len(result)
 
 def get_genre_tracks(genre,count):
 	openseed = mysql.connector.connect(
