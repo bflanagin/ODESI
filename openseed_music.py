@@ -161,8 +161,8 @@ def get_genre_tracks(genre,count):
 	music.execute(search)
 	result = music.fetchall()
 	num = 0
-	for genre in result:
-		if genre:
+	for song in result:
+		if song:
 			output.append({
 				"author":song[0],
 				"title": song[1],
