@@ -168,7 +168,7 @@ def get_genre_tracks(genre,count):
 	music.close()
 	openseed.close()
 
-	response = '{"genre_tracks":{"total":'+str(len(result))+',"results":'+str(output).replace("\'","").replace("\\","")+'}}'
+	response = '{"genre_tracks":{"total":'+str(len(result))+',"results":'+str(output)+'}}'
 	return response
 
 def get_tracks(start = 0,count = 0):
