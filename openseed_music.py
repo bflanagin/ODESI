@@ -166,7 +166,7 @@ def get_genre_tracks(genre,count):
 			if output == "":
 				output ='{"author":"'+str(genre[0])+'","title":"'+str(genre[1])+'","post":"'+str(genre[2])+'","img":"'+str(genre[3])+'","ogg":"'+str(genre[4])+'","curation":"'+str(genre[5])+'","type":"'+str(genre[6])+'","genre":"'+str(genre[7])+'","tags":'+str(genre[8])+',"duration":"'+str(genre[9])+'"}'
 			else:
-				output =',{"author":"'+str(genre[0])+'","title":"'+str(genre[1])+'","post":"'+str(genre[2])+'","img":"'+str(genre[3])+'","ogg":"'+str(genre[4])+'","curation":"'+str(genre[5])+'","type":"'+str(genre[6])+'","genre":"'+str(genre[7])+'","tags":'+str(genre[8])+',"duration":"'+str(genre[9])+'"}'
+				output +=',{"author":"'+str(genre[0])+'","title":"'+str(genre[1])+'","post":"'+str(genre[2])+'","img":"'+str(genre[3])+'","ogg":"'+str(genre[4])+'","curation":"'+str(genre[5])+'","type":"'+str(genre[6])+'","genre":"'+str(genre[7])+'","tags":'+str(genre[8])+',"duration":"'+str(genre[9])+'"}'
 
 	music.close()
 	openseed.close()
