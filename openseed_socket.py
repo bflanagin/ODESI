@@ -72,7 +72,7 @@ class TCPHandler(socketserver.BaseRequestHandler):
 			try:
 				json.loads(response)
 			except:
-				print("not json formated")
+				print("not json formated",response)
 			else:
 				chunky(response.strip(),self.request)
 
