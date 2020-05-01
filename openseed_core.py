@@ -122,15 +122,15 @@ def message(data):
 			elif action == "get_new_musicians":
 				response = Music.get_new_artists()
 			elif action == "get_new_tracks":
-				response = Music.get_new_tracks_json()
+				response = Music.get_new_tracks()
 			elif action == "get_genres":
 				response = Music.get_genres()
 			elif action == "get_genre":
-				response = Music.get_genre_tracks_json(from_client["genre"],from_client["count"])
+				response = Music.get_genre_tracks(from_client["genre"],from_client["count"])
 			elif action == "get_artist_tracks":
-				response = Music.get_artist_tracks_json(from_client["author"],from_client["count"])
+				response = Music.get_artist_tracks(from_client["author"],from_client["count"])
 			elif action == "get_tracks":
-				response = Music.get_tracks_json(from_client["start"],from_client["count"])
+				response = Music.get_tracks(from_client["start"],from_client["count"])
 
 			#####################################################
 			#
