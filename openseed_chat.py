@@ -288,12 +288,11 @@ def find_attendees(token,userlist,create,appPub):
 
 
 def send_chat(userid,chatroom,data,appPub):
-	
+	response = '{"chat_response":{"speaker":"server","message":"denied"}}'
 	roomInfo = find_chatroom(chatroom)
 	theRoom = roomInfo[0]
 	if len(theRoom) > 3:
 		username = json.loads(Account.user_from_id(userid))["user"]
-		response = '{"chat_response":{"speaker":"server","message":"denied"}}'
 		if username and username != None and username != "none":
 			response = '{"chat_response":{"speaker":"server","message":"No data"}}'
 			openseed = mysql.connector.connect(
