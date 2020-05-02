@@ -111,8 +111,28 @@ def get_conversations(token):
 	chat = "SELECT room,attendees,title,id FROM chat WHERE attendees LIKE %s ORDER BY Id DESC"
 	val1 = ("%"+username+"%",)
 	mysearch.execute(chat,val1)
-	result = mysearch.fetchall()
-	for r in result:
+	chat_result = mysearch.fetchall()
+	rooms = "SELECT room,attendees,title,id FROM chatrooms WHERE attendees LIKE %s ORDER BY Id DESC"
+	val2 = ("%"+username+"%",)
+	mysearch.execute(rooms,val2)
+	room_result = mysearch.fetchall()
+	
+	for c in chat_result:
+		if convolist.count != 0:
+			if str(c[0]) not in convolist:
+				convolist.append(str(c[0]))
+				if chatlist != "":
+					chatlist = chatlist+',{"room":"'+str(c[0])+'","attendees":"'+str(c[1])+'","title":"'+str(c[2])+'","index":'+str(c[3])+'}'
+				else:
+					chatlist = '{"room":"'+str(c[0])+'","attendees":"'+str(c[1])+'","title":"'+str(c[2])+'","index":'+str(c[3])+'}'
+		else:
+			convolist.append(str(c[0]))
+			if chatlist != "":
+				chatlist = chatlist+',{"room":"'+str(c[0])+'","attendees":"'+str(c[1])+'","title":"'+str(c[2])+'","index":'+str(c[3])+'}'
+			else:
+				chatlist = '{"room":"'+str(c[0])+'","attendees":"'+str(c[1])+'","title":"'+str(c[2])+'","index":'+str(c[3])+'}'
+	
+	for r in room_result:
 		if convolist.count != 0:
 			if str(r[0]) not in convolist:
 				convolist.append(str(r[0]))
