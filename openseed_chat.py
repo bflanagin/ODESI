@@ -112,7 +112,7 @@ def get_conversations(token):
 	val1 = ("%"+username+"%",)
 	mysearch.execute(chat,val1)
 	chat_result = mysearch.fetchall()
-	rooms = "SELECT room,attendees,title,count FROM chatrooms WHERE attendees LIKE %s ORDER BY Id DESC"
+	rooms = "SELECT room,attendees,title,count FROM chatrooms WHERE attendees LIKE %s ORDER BY count DESC"
 	val2 = ("%"+username+"%",)
 	mysearch.execute(rooms,val2)
 	room_result = mysearch.fetchall()
