@@ -34,6 +34,7 @@ def message(data):
 		return '{"server":"messages must be in json formated string"}'
 	else:		
 		action = from_client["act"]
+		print("In core "+from_client)
 		if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 			app = from_client["appPub"]
 			dev = from_client["devPub"]
