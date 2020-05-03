@@ -363,8 +363,8 @@ def simp_crypt(key,raw_data):
 	return secret.replace(" ","zZz")
 
 def simp_decrypt(key,raw_data):
-	print("using key "+key) 
-	print("on "+raw_data)
+	#print("using key "+key) 
+	#print("on "+raw_data)
 	num_array = []
 	for c in key:
 		if c in ["1","2","3","4","5","6","7","8","9"]:
@@ -373,7 +373,7 @@ def simp_decrypt(key,raw_data):
 	while len(num_array) < len(raw_data):
 		num_array += num_array
 	
-	print(num_array)
+	#print(num_array)
 		
 	key_stretch = key
 	message = ""
@@ -405,7 +405,7 @@ def simp_decrypt(key,raw_data):
 	
 	key_digits = key_digits.split(" ")	
 	
-	print("key in digits",key_digits)
+	#print("key in digits",key_digits)
 	
 	keynum = 0
 	for d in data:
