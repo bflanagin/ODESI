@@ -14,7 +14,7 @@ settings = Settings.get_settings()
 # We do not have a standard format for this area as we want the developer to feel like they can use it for whatever they feel like.
 # Steps for future function: 1) search app and developer id and return results 2) search results for things that match data. 
 
-def get_appdata(mode,appID,data):
+def get_appdata(mode,appID,tag,data):
 
 	table = ""
 	openseed = mysql.connector.connect(
@@ -46,7 +46,7 @@ def get_appdata(mode,appID,data):
 
 	return
 
-def set_appdata(mode,appID,data,update):
+def set_appdata(mode,appID,tag,data,update):
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
