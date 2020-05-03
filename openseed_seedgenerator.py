@@ -389,13 +389,12 @@ def simp_decrypt(key,raw_data):
 		if len(data)-1 > len(key_stretch) -1:
 			while len(key_stretch) -1 < len(data) -1:
 				key_stretch = key_stretch + key
-	key_stretch = key_stretch[0:len(data)]
+	key_stretch = key_stretch[0:len(data) -1]
 	
-	print(key_stretch)
 	
 	data = data.split(" ")
 	
-	print("data in digits ",data)
+	#print("data in digits ",data)
 	
 	for b in key_stretch:
 		i = ord(b)
@@ -403,9 +402,7 @@ def simp_decrypt(key,raw_data):
 	
 	key_digits = key_digits.split(" ")	
 	
-	print(key_digits)
-	
-	print("key in digits",data)
+	#print("key in digits",data)
 	
 	keynum = 0
 	for d in data:
