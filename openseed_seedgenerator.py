@@ -398,33 +398,49 @@ def simp_decrypt(key,raw_data):
 		key_digits += str(i)+" "
 	
 	key_digits = key_digits.split(" ")	
-	while datanum < len(data) - 1:
-		keynum = 0
-		while keynum < len(key_stretch) -1:
-			salt = 0
-			if keynum < len(num_array):
-				salt = num_array[keynum]
+	
+	keynum = 0
+	for d in data:
+		if d != None:
+			if int(d) + int(num_array[keynum]) == int(key_digits[keynum]):
+				message += char(int(d) - int(num_array[keynum]))
+			elif int(d) - int(num_array[keynum]) == int(key_digits[keynum]):
+				message += char(int(d) + int(num_array[keynum]))
 			else:
-				num_array += num_array
-				salt = num_array[keynum]
-				
-			if keynum < len(data) -1 and datanum < len(data) -1:
-				if int(data[datanum]) - int(salt) == int(key_digits[keynum]):
-					message += chr(int(data[datanum]) - int(salt))
-				elif int(data[datanum]) + int(salt) == int(key_digits[keynum]):
-						message += chr(int(data[datanum]) + int(salt))
+				var combine = 0
+				if int(num_array[keynum]) % 2 == 0:
+					combine = int(d) - int(key_digits[keynum])
 				else:
-					split = int(data[datanum])
-					if int(salt) % 2 == 0:
-						split = int(data[datanum]) - int(key_digits[keynum])
-					else:
-						print ("data = ",int(data[datanum]))
-						print ("key  = ",int(key_digits[keynum]))
-						split = int(data[datanum]) / int(salt)
-						print("chr code = ", split)	
-					message += chr(int(split))
-				datanum += 1
-			keynum += 1
+					combine = int(d) / int(num_array[keynum])
+					
+				message += char(combine)
+		keynum += 1
+	
+	
+	#while datanum < len(data) - 1:
+	#	keynum = 0
+	#	while keynum < len(key_stretch) -1:
+	#		salt = 0
+	#		if keynum < len(num_array):
+	#			salt = num_array[keynum]
+	#		else:
+	#			num_array += num_array
+	#			salt = num_array[keynum]
+	#			
+	#		if keynum < len(data) -1 and datanum < len(data) -1:
+	#			if int(data[datanum]) - int(salt) == int(key_digits[keynum]):
+	#				message += chr(int(data[datanum]) - int(salt))
+	#			elif int(data[datanum]) + int(salt) == int(key_digits[keynum]):
+	#					message += chr(int(data[datanum]) + int(salt))
+	#			else:
+	#				split = int(data[datanum])
+	#				if int(salt) % 2 == 0:
+	#					split = int(data[datanum]) - int(key_digits[keynum])
+	#				else:
+	#					split = int(data[datanum]) / int(salt)	
+	#				message += chr(int(split))
+	#			datanum += 1
+	#		keynum += 1
 			
-	return message.replace(":percent:","%").replace(":ampersand:","&").strip()
+	return message.strip()
 	

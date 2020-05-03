@@ -14,7 +14,7 @@ settings = Settings.get_settings()
 # We do not have a standard format for this area as we want the developer to feel like they can use it for whatever they feel like.
 # Steps for future function: 1) search app and developer id and return results 2) search results for things that match data. 
 
-def get_appdata(mode,appID,tag,data):
+def get_appdata(mode,appID,tag):
 
 	table = ""
 	openseed = mysql.connector.connect(
@@ -30,7 +30,7 @@ def get_appdata(mode,appID,tag,data):
 	try:
 		json.loads(data)
 	except:
-		return '{"server":"not json"}'
+		return '{"appdata":{"tag":"error","data":"error"}}'
 	else:
 		search = openseed.cursor()
 		find = "SELECT * FROM `"+table+"` WHERE appID = %s"
@@ -44,9 +44,11 @@ def get_appdata(mode,appID,tag,data):
 	search.close()
 	openseed.close()
 
-	return
+	return '{"appdata":{"tag":"'tag'","data":'+data+'}}'
 
 def set_appdata(mode,appID,tag,data,update):
+
+	info = "added"
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
@@ -60,7 +62,7 @@ def set_appdata(mode,appID,tag,data,update):
 	try:
 		json.loads(data)
 	except:
-		return '{"server":"not json"}'
+		return '{"server":{"appdata":"not json"}}'
 	else:
 		search = openseed.cursor()
 		insert = "INSERT INTO `"+table+"` (`appID`,`data`) VALUES (%s,%s)"
@@ -72,7 +74,7 @@ def set_appdata(mode,appID,tag,data,update):
 	search.close()
 	openseed.close()
 
-	return
+	return '{"server:{"appdata":"'+info+'}}'
 
 # We get the application public id and the applications private token and check to see if they match. If they do we create a token for the app to send to the user
 
