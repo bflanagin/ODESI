@@ -407,7 +407,7 @@ def simp_decrypt(key,raw_data):
 			elif int(d) - int(num_array[keynum]) == int(key_digits[keynum]):
 				message += char(int(d) + int(num_array[keynum]))
 			else:
-				var combine = 0
+				combine = 0
 				if int(num_array[keynum]) % 2 == 0:
 					combine = int(d) - int(key_digits[keynum])
 				else:
