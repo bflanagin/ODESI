@@ -409,7 +409,7 @@ def simp_decrypt(key,raw_data):
 	
 	keynum = 0
 	for d in data:
-		if d != None and key_digits[keynum] != None:
+		if d != '' and key_digits[keynum] != '':
 			if int(d) + int(num_array[keynum]) == int(key_digits[keynum]):
 				message += chr(int(d) - int(num_array[keynum]))
 			elif int(d) - int(num_array[keynum]) == int(key_digits[keynum]):
