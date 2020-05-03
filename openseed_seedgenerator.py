@@ -420,35 +420,13 @@ def simp_decrypt(key,raw_data):
 					combine = int(d) - int(key_digits[keynum])
 				else:
 					combine = int(d) / int(num_array[keynum])
-					
-				message += chr(int(combine))
+				try:
+					chr(int(combine))
+				except:
+					pass
+				else:	
+					message += chr(int(combine))
 		keynum += 1
-	
-	
-	#while datanum < len(data) - 1:
-	#	keynum = 0
-	#	while keynum < len(key_stretch) -1:
-	#		salt = 0
-	#		if keynum < len(num_array):
-	#			salt = num_array[keynum]
-	#		else:
-	#			num_array += num_array
-	#			salt = num_array[keynum]
-	#			
-	#		if keynum < len(data) -1 and datanum < len(data) -1:
-	#			if int(data[datanum]) - int(salt) == int(key_digits[keynum]):
-	#				message += chr(int(data[datanum]) - int(salt))
-	#			elif int(data[datanum]) + int(salt) == int(key_digits[keynum]):
-	#					message += chr(int(data[datanum]) + int(salt))
-	#			else:
-	#				split = int(data[datanum])
-	#				if int(salt) % 2 == 0:
-	#					split = int(data[datanum]) - int(key_digits[keynum])
-	#				else:
-	#					split = int(data[datanum]) / int(salt)	
-	#				message += chr(int(split))
-	#			datanum += 1
-	#		keynum += 1
 			
 	return message.strip()
 	
