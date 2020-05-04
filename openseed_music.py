@@ -141,7 +141,7 @@ def get_genres():
 
 	music.close()
 	openseed.close()
-	return '{"genres":'+output+'}'
+	return '{"genres":'+str(output)+'}'
 
 def get_genre_totals(genre):
 	openseed = mysql.connector.connect(
