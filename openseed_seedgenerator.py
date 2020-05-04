@@ -300,13 +300,13 @@ import random
 
 def simp_crypt(key,raw_data):
 	num_array = []
+	
 	for c in key:
-		try:
-			int(c)
-		except:
-			pass
-		else:
+		if c in ["1","2","3","4","5","6","7","8","9"]:
 			num_array.append(c)
+				
+	while len(num_array) < len(raw_data):
+		num_array += num_array
 	
 	secret = ""
 	datanum = 0
@@ -323,8 +323,8 @@ def simp_crypt(key,raw_data):
 	data = digits
 	
 	if key_stretch != "":
-		if len(data) -1 > len(key_stretch) -1:
-			while len(key_stretch) -1 < len(data) -1:
+		if len(data)> len(key_stretch):
+			while len(key_stretch) < len(data):
 				key_stretch = key_stretch + key
 				
 	key_stretch = key_stretch[0:len(data)]
@@ -334,8 +334,25 @@ def simp_crypt(key,raw_data):
 	for b in key_stretch:
 		i = ord(b)
 		key_digits += str(i)+" "
-	key_digits = key_digits.split(" ")	
+	key_digits = key_digits.split(" ")
 	
+	for d in data:
+		if d:
+			if int(d) == int(key_digits[keynum]):
+				if int(num_array[keynum]) % 2 == 0:
+					secret = secret + chr(int(d) - int(num_array[keynum]))
+				else:
+					secret = secret + chr(int(d) + int(num_array[keynum]))
+			else:
+				var combine = 0
+				if int(num_array[keynum]) % 2 == 0:
+					combine = int(d) + int(key_digits[keynum])
+				else:
+					combine =int(d) * int(num_array[keynum])
+					
+				secret = secret + chr(combine)
+		keynum += 1
+	'''
 	while datanum < len(data)-1:
 		keynum = 0
 		while keynum < len(key_stretch)-1:
@@ -360,6 +377,7 @@ def simp_crypt(key,raw_data):
 					secret = secret + chr(int(combine))
 				datanum += 1
 			keynum += 1
+			'''
 	return secret.replace(" ","zZz")
 
 def simp_decrypt(key,raw_data):
