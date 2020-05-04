@@ -31,6 +31,7 @@ def message(data):
 	try:
 		from_client = json.loads(data)
 	except:
+		print("failed to parse "+data)
 		return '{"server":"messages must be in json formated string"}'
 	else:		
 		action = from_client["act"]
