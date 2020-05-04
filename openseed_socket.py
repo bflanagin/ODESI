@@ -59,6 +59,7 @@ class TCPHandler(socketserver.BaseRequestHandler):
 				response = Core.message(decrypted)
 				#print("Returning: "+response)
 				encrypt = Seed.simp_crypt(key,response)
+				json.loads(encrypt)
 				#encrypt = response
 				#print("Returning: "+Seed.simp_decrypt(key,encrypt))
 				chunky(encrypt.strip(),self.request)
