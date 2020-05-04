@@ -339,10 +339,11 @@ def simp_crypt(key,raw_data):
 	for d in data:
 		if d:
 			if int(d) == int(key_digits[keynum]):
-				if int(num_array[keynum]) % 2 == 0:
-					secret = secret + chr(int(d) - int(num_array[keynum]))
-				else:
-					secret = secret + chr(int(d) + int(num_array[keynum]))
+				#if int(num_array[keynum]) % 2 == 0:
+				#	secret = secret + chr(int(d) - int(num_array[keynum]))
+				#else:
+				#	secret = secret + chr(int(d) + int(num_array[keynum]))
+				secret += chr(int(d))
 			else:
 				combine = 0
 				if int(num_array[keynum]) % 2 == 0:
@@ -428,13 +429,8 @@ def simp_decrypt(key,raw_data):
 	keynum = 0
 	for d in data:
 		if d != '' and key_digits[keynum] != '':
-			if int(d) + int(num_array[keynum]) == int(key_digits[keynum]):
-				message += chr(int(d) + int(num_array[keynum]))
-			elif int(d) - int(num_array[keynum]) == int(key_digits[keynum]):
-				if int(num_array[keynum]) == 1:
-					message += chr(int(d))
-				else:
-					message += chr(int(d) - int(num_array[keynum]))
+			if int(d) == int(key_digits[keynum]):
+				message += chr(int(d))
 			else:
 				combine = 0
 				if int(num_array[keynum]) % 2 == 0:
