@@ -288,16 +288,6 @@ def get_room_key(token,room):
 
 	return str(code)
 
-
-#!/usr/bin/python
-
-import hashlib
-import sys
-sys.path.append("..")
-import mysql.connector
-import json
-import random
-
 def simp_crypt(key,raw_data):
 	num_array = []
 	
@@ -307,6 +297,7 @@ def simp_crypt(key,raw_data):
 				
 	while len(num_array) < len(raw_data):
 		num_array += num_array
+	num_array += num_array
 	
 	secret = ""
 	datanum = 0
@@ -353,32 +344,7 @@ def simp_crypt(key,raw_data):
 					
 				secret = secret + chr(combine)
 		keynum += 1
-	'''
-	while datanum < len(data)-1:
-		keynum = 0
-		while keynum < len(key_stretch)-1:
-			salt = 0
-			if keynum < len(num_array):
-				salt = num_array[keynum]
-			else:
-				num_array += num_array
-				salt = num_array[keynum]
-			if keynum < len(data)-1 and datanum < len(data)-1:
-				if data[datanum] == key_digits[keynum]:
-					if int(salt) % 2 == 0:
-						secret = secret + chr(int(data[datanum]) - int(salt))
-					else:
-						secret = secret + chr(int(data[datanum]) + int(salt))
-				else:
-					combine = 0
-					if int(salt) % 2 == 0:
-						combine = int(data[datanum]) + int(key_digits[keynum])
-					else:
-						combine = int(data[datanum]) * int(salt)
-					secret = secret + chr(int(combine))
-				datanum += 1
-			keynum += 1
-			'''
+
 	return secret.replace(" ","zZz")
 
 def simp_decrypt(key,raw_data):
@@ -391,6 +357,7 @@ def simp_decrypt(key,raw_data):
 				
 	while len(num_array) < len(raw_data):
 		num_array += num_array
+	num_array += num_array
 	
 	#print(num_array)
 		
