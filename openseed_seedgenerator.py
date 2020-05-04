@@ -292,7 +292,7 @@ def simp_crypt(key,raw_data):
 	num_array = []
 	
 	for c in key:
-		if c in ["1","2","3","4","5","6","7","8","9"]:
+		if c in ["2","3","4","5","6","7","8","9"]:
 			num_array.append(c)
 				
 	while len(num_array) < len(raw_data):
@@ -352,7 +352,7 @@ def simp_decrypt(key,raw_data):
 	#print("on "+raw_data)
 	num_array = []
 	for c in key:
-		if c in ["1","2","3","4","5","6","7","8","9"]:
+		if c in ["2","3","4","5","6","7","8","9"]:
 			num_array.append(c)
 				
 	while len(num_array) < len(raw_data):
