@@ -335,7 +335,7 @@ def simp_crypt(key,raw_data):
 		i = ord(b)
 		key_digits += str(i)+" "
 	key_digits = key_digits.split(" ")
-	
+	keynum = 0
 	for d in data:
 		if d:
 			if int(d) == int(key_digits[keynum]):
