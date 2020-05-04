@@ -408,10 +408,10 @@ def simp_decrypt(key,raw_data):
 	data = digits
 	
 	if key_stretch != "":
-		if len(data)-1 > len(key_stretch) -1:
-			while len(key_stretch) -1 < len(data) -1:
+		if len(data)> len(key_stretch):
+			while len(key_stretch) < len(data):
 				key_stretch = key_stretch + key
-	key_stretch = key_stretch[0:len(data) -1]
+	key_stretch = key_stretch[0:len(data)]
 	
 	
 	data = data.split(" ")
