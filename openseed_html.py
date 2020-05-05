@@ -16,7 +16,7 @@ def index():
 	appId = ""
 	key = ""
 	message = ""
-	if themessage.split("<::>") > 1:
+	if len(themessage.split("<::>")) == 3:
 		appId = themessage.split("<::>")[0]
 		key = Account.get_priv_from_pub(appId,"App")
 		message = themessage.split("<::>")[1]
