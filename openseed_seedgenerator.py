@@ -159,7 +159,12 @@ def to_char(thecode):
 	code = ""
 	num = 0
 	while num < len(thecode):
-		code = code+chr(int(thecode[num:num+2]))
+		try:
+			test = int(thecode[num:num+2])
+		except:
+			pass
+		else:
+			code = code+chr(test)
 		num = num + 2
 
 	return code
