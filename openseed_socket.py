@@ -58,8 +58,9 @@ class TCPHandler(socketserver.BaseRequestHandler):
 				#response = Core.message(message)
 				response = Core.message(decrypted)
 				#print("Returning: "+response)
-				#encrypt = Seed.simp_crypt(key,response)
-				encrypt = response
+				encrypt = Seed.simp_crypt(key,response)
+				#json.loads(Seed.simp_decrypt(key,encrypt))
+				#encrypt = response
 				print("Returning: "+Seed.simp_decrypt(key,encrypt))
 				chunky(encrypt.strip(),self.request)
 				#self.request.sendall(response.encode("utf8"))
@@ -72,7 +73,7 @@ class TCPHandler(socketserver.BaseRequestHandler):
 			try:
 				json.loads(response)
 			except:
-				print("not json formated")
+				print("not json formated on return of",self.data)
 			else:
 				chunky(response.strip(),self.request)
 

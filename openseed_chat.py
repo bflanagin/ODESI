@@ -111,8 +111,28 @@ def get_conversations(token):
 	chat = "SELECT room,attendees,title,id FROM chat WHERE attendees LIKE %s ORDER BY Id DESC"
 	val1 = ("%"+username+"%",)
 	mysearch.execute(chat,val1)
-	result = mysearch.fetchall()
-	for r in result:
+	chat_result = mysearch.fetchall()
+	rooms = "SELECT room,attendees,title,count FROM chatrooms WHERE attendees LIKE %s ORDER BY count DESC"
+	val2 = ("%"+username+"%",)
+	mysearch.execute(rooms,val2)
+	room_result = mysearch.fetchall()
+	
+	for c in chat_result:
+		if convolist.count != 0:
+			if str(c[0]) not in convolist:
+				convolist.append(str(c[0]))
+				if chatlist != "":
+					chatlist = chatlist+',{"room":"'+str(c[0])+'","attendees":"'+str(c[1])+'","title":"'+str(c[2])+'","index":'+str(c[3])+'}'
+				else:
+					chatlist = '{"room":"'+str(c[0])+'","attendees":"'+str(c[1])+'","title":"'+str(c[2])+'","index":'+str(c[3])+'}'
+		else:
+			convolist.append(str(c[0]))
+			if chatlist != "":
+				chatlist = chatlist+',{"room":"'+str(c[0])+'","attendees":"'+str(c[1])+'","title":"'+str(c[2])+'","index":'+str(c[3])+'}'
+			else:
+				chatlist = '{"room":"'+str(c[0])+'","attendees":"'+str(c[1])+'","title":"'+str(c[2])+'","index":'+str(c[3])+'}'
+	
+	for r in room_result:
 		if convolist.count != 0:
 			if str(r[0]) not in convolist:
 				convolist.append(str(r[0]))
@@ -268,12 +288,11 @@ def find_attendees(token,userlist,create,appPub):
 
 
 def send_chat(userid,chatroom,data,appPub):
-	
+	response = '{"chat_response":{"speaker":"server","message":"denied"}}'
 	roomInfo = find_chatroom(chatroom)
 	theRoom = roomInfo[0]
 	if len(theRoom) > 3:
 		username = json.loads(Account.user_from_id(userid))["user"]
-		response = '{"chat_response":{"speaker":"server","message":"denied"}}'
 		if username and username != None and username != "none":
 			response = '{"chat_response":{"speaker":"server","message":"No data"}}'
 			openseed = mysql.connector.connect(

@@ -112,9 +112,9 @@ def get_new_tracks():
 			else:
 				print(song[9])
 			if output == "":
-				output = '{"author":"'+song[0]+'","title":"'+song[1]+'","post":"'+song[2]+'","img":"'+song[3]+'","ogg":"'+song[4]+'","curation":"'+str(song[5])+'","type":"'+song[6]+'","genre":"'+song[7]+'","tags":"'+song[8]+'","duration":"'+dur+'"}'
+				output = '{"author":"'+song[0]+'","title":"'+song[1].replace('"','\\"').replace('"s ',"\\'s ")+'","post":"'+song[2]+'","img":"'+song[3]+'","ogg":"'+song[4]+'","curation":"'+str(song[5])+'","type":"'+song[6]+'","genre":"'+song[7]+'","tags":"'+song[8]+'","duration":"'+dur+'"}'
 			else:
-				output += ',{"author":"'+song[0]+'","title":"'+song[1]+'","post":"'+song[2]+'","img":"'+song[3]+'","ogg":"'+song[4]+'","curation":"'+str(song[5])+'","type":"'+song[6]+'","genre":"'+song[7]+'","tags":"'+song[8]+'","duration":"'+dur+'"}'
+				output += ',{"author":"'+song[0]+'","title":"'+song[1].replace('"','\\"').replace('"s ',"\\'s ")+'","post":"'+song[2]+'","img":"'+song[3]+'","ogg":"'+song[4]+'","curation":"'+str(song[5])+'","type":"'+song[6]+'","genre":"'+song[7]+'","tags":"'+song[8]+'","duration":"'+dur+'"}'
 
 	music.close()
 	openseed.close()
@@ -130,18 +130,39 @@ def get_genres():
 		database = "ipfsstore"
 		)
 	music = openseed.cursor()
-	output = []
+	output = ""
 	search = "SELECT genre FROM `audio` WHERE ogg IS NOT NULL AND ogg LIKE '_%' ORDER BY date DESC"
 	music.execute(search)
 	result = music.fetchall()
 	for genre in result:
 		if genre[0]:
 			if str(output).find(genre[0]) == -1:
-				output.append(genre[0]) 
+				if output == "":
+					output += '{"name":"'+genre[0]+'","total":'+str(get_genre_totals(genre[0]))+'}'
+				else:
+					output +=  ',{"name":"'+genre[0]+'","total":'+str(get_genre_totals(genre[0]))+'}'
 
 	music.close()
 	openseed.close()
-	return '{"genres":'+json.dumps(output)+'}'
+	return '{"genres":['+str(output)+']}'
+
+def get_genre_totals(genre):
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["ipfsuser"],
+		password = settings["ipfspassword"],
+		database = "ipfsstore"
+		)
+	music = openseed.cursor()
+	output = []
+	search = "SELECT genre FROM `audio` WHERE genre = %s AND ogg IS NOT NULL AND ogg LIKE '_%' ORDER BY date DESC"
+	vals = (genre,)
+	music.execute(search,vals)
+	result = music.fetchall()
+	
+	music.close()
+	openseed.close()
+	return len(result)
 
 def get_genre_tracks(genre,count):
 	openseed = mysql.connector.connect(
@@ -161,14 +182,24 @@ def get_genre_tracks(genre,count):
 	music.execute(search)
 	result = music.fetchall()
 	num = 0
-	for genre in result:
-		if genre:
-			output.append('{"author":"'+genre[0]+'","title":"'+genre[1]+'","post":"'+genre[2]+'","img":"'+genre[3]+'","ogg":"'+genre[4]+'","curation":"'+str(genre[5])+'","type":"'+genre[6]+'","genre":"'+genre[7]+'","tags":'+genre[8]+',"duration":"'+str(genre[9])+'"}')
-
+	for song in result:
+		if song:
+			output.append({
+				"author":song[0],
+				"title": song[1],
+				"post": song[2],
+				"img": song[3],
+				"ogg": song[4],
+				"curation": song[5],
+				"type": song[6],
+				"genre": song[7],
+				"tags": song[8],
+				"duration": song[9]
+				})
 	music.close()
 	openseed.close()
 
-	response = '{"genre_tracks":{"total":"'+str(len(result))+'","results":['+str(output).replace("\'","")+']}}'
+	response = '{"genre_tracks":{"total":'+str(len(result))+',"results":'+json.dumps(output)+'}}'
 	return response
 
 def get_tracks(start = 0,count = 0):
@@ -180,23 +211,27 @@ def get_tracks(start = 0,count = 0):
 		)
 	num = 0
 	music = openseed.cursor()
-	output = ""
+	output = []
 	search = "SELECT author,title,post,img,ogg,curation,type,genre,tags,duration FROM `audio` WHERE ogg IS NOT NULL AND ogg LIKE '_%' ORDER BY date DESC LIMIT "+str(count)+" OFFSET "+str(start)
 	music.execute(search)
 	result = music.fetchall()
-	for genre in result:
-		if genre:
-			if output == "":
-				output = '{"author":"'+genre[0]+'", "title":"'+genre[1]+'", "post":"'+genre[2]+'","img":"'+genre[3]+'","ogg":"'+genre[4]+'","curation":"'+str(genre[5])+'","type":"'+genre[6]+'","genre":"'+genre[7]+'","tags":'+genre[8]+',"duration":"'+str(genre[9])+'"}'
-			else:
-				output += ',{"author":"'+genre[0]+'", "title":"'+genre[1]+'", "post":"'+genre[2]+'","img":"'+genre[3]+'","ogg":"'+genre[4]+'","curation":"'+str(genre[5])+'","type":"'+genre[6]+'","genre":"'+genre[7]+'","tags":'+genre[8]+',"duration":"'+str(genre[9])+'"}'
-				
-		#if int(count) != 0:
-			#if num == int(count):
-				#break
-		#num += 1
+	
+	for song in result:
+		if song:
+			output.append({
+				"author":song[0],
+				"title": song[1],
+				"post": song[2],
+				"img": song[3],
+				"ogg": song[4],
+				"curation": song[5],
+				"type": song[6],
+				"genre": song[7],
+				"tags": song[8],
+				"duration": song[9]
+				})
 
 	music.close()
 	openseed.close()
-	return '{"tracks":{"total":"'+str(len(result))+'","results":['+str(output).replace("\'","")+']}}'
+	return '{"tracks":{"total":"'+str(len(result))+'","results":'+json.dumps(output)+'}}'
 
