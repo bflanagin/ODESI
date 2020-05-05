@@ -8,6 +8,8 @@ import json
 import time
 import openseed_core as Core
 import openseed_seedgenerator as Seed
+import openseed_account as Account
+
 from bottle import route, run, template, request, static_file
 
 @route('/api', method='POST')
@@ -17,6 +19,7 @@ def index():
 	key = ""
 	message = ""
 	if len(themessage.split("<::>")) == 3:
+		print("Encrypted message")
 		appId = themessage.split("<::>")[0]
 		key = Account.get_priv_from_pub(appId,"App")
 		message = themessage.split("<::>")[1]
@@ -29,6 +32,7 @@ def index():
 		
 		return encrypt
 	else:
+		print("Non-encrypted message")
 		if themessage != None:
 			return Core.message(themessage)
 
