@@ -12,10 +12,10 @@ import sys
 import os
 
 async def echo(websocket, path):
-    async for message in websocket:
-    	response = Core.message(message)
-        await websocket.send(response)
+	async for message in websocket:
+		response = Core.message(message)
+		await websocket.send(response)
 
 asyncio.get_event_loop().run_until_complete(
-    websockets.serve(echo, '0.0.0.0', 8765))
+	websockets.serve(echo, '0.0.0.0', 8765))
 asyncio.get_event_loop().run_forever()
