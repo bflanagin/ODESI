@@ -18,6 +18,7 @@ def index():
 	appId = ""
 	key = ""
 	message = ""
+	print(themessage)
 	if len(themessage.split("<::>")) == 3:
 		print("Encrypted message")
 		appId = themessage.split("<::>")[0]
@@ -26,12 +27,12 @@ def index():
 		
 		decrypted = Seed.simp_decrypt(key,message)
 		
-		print("From: "+decrypted)
+		#print("From: "+decrypted)
 		
 		response = Core.message(decrypted)
 		encrypt = Seed.simp_crypt(key,response)
 		
-		print("Returning: "+Seed.simp_decrypt(key,encrypt))
+		#print("Returning: "+Seed.simp_decrypt(key,encrypt))
 		
 		return encrypt
 	else:
