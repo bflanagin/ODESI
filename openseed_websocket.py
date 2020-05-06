@@ -22,11 +22,11 @@ async def to_core(websocket, path):
 				decrypted = Seed.simp_decrypt(key,message)
 				response = Core.message(decrypted)
 				encrypt = Seed.simp_crypt(key,response)
-				print(Seed.simp_decrypt(key,encrypt))
+				#print(Seed.simp_decrypt(key,encrypt))
 				await websocket.send(encrypt)
 			else:
-				print('{"server":"error incomplete message"}')
-				print(themessage)
+				#print('{"server":"error incomplete message"}')
+				#print(themessage)
 				await websocket.send(str('{"server":"error incomplete message"}').encode("utf8"))
 
 asyncio.get_event_loop().run_until_complete(websockets.serve(to_core, '0.0.0.0', 8765))
