@@ -24,8 +24,8 @@ def index():
 		appId = themessage.split("<::>")[0]
 		key = Account.get_priv_from_pub(appId,"App")
 		message = themessage.split("<::>")[1]
-		decrypted = Seed.simp_decrypt(key,message)
-		print(message)
+		decrypted = message
+		#decrypted = Seed.simp_decrypt(key,message)
 		print("From: "+decrypted)
 		
 		response = Core.message(decrypted)
