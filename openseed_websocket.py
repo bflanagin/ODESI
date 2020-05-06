@@ -22,7 +22,7 @@ async def to_core(websocket, path):
 				decrypted = Seed.simp_decrypt(key,message)
 				response = Core.message(decrypted)
 				encrypt = Seed.simp_crypt(key,response)
-				print("returning: ",Seed.simp_decrypt(key,encrypt)
+				print("returning: ",Seed.simp_decrypt(key,encrypt))
 				await websocket.send(encrypt)
 			else:
 				print('{"server":"error incomplete message"}')
