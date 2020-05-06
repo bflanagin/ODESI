@@ -15,9 +15,9 @@ async def to_core(websocket, path):
 	async for message in websocket:
 		themessage = message.decode()
 		if themessage.find("msg=") !=-1:
-			appId = self.data.decode().split("msg=")[1].split("<::>")[0]
+			appId = themessage.split("msg=")[1].split("<::>")[0]
 			key = Account.get_priv_from_pub(appId,"App")
-			message = self.data.decode().split("msg=")[1].split("<::>")[1]
+			message = themessage.split("msg=")[1].split("<::>")[1]
 			if len(themessage.split("msg=")[1].split("<::>")) == 3:
 				decrypted = Seed.simp_decrypt(key,message)
 				response = Core.message(decrypted)
