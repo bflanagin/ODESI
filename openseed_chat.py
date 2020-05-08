@@ -8,7 +8,6 @@ import urllib.parse
 sys.path.append("..")
 from steem import Steem
 import openseed_account as Account
-import onetime as OneTime
 import openseed_setup as Settings
 import openseed_seedgenerator as Seed
 
@@ -54,7 +53,7 @@ def create_chatroom(creator,title,userlist,appPub):
 		chatcreator.close()	
 		openseed.close()
 		username= json.loads(Account.user_from_id(creator))["user"]
-		newkey = OneTime.store_onetime(1,username,userlist,room)
+		newkey = Seed.store_onetime(1,username,userlist,room)
 	
 		return '{"type":"server","room":"'+room+'","title":"'+title+'","key":"'+newkey+'"}'
 	
