@@ -292,6 +292,57 @@ def get_room_key(token,room):
 	openseed.close()
 
 	return str(code)
+	
+	
+def get_key(thetype,register,room):
+	result = ""
+	#cleanroom = room.split("[")[1].split("]")[0]
+	#wharoom = cleanroom.split(",")[0]+', '+cleanroom.split(",")[1]
+	#reverseroom = cleanroom.split(",")[1]+', '+cleanroom.split(",")[0]
+	reg = ""
+	code = ""
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+	mysearch = openseed.cursor()
+	check = "SELECT registered,code,validusers FROM onetime WHERE room = %s AND type = %s"
+	val1 = (room,thetype)
+	#val2 = (reverseroom,thetype)
+	mysearch.execute(check,val1)
+	result1 = mysearch.fetchall()
+	#mysearch.execute(check,val2)
+	#result2 = mysearch.fetchall()
+	if len(result1) == 1:
+		result = result1
+	#elif len(result2) == 1:
+	#	result = result2
+	else:
+		result = 0
+
+	if result != 0:
+		validusers = result[0][2]
+		vuser = json.loads(Account.user_from_id(register))["user"]
+		
+		if validusers.find(vuser) != -1: 
+			if len(result1) == 1:
+				reg = result[0][0]
+			if reg != register:
+				code = '{"room":"'+room+'","key":"'+result[0][1]+'"}'
+			else:
+				code = '{"room":"'+room+'","key":"'+result[0][1]+'"}'
+		else:
+			code = '{"room":"denied","key":"denied"}'
+	else:
+		code = '{"room":"denied","key":"denied"}'
+
+	openseed.commit()
+	mysearch.close()
+	openseed.close()
+	return '{"lock":'+str(code)+'}'
+
 
 def simp_crypt(key,raw_data):
 	num_array = []
@@ -312,7 +363,7 @@ def simp_crypt(key,raw_data):
 	keystring = "" 
 
 	#//lets turn it into integers first//
-	for t in raw_data.replace("%", ":percent:").replace("&", ":ampersand:"):
+	for t in raw_data:
 		c = ord(t)
 		digits += str(c)+" "
 		
