@@ -428,4 +428,14 @@ def import_hive_profile(token,username):
 		password = settings["dbpassword"],
 		database = "openseed"
 	)
+	
+def ipfs_pin_request(thehash,thetype,reference):
+
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+	)
+
 

@@ -15,7 +15,6 @@ import openseed_music as Music
 import openseed_setup as Settings
 import openseed_game as Game
 import openseed_chat as Chat
-import onetime as OneTime
 import openseed_hive as Hive
 
 
@@ -175,9 +174,9 @@ def message(data):
 				response = Chat.find_attendees(from_client["token"],from_client["attendees"],from_client["create"],app)
 
 			elif action == "set_key":
-				response = OneTime.store_onetime(from_client["type"],from_client["register"],from_client["validusers"])
+				response = Seed.store_onetime(from_client["type"],from_client["register"],from_client["validusers"])
 			elif action == "get_key":
-				response = OneTime.get_key(from_client["thetype"],from_client["token"],from_client["room"])
+				response = Seed.get_key(from_client["thetype"],from_client["token"],from_client["room"])
 
 			# Heart Beat #	
 			elif action == "heartbeat":
@@ -195,6 +194,10 @@ def message(data):
 				response = Account.gps_search(from_client["username"],from_client["cords"])
 			elif action == "search":
 				response = Account.openseed_search(from_client["username"])
+			elif action == "upload":
+				response = Utils.upload(from_client["filename"],from_client["type"],from_client["md5sum"],from_client["data"])
+			elif action == "ipfs_pin_request":
+				response = Utils.ipfs(from_client["hash"],from_client["type"],from_client["reference"])
 			else:
 				response = '{"server":"Please read documentation on accepted commands"}'
 				
