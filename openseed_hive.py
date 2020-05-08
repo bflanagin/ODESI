@@ -61,7 +61,7 @@ title = "New Song"
 
 def get_post(author,permlink) :
 	post = h.get_content(author,permlink)
-	return '{"hive_post":"'+post["body"]+'"}'
+	return '{"hive_post":"author":"'+author+'","title":"'+post["title"]+'","post":"'+post["body"]+'"}'
 
 def get_account(account):
 	profile = '{"profile":"Not found"}'
