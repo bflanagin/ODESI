@@ -301,8 +301,8 @@ def create_creator_account(devName,contactName,contactEmail,account_token):
 		if account != "none":
 			devID = Seed.generate_id(devName,contactName,contactEmail,account)
 			pubID = Seed.generate_publicid(devID)
-			sql = "INSERT INTO `developers` (`devID`,`publicID`,`devName`,`contactName`,`contactEmail`) VALUES (%s,%s,%s,%s,%s)"
-			val = (str(devID),str(pubID),str(devName),str(contactName),str(contactEmail)) 
+			sql = "INSERT INTO `developers` (`devID`,`publicID`,`devName`,`contactName`,`contactEmail`,`openseed`) VALUES (%s,%s,%s,%s,%s,%s)"
+			val = (str(devID),str(pubID),str(devName),str(contactName),str(contactEmail),str(account)) 
 			mycursor.execute(sql,val)	
 			openseed.commit()
 			mycursor.close()
