@@ -315,10 +315,12 @@ def create_creator_account(devName,contactName,contactEmail,account_token):
 	
 
 def creator_check(cname,account_token):
-	print(cname)
+	
 	account = json.loads(user_from_id(account_token))["user"]
-	print(account)
+	
 	if check_db(account,"developers") == 1:
+		print(cname)
+		print(account)
 		openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
