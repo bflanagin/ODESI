@@ -52,7 +52,7 @@ def check_db(name,db):
 	result = len(mysearch.fetchall())
 	mysearch.close()
 	openseed.close()
-
+	print(result)
 	return result
 
 def check_appID(appPub,devPub):
