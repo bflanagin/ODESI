@@ -184,13 +184,25 @@ def connection_request(token,requestee,response,appPub):
 			values = ("2",requestee,username)
 			request_search.execute(update,values)
 			openseed.commit()
-			
 			chatroom = Chat.find_attendees(token,requestee+","+username,1,appPub)
 			output = '{"request":"accepted","room":'+chatroom+'}'
 		# disallows user from create a second request or updating their own request to others.
-		elif len(exists_1) == 1:
+		elif len(exists_1) == 1 and int(theresponse) != 0:
 			output = '{"request":"exists","to":"'+requestee+'","from":"'+username+'"}'
-		
+			
+		elif len(exists_1) == 1 and int(theresponse) == 0:
+			update = "UPDATE `connections` SET `response` = %s WHERE userid1 LIKE %s AND userid2 LIKE %s"
+			values = ("0",requestee,username)
+			request_search.execute(update,values)
+			openseed.commit()
+			output = '{"request":"denied","to":"'+requestee+'","from":"'+username+'"}'
+			
+		elif len(exists_2) == 1 and int(theresponse) == 0:
+			update = "UPDATE `connections` SET `response` = %s WHERE userid1 LIKE %s AND userid2 LIKE %s"
+			values = ("0",requestee,username)
+			request_search.execute(update,values)
+			openseed.commit()
+			output = '{"request":"denied","to":"'+requestee+'","from":"'+username+'"}'
 	
 		request_search.close()
 		openseed.close()
