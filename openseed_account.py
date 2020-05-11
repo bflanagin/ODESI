@@ -326,7 +326,7 @@ def creator_check(cname,account_token):
 		database = "openseed"
 		)
 		mysearch = openseed.cursor()
-		search = "SELECT devID,publicID FROM `developers` WHERE `devName` = %s AND `openseed` LIKE %s"
+		search = "SELECT devID,publicID FROM `developers` WHERE `devName` = %s AND `openseed` = %s"
 		val = (cname,str(account),)
 		mysearch.execute(search,val)
 		result = mysearch.fetchall()
