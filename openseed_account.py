@@ -331,11 +331,11 @@ def creator_check(account):
 		mysearch.close()
 		openseed.close()
 		if len(result) == 1:
-			return '{"devID":"'+result[0][0]+'","pubID":"'+result[0][1]+'"}'
+			return '{"creator_info":{"devID":"'+result[0][0]+'","pubID":"'+result[0][1]+'"}}'
 		elif len(result) <= 0:
-			return '{"devID":"none","pubID":"none"}' 
+			return '{"creator_info":{"devID":"none","pubID":"none"}}' 
 	else:
-		return '{"devID":"none","pubID":"none"}'
+		return '{"creator_info":{"devID":"none","pubID":"none"}}'
 		
 # Needs developer private ID and a "namespaced" app name something like com.openorchard.testapp#
 
