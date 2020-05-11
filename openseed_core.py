@@ -38,8 +38,6 @@ def message(data):
 		if Account.check_appID(from_client["appPub"],from_client["devPub"]):
 			app = from_client["appPub"]
 			dev = from_client["devPub"]
-			
-			
 
 			#####################################################
 			#
@@ -55,10 +53,13 @@ def message(data):
 				response = Account.create_account(from_client["account"],from_client["passphrase"],from_client["email"])
 			
 			elif action == "create_creator_account":
-				response = Account.create_creator(from_client["creatorName"],from_client["contactName"],from_client["contactEmail"],from_client["openseed"])
+				response = Account.create_creator_account(from_client["creatorName"],from_client["contactName"],from_client["contactEmail"],from_client["openseed"])
+			elif action == "create_dev_account":
+				response = Account.create_creator_account(from_client["devName"],from_client["contactName"],from_client["contactEmail"],from_client["openseed"])
+				
 			elif action == "set_profile":
-				response = Account.set_profile(from_client["token"],from_client["data1"],from_client["data2"],
-					from_client["data3"],from_client["data4"],from_client["data5"],from_client["type"])
+				response = Account.set_profile(from_client["token"],from_client["openseed"],from_client["extended"],
+					from_client["appdata"],from_client["misc"],from_client["imports"],from_client["type"])
 			elif action == "get_status":
 				response = Account.get_status(from_client["account"])
 			elif action == "set_status":
