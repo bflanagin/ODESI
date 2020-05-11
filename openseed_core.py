@@ -48,7 +48,7 @@ def message(data):
 			if action == "account_check":
 				response = Account.accountCheck(from_client["account"],from_client["passphrase"])
 			elif action == "creator_check":
-				response = Account.creator_check(from_client["openseed"])
+				response = Account.creator_check(from_client["token"])
 			elif action == "create_account":
 				response = Account.create_account(from_client["account"],from_client["passphrase"],from_client["email"])
 			
