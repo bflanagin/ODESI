@@ -318,7 +318,7 @@ def creator_check(cname,account_token):
 	
 	account = json.loads(user_from_id(account_token))["user"]
 	
-	if check_db(account,"developers") == 1:
+	if check_db(account,"developers") >= 1:
 		print(cname)
 		print(account)
 		openseed = mysql.connector.connect(
