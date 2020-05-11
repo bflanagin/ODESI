@@ -314,8 +314,9 @@ def create_creator_account(devName,contactName,contactEmail,account_token):
 		return '{"creator_account":{"devID":"exists","pubID":"exists"}}'
 	
 
-def creator_check(account_token):
+def creator_check(cname,account_token):
 	account = json.loads(user_from_id(account_token))["user"]
+	print(account)
 	if check_db(account,"developers") == 1:
 		openseed = mysql.connector.connect(
 		host = "localhost",
@@ -324,8 +325,8 @@ def creator_check(account_token):
 		database = "openseed"
 		)
 		mysearch = openseed.cursor()
-		search = "SELECT devID,publicID FROM `developers` WHERE `openseed` LIKE %s"
-		val = (str(account),)
+		search = "SELECT devID,publicID FROM `developers` WHERE devName = %s AND `openseed` LIKE %s"
+		val = (cname,str(account),)
 		mysearch.execute(search,val)
 		result = mysearch.fetchall()
 		mysearch.close()
