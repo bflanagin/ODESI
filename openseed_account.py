@@ -42,7 +42,7 @@ def check_db(name,db):
 	if db == "users":
 		search = "SELECT * FROM `user_tokens` WHERE `username` LIKE '"+str(name)+"'"
 	if db == "developers":
-		search = "SELECT * FROM `developers` WHERE `devName` LIKE '"+str(name)+"'"
+		search = "SELECT * FROM `developers` WHERE `openseed` LIKE '"+str(name)+"'"
 	if db == "applications":
 		search = "SELECT * FROM `applications` WHERE `appName` LIKE '"+str(name)+"'"
 	if db == "profiles":
