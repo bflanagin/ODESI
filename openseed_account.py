@@ -315,6 +315,7 @@ def create_creator_account(devName,contactName,contactEmail,account_token):
 	
 
 def creator_check(cname,account_token):
+	print(cname)
 	account = json.loads(user_from_id(account_token))["user"]
 	print(account)
 	if check_db(account,"developers") == 1:
@@ -325,7 +326,7 @@ def creator_check(cname,account_token):
 		database = "openseed"
 		)
 		mysearch = openseed.cursor()
-		search = "SELECT devID,publicID FROM `developers` WHERE devName = %s AND `openseed` LIKE %s"
+		search = "SELECT devID,publicID FROM `developers` WHERE `devName` = %s AND `openseed` LIKE %s"
 		val = (cname,str(account),)
 		mysearch.execute(search,val)
 		result = mysearch.fetchall()
