@@ -130,14 +130,14 @@ def user_from_id(theid):
 		database = "openseed"
 		)
 	mysearch = openseed.cursor()
-	search = "SELECT username FROM `users` WHERE `userid` = %s"
+	search = "SELECT username,hive FROM `users` WHERE `userid` = %s"
 	val = (str(theid),)
 	mysearch.execute(search,val)
 	result = mysearch.fetchall()
 	mysearch.close()
 	openseed.close()
 	if len(result) == 1:
-		return_user = '{"user":"'+result[0][0].replace('\x00',"")+'"}'
+		return_user = '{"user":"'+result[0][0].replace('\x00',"")+'","hive":"'+result[0][1].replace('\x00',"")+'"}'
 		
 	return return_user
 

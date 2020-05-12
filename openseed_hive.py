@@ -235,26 +235,31 @@ def create_post(devID,appID,publicID,title,data):
 	
 	return
 
-def like_post(name,post):
-	upvote_pct = 30
+def like_post(name,post,percent = 30):
+	poster = name
+	if name != who:
+		poster = Account.user_from_id(name)["hive"]
 	already_voted = -1
 	# Gets votes on the post
-	result = h.get_active_votes(name, post)
-	if result:
+	result = h.get_active_votes(poster, post)
+	if result and poster != None and poster != "":
 		# We run through the votes to make sure we haven't already voted on this post
 		for vote in result:
-			if vote['voter'] == who:
+			if vote['voter'] == poster:
 				already_voted = 1
 				break
 			else:
 				already_voted = 0
 
 		if already_voted == 0:
-			identifier = ('@'+name+'/'+post)
-			print("voting on ",identifier)	
-			h.commit.vote(identifier, float(upvote_pct), who)
+			identifier = ('@'+poster+'/'+post)
+			#print("voting on ",identifier)	
+			h.commit.vote(identifier, float(precent), poster)
+			return('{"liked_hive_post":{"response":"voted","weight":'+percent+',"post":"'+post+'"}}')
 		else:
-			print("Voted already")
+			return('{"liked_hive_post":{"response":"already voted","weight":"error","post":"'+post+'"}}')
+		
+		return('{"liked_hive_post":{"response":"error","weight":"error","post":"error"}}')
 
 
 def openseed_post_reply(author,post,body):
