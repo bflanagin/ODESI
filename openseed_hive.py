@@ -239,7 +239,7 @@ def like_post(token,author,post,percent = 30):
 	print("voting on ",post)
 	poster = token
 	if token != who:
-		poster = json.loads(Account.user_from_id(name))["hive"]
+		poster = json.loads(Account.user_from_id(token))["hive"]
 	print("as ",poster)
 	print("at ",percent)
 	already_voted = -1
