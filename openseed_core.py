@@ -108,6 +108,8 @@ def message(data):
 				
 			elif action == "get_hive_post":
 				response = Hive.get_post(from_client["author"],from_client["permlink"])
+			elif action == "like_hive_post":
+				response = Hive.like_post(from_client["token"],from_client["author"],from_client["post"],from_client["percent"])
 			
 			elif action == "hivecheck":
 				Account.hive_Check(from_client["hivename"])
@@ -165,7 +167,7 @@ def message(data):
 
 			elif action == "get_connections":
 				response = Connections.get_openseed_connections(from_client["account"],from_client["hive"])
-			elif action == "set_connection_status:
+			elif action == "set_connection_status":
 				response = Connections.connection_request(from_client["token"],from_client["account"],from_client["response"],app)
 				
 			elif action == "get_requests":

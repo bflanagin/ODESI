@@ -19,7 +19,7 @@ def update_leaderboard(devID,appID,user,data):
 		database = "openseed"
 		)
 	scoresearch = openseed.cursor()
-	search = "SELECT * FROM `history` WHERE `devID` = %s AND `appID` = %s AND `username` = %s AND `data` = %s `type` = '99'"
+	search = "SELECT * FROM `history` WHERE `devID` = %s AND `appID` = %s AND `username` = %s AND `data` = %s `type` = '7'"
 	vals = (str(devID),str(appID),str(user),str(data))
 	scoresearch.execute(search,vals)
 	result = len(scoresearch.fetchall())
@@ -42,7 +42,7 @@ def get_leaderboard(devID,appID):
 		)
 	scoresearch = openseed.cursor()
 	output = ""
-	search = "SELECT username,data FROM `history` WHERE `type` = '99' AND `devID` = '"+str(devID)+"' AND `appID` = '"+str(appID)+"'"
+	search = "SELECT username,data FROM `history` WHERE `type` = '7' AND `devID` = '"+str(devID)+"' AND `appID` = '"+str(appID)+"'"
 	scoresearch.execute(search)
 	result = scoresearch.fetchall()
 	for score in result:
