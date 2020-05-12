@@ -42,7 +42,7 @@ def check_db(name,db):
 	if db == "users":
 		search = "SELECT * FROM `user_tokens` WHERE `username` LIKE '"+str(name)+"'"
 	if db == "developers":
-		search = "SELECT * FROM `developers` WHERE `devName` LIKE '"+str(name)+"'"
+		search = "SELECT * FROM `developers` WHERE `openseed` LIKE '"+str(name)+"'"
 	if db == "applications":
 		search = "SELECT * FROM `applications` WHERE `appName` LIKE '"+str(name)+"'"
 	if db == "profiles":
@@ -52,7 +52,7 @@ def check_db(name,db):
 	result = len(mysearch.fetchall())
 	mysearch.close()
 	openseed.close()
-
+	print(result)
 	return result
 
 def check_appID(appPub,devPub):
@@ -301,8 +301,8 @@ def create_creator_account(devName,contactName,contactEmail,account_token):
 		if account != "none":
 			devID = Seed.generate_id(devName,contactName,contactEmail,account)
 			pubID = Seed.generate_publicid(devID)
-			sql = "INSERT INTO `developers` (`devID`,`publicID`,`devName`,`contactName`,`contactEmail`) VALUES (%s,%s,%s,%s,%s)"
-			val = (str(devID),str(pubID),str(devName),str(contactName),str(contactEmail)) 
+			sql = "INSERT INTO `developers` (`devID`,`publicID`,`devName`,`contactName`,`contactEmail`,`openseed`) VALUES (%s,%s,%s,%s,%s,%s)"
+			val = (str(devID),str(pubID),str(devName),str(contactName),str(contactEmail),str(account)) 
 			mycursor.execute(sql,val)	
 			openseed.commit()
 			mycursor.close()
@@ -314,9 +314,13 @@ def create_creator_account(devName,contactName,contactEmail,account_token):
 		return '{"creator_account":{"devID":"exists","pubID":"exists"}}'
 	
 
-def creator_check(account):
-
-	if check_db(account,"developers") == 1:
+def creator_check(cname,account_token):
+	
+	account = json.loads(user_from_id(account_token))["user"]
+	
+	if check_db(account,"developers") >= 1:
+		print(cname)
+		print(account)
 		openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
@@ -324,18 +328,18 @@ def creator_check(account):
 		database = "openseed"
 		)
 		mysearch = openseed.cursor()
-		search = "SELECT devID,publicID FROM `developers` WHERE `openseed` LIKE %s"
-		val = (str(account),)
+		search = "SELECT devID,publicID FROM `developers` WHERE `devName` = %s AND `openseed` = %s"
+		val = (cname,str(account),)
 		mysearch.execute(search,val)
 		result = mysearch.fetchall()
 		mysearch.close()
 		openseed.close()
 		if len(result) == 1:
-			return '{"devID":"'+result[0][0]+'","pubID":"'+result[0][1]+'"}'
+			return '{"creator_info":{"devID":"'+result[0][0]+'","pubID":"'+result[0][1]+'"}}'
 		elif len(result) <= 0:
-			return '{"devID":"none","pubID":"none"}' 
+			return '{"creator_info":{"devID":"none","pubID":"none"}}' 
 	else:
-		return '{"devID":"none","pubID":"none"}'
+		return '{"creator_info":{"devID":"none","pubID":"none"}}'
 		
 # Needs developer private ID and a "namespaced" app name something like com.openorchard.testapp#
 

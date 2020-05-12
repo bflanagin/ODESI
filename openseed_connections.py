@@ -118,58 +118,7 @@ def profile(token):
 
 	return(profile)
 
-#def user_profile(username):
-#	openseed = mysql.connector.connect(
-#		host = "localhost",
-#		user = settings["dbuser"],
-#		password = settings["dbpassword"],
-#		database = "openseed"
-#		)
-#	profile = '"profile":{}'
-#	theid = json.loads(Account.id_from_user(username))["id"]
 
-#	if theid != "none":
-#		search = "SELECT data1,data2,data3,data4,data5 FROM `profiles` WHERE `id` = %s"
-#		sval = (theid,)
-#		mysearch = openseed.cursor()
-#		mysearch.execute(search,sval)
-#		result = mysearch.fetchall()
-#		data1 = '"None"'
-#		data2 = '"None"'
-#		data3 = '"None"'
-#		data4 = '"None"'
-#		data5 = '"None"'
-#		if len(result) == 1:
-#			if(result[0][0] != "None"):
-#				data1 = result[0][0]
- 
-#			if(result[0][1] != "None"):
-#				data2 = result[0][1]
- 
-#			if(result[0][2] != "None"):
-#				data3 = result[0][2]
- 
-#			if(result[0][3] != "None"):
-#				data4 = result[0][3]
-
-#			if(result[0][4] != "None"):
-#				if(len(result[0][4]) > 1):
-#					data5 = str(result[0][4]).replace(',"is_public":true',"").replace(',"redirect_uris":["http://142.93.27.131:8675/steemconnect/verify.py"]',"")
-#				else:
-#					data5 = '{}'
-#			else:
-#				data5 = '{}'
-
-#		profile = '"profile":{"openseed":'+data1.replace("\n","")+',"extended":'+data2.replace("\n","")+',"appdata":'+data3.replace("\n","")+',"misc":'+data4.replace("\n","")+',"imports":'+data5.replace("\n","")+'}'
-
-#		mysearch.close()
-#	openseed.close()
-
-#	return(profile)
-
-
-
- 
 # Requests have three states 1 pending 2 accepted 0 denied. 
 
 def connection_request(token,requestee,response,appPub):
@@ -235,13 +184,25 @@ def connection_request(token,requestee,response,appPub):
 			values = ("2",requestee,username)
 			request_search.execute(update,values)
 			openseed.commit()
-			
 			chatroom = Chat.find_attendees(token,requestee+","+username,1,appPub)
 			output = '{"request":"accepted","room":'+chatroom+'}'
 		# disallows user from create a second request or updating their own request to others.
-		elif len(exists_1) == 1:
+		elif len(exists_1) == 1 and int(theresponse) != 0:
 			output = '{"request":"exists","to":"'+requestee+'","from":"'+username+'"}'
-		
+			
+		elif len(exists_1) == 1 and int(theresponse) == 0:
+			update = "UPDATE `connections` SET `response` = %s WHERE userid1 LIKE %s AND userid2 LIKE %s"
+			values = ("0",requestee,username)
+			request_search.execute(update,values)
+			openseed.commit()
+			output = '{"request":"denied","to":"'+requestee+'","from":"'+username+'"}'
+			
+		elif len(exists_2) == 1 and int(theresponse) == 0:
+			update = "UPDATE `connections` SET `response` = %s WHERE userid2 LIKE %s AND userid1 LIKE %s"
+			values = ("0",requestee,username)
+			request_search.execute(update,values)
+			openseed.commit()
+			output = '{"request":"denied","to":"'+requestee+'","from":"'+username+'"}'
 	
 		request_search.close()
 		openseed.close()
