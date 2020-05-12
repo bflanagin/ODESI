@@ -44,22 +44,36 @@ def message(data):
 			#  Account Section
 			#
 			#####################################################
+			
+			## Standard account
 
 			if action == "account_check":
 				response = Account.accountCheck(from_client["account"],from_client["passphrase"])
-			elif action == "creator_check":
-				response = Account.creator_check(from_client["name"],from_client["token"])
 			elif action == "create_account":
 				response = Account.create_account(from_client["account"],from_client["passphrase"],from_client["email"])
+				
+			## Creator account	
 			
+			elif action == "creator_check":
+				response = Account.creator_check(from_client["name"],from_client["token"])
 			elif action == "create_creator_account":
 				response = Account.create_creator_account(from_client["creatorName"],from_client["contactName"],from_client["contactEmail"],from_client["openseed"])
 			elif action == "create_dev_account":
 				response = Account.create_creator_account(from_client["devName"],from_client["contactName"],from_client["contactEmail"],from_client["openseed"])
 				
+			elif action == "account":
+				response = Account.get_account(from_client["token"])
+					
+			## Profile
+			 		
 			elif action == "set_profile":
 				response = Account.set_profile(from_client["token"],from_client["openseed"],from_client["extended"],
 					from_client["appdata"],from_client["misc"],from_client["imports"],from_client["type"])
+			elif action == "get_profile":
+				response = "{"+Account.get_profile(from_client["account"])+"}"
+			elif action == "get_profile_lite":
+				response = "{"+Account.user_profile_lite(from_client["account"])+"}"
+			
 			elif action == "get_status":
 				response = Account.get_status(from_client["account"])
 			elif action == "set_status":
@@ -82,19 +96,28 @@ def message(data):
 				
 			elif action == "hive_login":
 				response = Hive.openseed_interconnect(from_client["hiveaccount"],from_client["hiveaccount"],from_client["postingkey"],from_client["storekey"],True)
+				
 			elif action == "hive_connect":
 				response = Hive.openseed_interconnect(from_client["account"],from_client["hiveaccount"],from_client["postingkey"],from_client["storekey"],False)
 				
 			elif action == "get_hive_account":
 				response = Hive.get_account(from_client["account"])
+				
 			elif action == "get_full_hive_account":
 				response = Hive.get_full_account(from_client["account"])
+				
 			elif action == "get_hive_post":
 				response = Hive.get_post(from_client["author"],from_client["permlink"])
+			
+			elif action == "hivecheck":
+				Account.hive_Check(from_client["hivename"])
+				
 			elif action == "set_posting_right":
 				response = '{"server":"error"}'
+				
 			elif action == "remove_posting_right":
 				response = '{"server":"error"}'
+				
 			elif action == "link_account":
 				response = Account.hive.link(from_client["username"],from_client["hivename"])
 				if response:
@@ -142,10 +165,9 @@ def message(data):
 
 			elif action == "get_connections":
 				response = Connections.get_openseed_connections(from_client["account"],from_client["hive"])
-			elif action == "get_profile":
-				response = "{"+Account.get_profile(from_client["account"])+"}"
-			elif action == "get_profile_lite":
-				response = "{"+Account.user_profile_lite(from_client["account"])+"}"
+			elif action == "set_connection_status:
+				response = Connections.connection_request(from_client["token"],from_client["account"],from_client["response"],app)
+				
 			elif action == "get_requests":
 				response = Connections.get_requests(from_client["token"],from_client["count"])
 			elif action == "send_request":
@@ -199,6 +221,11 @@ def message(data):
 				response = Utils.upload(from_client["filename"],from_client["type"],from_client["md5sum"],from_client["data"])
 			elif action == "ipfs_pin_request":
 				response = Utils.ipfs(from_client["hash"],from_client["type"],from_client["reference"])
+			
+			# Will need to add this
+		
+			elif action == "web_auth":
+				response = ""
 			else:
 				response = '{"server":"Please read documentation on accepted commands"}'
 				
