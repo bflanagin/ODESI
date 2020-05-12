@@ -253,7 +253,9 @@ def like_post(name,post,percent = 30):
 
 		if already_voted == 0:
 			identifier = ('@'+poster+'/'+post)
-			#print("voting on ",identifier)	
+			print("voting on ",identifier)
+			print("as ",poster)
+			print("at ",percent)
 			h.commit.vote(identifier, float(precent), poster)
 			return('{"liked_hive_post":{"response":"voted","weight":'+percent+',"post":"'+post+'"}}')
 		else:
