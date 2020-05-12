@@ -238,7 +238,7 @@ def create_post(devID,appID,publicID,title,data):
 def like_post(name,post,percent = 30):
 	poster = name
 	if name != who:
-		poster = Account.user_from_id(name)["hive"]
+		poster = json.loads(Account.user_from_id(name))["hive"]
 	already_voted = -1
 	# Gets votes on the post
 	result = h.get_active_votes(poster, post)
