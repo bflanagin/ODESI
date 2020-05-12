@@ -256,7 +256,7 @@ def like_post(token,author,post,percent = 30):
 
 		if already_voted == 0:
 			identifier = ('@'+author+'/'+post)
-			h.commit.vote(identifier, float(precent), poster)
+			h.commit.vote(identifier, float(percent), poster)
 			return('{"liked_hive_post":{"response":"voted","weight":'+percent+',"post":"'+post+'"}}')
 		else:
 			return('{"liked_hive_post":{"response":"already voted","weight":"error","post":"'+post+'"}}')
