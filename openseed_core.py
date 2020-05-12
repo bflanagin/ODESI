@@ -167,7 +167,7 @@ def message(data):
 
 			elif action == "get_connections":
 				response = Connections.get_openseed_connections(from_client["account"],from_client["hive"])
-			elif action == "set_connection_status:
+			elif action == "set_connection_status":
 				response = Connections.connection_request(from_client["token"],from_client["account"],from_client["response"],app)
 				
 			elif action == "get_requests":
