@@ -198,7 +198,7 @@ def connection_request(token,requestee,response,appPub):
 			output = '{"request":"denied","to":"'+requestee+'","from":"'+username+'"}'
 			
 		elif len(exists_2) == 1 and int(theresponse) == 0:
-			update = "UPDATE `connections` SET `response` = %s WHERE userid1 LIKE %s AND userid2 LIKE %s"
+			update = "UPDATE `connections` SET `response` = %s WHERE userid2 LIKE %s AND userid1 LIKE %s"
 			values = ("0",requestee,username)
 			request_search.execute(update,values)
 			openseed.commit()
