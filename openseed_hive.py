@@ -235,16 +235,16 @@ def create_post(devID,appID,publicID,title,data):
 	
 	return
 
-def like_post(name,post,percent = 30):
-	print("voting on ",identifier)
-	poster = name
-	if name != who:
+def like_post(token,author,post,percent = 30):
+	print("voting on ",post)
+	poster = token
+	if token != who:
 		poster = json.loads(Account.user_from_id(name))["hive"]
 	print("as ",poster)
 	print("at ",percent)
 	already_voted = -1
 	# Gets votes on the post
-	result = h.get_active_votes(poster, post)
+	result = h.get_active_votes(author, post)
 	if result and poster != None and poster != "":
 		# We run through the votes to make sure we haven't already voted on this post
 		for vote in result:
@@ -255,10 +255,7 @@ def like_post(name,post,percent = 30):
 				already_voted = 0
 
 		if already_voted == 0:
-			identifier = ('@'+poster+'/'+post)
-			
-			
-			
+			identifier = ('@'+author+'/'+post)
 			h.commit.vote(identifier, float(precent), poster)
 			return('{"liked_hive_post":{"response":"voted","weight":'+percent+',"post":"'+post+'"}}')
 		else:
