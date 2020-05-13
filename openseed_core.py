@@ -108,8 +108,12 @@ def message(data):
 				
 			elif action == "get_hive_post":
 				response = Hive.get_post(from_client["author"],from_client["permlink"])
+				
 			elif action == "like_hive_post":
 				response = Hive.like_post(from_client["token"],from_client["author"],from_client["post"],from_client["percent"])
+			
+			elif action == "post_hive_comment":
+				response = Hive.post_comment(from_client["token"],from_client["author"],from_client["post"],from_client["comment"])
 			
 			elif action == "hivecheck":
 				Account.hive_Check(from_client["hivename"])

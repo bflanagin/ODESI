@@ -61,7 +61,6 @@ title = "New Song"
 
 def get_post(author,permlink) :
 	post = h.get_content(author,permlink)
-	json.loads('{"hive_post":{"author":"'+author+'","title":'+json.dumps(post["title"])+',"post":'+json.dumps(post["body"])+'}}')
 	return '{"hive_post":{"author":"'+author+'","title":'+json.dumps(post["title"])+',"post":'+json.dumps(post["body"])+'}}'
 
 def get_account(account):
@@ -265,12 +264,20 @@ def like_post(token,author,post,percent = 30):
 		return('{"liked_hive_post":{"response":"error","weight":"error","post":"error"}}')
 
 
-def openseed_post_reply(author,post,body):
+def post_comment(token,author,post,body):
+	response = '{"hive_comment":{"response":"error","post":"error"}}'
+	print("commenting on ",post)
+	poster = token
+	if token != who:
+		poster = json.loads(Account.user_from_id(token))["hive"]
+	if poster == None or poster == "":
+		poster = who
+		body += "\n "+json.loads(Account.user_from_id(token))["user"]+" on ODESI"
 	reply_identifier = '/'.join([author,post])
 	print(reply_identifier)
-	h.commit.post(title='', body=body, author=who, permlink='',reply_identifier=reply_identifier) 
-	print("Adding reply")
-	return
+	h.commit.post(title='', body=body, author=poster, permlink='',reply_identifier=reply_identifier) 
+	response = '{"hive_comment":{"response":"added","post":"'+post+'"}}')
+	return response
 
 def openseed_post(author,post,body,title,json):
 	h.commit.post(title=title, body=body, author=who, permlink='') 
