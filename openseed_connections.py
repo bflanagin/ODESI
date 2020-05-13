@@ -153,6 +153,7 @@ def connection_request(token,requestee,response,appPub):
 			output = '{"request":"accepted","to":"'+requestee+'","from":"'+username+'"}'
 		elif len(exists_2) == 1 and exists_2[0][3] == 2:
 			output = '{"request":"accepted","to":"'+requestee+'","from":"'+username+'"}'	
+			
 		# Checks to see if the request is already denied
 		elif len(exists_1) == 1 and exists_1[0][3] == 0: 
 			output = '{"request":"denied","to":"'+requestee+'","from":"'+username+'"}'
@@ -166,30 +167,21 @@ def connection_request(token,requestee,response,appPub):
 			request_search.execute(insert,values)
 			openseed.commit()
 			output = '{"request":"sent","to":"'+requestee+'","from":"'+username+'"}'
-
-		# checks to see if the second user has sent a request to the first
-		elif len(exists_2) == 1 and int(theresponse) != 1:
-  
-			update = "UPDATE `connections` SET `response` = %s WHERE userid1 LIKE %s AND userid2 LIKE %s"
-			values = (str(theresponse),requestee,username)
-			request_search.execute(update,values)
-			openseed.commit()
-			
-			chatroom = Chat.find_attendees(token,requestee+","+username,1,appPub)
-			output = '{"request":"accepted","room":'+chatroom+'}'
-		# same as above but auto connects users.
+		
+		# checks to see if the second user has sent a request to the first and auto connects users.
 		elif len(exists_2) == 1 and int(theresponse) == 1:
-
 			update = "UPDATE `connections` SET `response` = %s WHERE userid1 LIKE %s AND userid2 LIKE %s"
 			values = ("2",requestee,username)
 			request_search.execute(update,values)
 			openseed.commit()
 			chatroom = Chat.find_attendees(token,requestee+","+username,1,appPub)
 			output = '{"request":"accepted","room":'+chatroom+'}'
+			
 		# disallows user from create a second request or updating their own request to others.
 		elif len(exists_1) == 1 and int(theresponse) != 0:
 			output = '{"request":"exists","to":"'+requestee+'","from":"'+username+'"}'
-			
+		
+		# Allow users to disconnect from others or cancel request.	
 		elif len(exists_1) == 1 and int(theresponse) == 0:
 			update = "UPDATE `connections` SET `response` = %s WHERE userid1 LIKE %s AND userid2 LIKE %s"
 			values = ("0",requestee,username)
