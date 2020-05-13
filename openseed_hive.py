@@ -236,6 +236,7 @@ def create_post(devID,appID,publicID,title,data):
 	return
 
 def like_post(token,author,post,percent = 30):
+	w.unlock(fix_thy_self,user_passphrase=settings["passphrase"])
 	print("voting on ",post)
 	poster = token
 	if token != who:
@@ -265,6 +266,7 @@ def like_post(token,author,post,percent = 30):
 
 
 def post_comment(token,author,post,body):
+	w.unlock(fix_thy_self,user_passphrase=settings["passphrase"])
 	response = '{"hive_comment":{"response":"error","post":"error"}}'
 	print("commenting on ",post)
 	poster = token
