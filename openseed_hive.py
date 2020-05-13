@@ -276,7 +276,7 @@ def post_comment(token,author,post,body):
 	reply_identifier = '/'.join([author,post])
 	print(reply_identifier)
 	h.commit.post(title='', body=body, author=poster, permlink='',reply_identifier=reply_identifier) 
-	response = '{"hive_comment":{"response":"added","post":"'+post+'"}}')
+	response = '{"hive_comment":{"response":"added","post":"'+post+'"}}'
 	return response
 
 def openseed_post(author,post,body,title,json):
