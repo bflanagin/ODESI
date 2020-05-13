@@ -149,9 +149,9 @@ def connection_request(token,requestee,response,appPub):
 		exists_2 = request_search.fetchall()
 		
 		# Checks to see if the request is already accepted
-		if len(exists_1) == 1 and exists_1[0][3] == 2: 
+		if len(exists_1) == 1 and exists_1[0][3] == 2 and theresponse != 0: 
 			output = '{"request":"accepted","to":"'+requestee+'","from":"'+username+'"}'
-		elif len(exists_2) == 1 and exists_2[0][3] == 2:
+		elif len(exists_2) == 1 and exists_2[0][3] == 2 and theresponse != 0:
 			output = '{"request":"accepted","to":"'+requestee+'","from":"'+username+'"}'	
 			
 		# Checks to see if the request is already denied
@@ -161,7 +161,7 @@ def connection_request(token,requestee,response,appPub):
 			output = '{"request":"denied","to":"'+requestee+'","from":"'+username+'"}'
 
 		# Checks to see if there is no request either direction
-		elif len(exists_1) != 1 and len(exists_2) !=1: 
+		elif len(exists_1) != 1 and len(exists_2) !=1 and theresponse != 0: 
 			insert = "INSERT INTO `connections` (`userid1`,`userid2`,`response`) VALUES  (%s,%s,%s)"
 			values = (username,requestee,theresponse)
 			request_search.execute(insert,values)
@@ -169,7 +169,7 @@ def connection_request(token,requestee,response,appPub):
 			output = '{"request":"sent","to":"'+requestee+'","from":"'+username+'"}'
 		
 		# checks to see if the second user has sent a request to the first and auto connects users.
-		elif len(exists_2) == 1 and int(theresponse) == 1:
+		elif len(exists_2) == 1 and int(theresponse) == 1 and theresponse != 0:
 			update = "UPDATE `connections` SET `response` = %s WHERE userid1 LIKE %s AND userid2 LIKE %s"
 			values = ("2",requestee,username)
 			request_search.execute(update,values)
