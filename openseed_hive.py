@@ -61,7 +61,7 @@ title = "New Song"
 
 def get_post(author,permlink) :
 	post = h.get_content(author,permlink)
-	print("got this back from hive ",post)
+	json.loads('{"hive_post":{"author":"'+author+'","title":'+json.dumps(post["title"])+',"post":'+json.dumps(post["body"])+'}}')
 	return '{"hive_post":{"author":"'+author+'","title":'+json.dumps(post["title"])+',"post":'+json.dumps(post["body"])+'}}'
 
 def get_account(account):
