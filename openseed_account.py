@@ -137,7 +137,10 @@ def user_from_id(theid):
 	mysearch.close()
 	openseed.close()
 	if len(result) == 1:
-		return_user = '{"user":"'+result[0][0].replace('\x00',"")+'","hive":"'+result[0][1].replace('\x00',"")+'"}'
+		if result[0][1] != None:
+			return_user = '{"user":"'+result[0][0].replace('\x00',"")+'","hive":"'+result[0][1].replace('\x00',"")+'"}'
+		else:
+			return_user = '{"user":"'+result[0][0].replace('\x00',"")+'","hive":""}'
 		
 	return return_user
 

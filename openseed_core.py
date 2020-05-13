@@ -8,6 +8,7 @@ import mysql.connector
 import socketserver
 
 import openseed_account as Account
+import openseed_groups as Groups
 import openseed_connections as Connections
 import openseed_seedgenerator as Seed
 import openseed_utils as Utils
@@ -16,6 +17,7 @@ import openseed_setup as Settings
 import openseed_game as Game
 import openseed_chat as Chat
 import openseed_hive as Hive
+
 
 
 import json
@@ -82,6 +84,27 @@ def message(data):
 				response = Account.get_history(from_client["account"],from_client["apprange"],from_client["count"])
 			elif action == "update_history":
 				response = Account.update_history(from_client["account"],from_client["type"],from_client["appPub"],from_client["data"])
+				
+			#####################################################
+			#
+			# Group Section
+			#
+			#####################################################
+			
+			elif action == "create_group":
+				response = Groups.get_status(from_client["account"])
+			elif action == "group_check":
+				response = Groups.get_status(from_client["account"])
+			elif action == "create_group_invite":
+				response = Groups.get_status(from_client["account"])
+			elif action == "add_user_to_group":
+				response = Groups.get_status(from_client["account"])
+			elif action == "del_user_from_group":
+				response = Groups.get_status(from_client["account"])
+			elif action == "check_user_roles":
+				response = Groups.get_status(from_client["account"])
+			elif action == "set_user_roles":
+				response = Groups.get_status(from_client["account"])
 
 			#####################################################
 			#

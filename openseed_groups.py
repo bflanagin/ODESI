@@ -77,7 +77,7 @@ def add_user_to_group():
 
 	return()
 
-def del_user_to_group():
+def del_user_from_group():
 
 	return()
 	
