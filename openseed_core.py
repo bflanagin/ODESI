@@ -102,7 +102,7 @@ def message(data):
 				
 			elif action == "get_groups":
 				response = Groups.group_list(from_client["token"])
-			elif action == "get_users_in_group:
+			elif action == "get_users_in_group":
 				response = Groups.group_list_users(from_client["token"],from_client["title"])
 				
 			# Still being worked on	
