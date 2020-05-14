@@ -17,6 +17,7 @@ import openseed_setup as Settings
 import openseed_game as Game
 import openseed_chat as Chat
 import openseed_hive as Hive
+import openseed_apptools as Apps
 
 
 
@@ -113,6 +114,61 @@ def message(data):
 				
 			elif action == "create_group_invite":
 				response = Groups.get_status(from_client["account"])
+						
+			#####################################################
+			#
+			# App Section 
+			#
+			#####################################################
+			
+			# Generalized data storage. Can be used for posts, comments, settings, etc.
+			elif action == "set_pub_data":
+				response = Apps.set_appdata("pub",from_client["owner"],app,from_client["type"],from_client["title"],from_client["tags"],from_client["data"])
+			elif action == "get_pub_data":
+				response = Apps.get_appdata("pub",from_client["owner"],app,from_client["type"],from_client["title"],from_client["tags"])
+				
+			elif action == "set_priv_data":
+				response = Apps.set_appdata("priv",from_client["owner"],app,from_client["type"],from_client["title"],from_client["tags"],from_client["data"],from_client["allowed"],from_client["denied"])
+				
+			elif action == "get_priv_data":
+				response = Apps.get_appdata("priv",from_client["owner"],app,from_client["type"],from_client["title"],from_client["tags"])
+
+			# Convenience functions to standardize posts for "steem like" features
+			elif action == "set_post":
+				response = Apps.set_appdata("pub",from_client["owner"],app,"post",from_client["title"],from_client["tags"],from_client["data"])
+				
+			elif action == "get_post":
+				response = Apps.get_appdata("pub",from_client["owner"],app,"post",from_client["title"],from_client["tags"])
+				
+			elif action == "set_priv_post":
+				response = Apps.set_appdata("priv",from_client["owner"],app,"post",from_client["title"],from_client["tags"],from_client["data"],from_client["allowed"],from_client["denied"])
+				
+			elif action == "get_priv_post":
+				response = Apps.get_appdata("priv",from_client["owner"],app,"post",from_client["title"],from_client["tags"])
+			
+			#####################################################
+			#
+			#  Games Section
+			#
+			#####################################################
+			
+			elif action == "update_leaderboard":
+				response = Account.update_history(from_client["account"],from_client["type"],app,from_client["data"])
+			elif action == "get_leaderboard":
+				response = Account.get_history(from_client["account"],from_client["apprange"],from_client["count"])
+				
+			elif action == "set_save":
+				response = Apps.get_appdata(from_client["account"],from_client["type"],app,from_client["data"])
+			elif action == "get_save":
+				response = Apps.get_appdata(from_client["account"],from_client["apprange"],from_client["count"])
+				
+			elif action == "create_achievement":
+				response = Apps.create_achievement(from_client["account"],from_client["type"],app,from_client["data"])	
+			elif action == "get_achievements":
+				response = Apps.get_achievements(from_client["account"],from_client["apprange"],from_client["count"])
+			elif action == "award_achievement":
+				response = Account.update_history(from_client["account"],from_client["type"],app,from_client["data"])
+					
 			#####################################################
 			#
 			#  Hive Section
@@ -158,17 +214,6 @@ def message(data):
 				response = Account.hive.link(from_client["username"],from_client["hivename"])
 				if response:
 					Hive.memo(from_client["username"],from_client["hivename"],response)
-
-			#####################################################
-			#
-			#  Games Section
-			#
-			#####################################################
-
-			elif action == "update_leaderboard":
-				response = Game.update_leaderboard(dev,app,from_client["username"],from_client["data"],from_client["hive"],from_client["postingkey"])
-			elif action == "get_leaderboard":
-				response = Game.get_leaderboard(dev,app)
 
 			#####################################################
 			#

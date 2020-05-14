@@ -14,7 +14,7 @@ settings = Settings.get_settings()
 # We do not have a standard format for this area as we want the developer to feel like they can use it for whatever they feel like.
 # Steps for future function: 1) search app and developer id and return results 2) search results for things that match data. 
 
-def get_appdata(mode,appID,tag):
+def get_appdata(mode,owner,appID,thetype,tags):
 
 	table = ""
 	openseed = mysql.connector.connect(
@@ -23,10 +23,10 @@ def get_appdata(mode,appID,tag):
 		password = settings["dbpassword"],
 		database = "openseed"
 		)
-		if mode == "priv":
-			table = "app_data_priv"
-		else:
-			table = "app_data_pub"		
+	if mode == "priv":
+		table = "app_data_priv"
+	else:
+		table = "app_data_pub"		
 	try:
 		json.loads(data)
 	except:
@@ -44,9 +44,9 @@ def get_appdata(mode,appID,tag):
 	search.close()
 	openseed.close()
 
-	return '{"appdata":{"tag":"'tag'","data":'+data+'}}'
+	return '{"appdata":{"type":"'+thetype+'","data":'+data+'}}'
 
-def set_appdata(mode,appID,tag,data,update):
+def set_appdata(mode,owner,appID,thetype,title,tags,data,allowed = "all",denied = ""):
 
 	info = "added"
 	openseed = mysql.connector.connect(
@@ -55,10 +55,10 @@ def set_appdata(mode,appID,tag,data,update):
 		password = settings["dbpassword"],
 		database = "openseed"
 		)
-		if mode == "priv":
-			table = "app_data_priv"
-		else:
-			table = "app_data_pub"
+	if mode == "priv":
+		table = "app_data_priv"
+	else:
+		table = "app_data_pub"
 	try:
 		json.loads(data)
 	except:
@@ -121,7 +121,7 @@ def get_webapp_token(token,username,appPub):
 	token = json.loads(Account.id_from_username(username))["id"]
 
 	if token != "none" and len(result) == 1:
-		output = '{"appPub":"'+appPub+'","token":"'token'"}'
+		output = '{"appPub":"'+appPub+'","token":"'+token+'"}'
 	elif token == "none":
 		Account.create_user
 	
