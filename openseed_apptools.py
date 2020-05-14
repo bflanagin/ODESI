@@ -44,7 +44,7 @@ def get_appdata(mode,owner,appID,thetype,tags):
 	search.close()
 	openseed.close()
 
-	return '{"appdata":{"tag":"'tag'","data":'+data+'}}'
+	return '{"appdata":{"type":"'+thetype+'","data":'+data+'}}'
 
 def set_appdata(mode,owner,appID,thetype,title,tags,data,allowed = "all",denied = ""):
 
@@ -121,7 +121,7 @@ def get_webapp_token(token,username,appPub):
 	token = json.loads(Account.id_from_username(username))["id"]
 
 	if token != "none" and len(result) == 1:
-		output = '{"appPub":"'+appPub+'","token":"'token'"}'
+		output = '{"appPub":"'+appPub+'","token":"'+token+'"}'
 	elif token == "none":
 		Account.create_user
 	
