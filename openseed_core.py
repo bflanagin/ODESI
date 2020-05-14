@@ -122,12 +122,12 @@ def message(data):
 			#####################################################
 			
 			# Generalized data storage. Can be used for posts, comments, settings, etc.
-			elif action == "set_pub_data"":
+			elif action == "set_pub_data":
 				response = Apps.set_appdata("pub",from_client["owner"],app,from_client["type"],from_client["title"],from_client["tags"],from_client["data"])
 			elif action == "get_pub_data":
 				response = Apps.get_appdata("pub",from_client["owner"],app,from_client["type"],from_client["title"],from_client["tags"])
 				
-			elif action == "set_priv_data"":
+			elif action == "set_priv_data":
 				response = Apps.set_appdata("priv",from_client["owner"],app,from_client["type"],from_client["title"],from_client["tags"],from_client["data"],from_client["allowed"],from_client["denied"])
 				
 			elif action == "get_priv_data":
@@ -152,17 +152,17 @@ def message(data):
 			#
 			#####################################################
 			
-			elif action == "update_leaderboard"":
+			elif action == "update_leaderboard":
 				response = Account.update_history(from_client["account"],from_client["type"],app,from_client["data"])
 			elif action == "get_leaderboard":
 				response = Account.get_history(from_client["account"],from_client["apprange"],from_client["count"])
 				
-			elif action == "set_save"":
+			elif action == "set_save":
 				response = Apps.get_appdata(from_client["account"],from_client["type"],app,from_client["data"])
 			elif action == "get_save":
 				response = Apps.get_appdata(from_client["account"],from_client["apprange"],from_client["count"])
 				
-			elif action == "create_achievement"":
+			elif action == "create_achievement":
 				response = Apps.create_achievement(from_client["account"],from_client["type"],app,from_client["data"])	
 			elif action == "get_achievements":
 				response = Apps.get_achievements(from_client["account"],from_client["apprange"],from_client["count"])
