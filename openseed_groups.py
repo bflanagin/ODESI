@@ -168,7 +168,7 @@ def add_user_to_group(token,title,user):
 				response = '{"group_add":{"user":"exists"}}'
 				break
 				
-		for d in denied.split(",");
+		for d in denied.split(","):
 			if user != d:
 				newdenied.append(d)
 		
@@ -206,9 +206,9 @@ def del_user_from_group(token,title,user):
 				response = '{"group_del":{"user":"exists"}}'
 				break
 				
-		for d in allowed.split(",");
+		for d in allowed.split(","):
 			if user != d:
-				newdenied.append(d)
+				newallowed.append(d)
 		
 		adding = "UPDATE groups SET allowed = %s, denied = %s WHERE owner = %s AND title = %s"
 		vals = (newallowed.join(","),denied+","+user,owner,title)
