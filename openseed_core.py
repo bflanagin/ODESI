@@ -93,7 +93,7 @@ def message(data):
 			
 			elif action == "create_group":
 				response = Groups.create_group(from_client["token"],from_client["title"],from_client["allowed"],from_client["denied"],app)
-			elif actoin == "delete_group":
+			elif action == "delete_group":
 				response = Groups.delete_group(from_client["token"],from_client["title"])
 			elif action == "add_user_to_group":
 				response = Groups.get_status(from_client["token"],from_client["title"],from_client["user"])
