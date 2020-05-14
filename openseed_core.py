@@ -135,7 +135,7 @@ def message(data):
 
 			# Convenience functions to standardize posts for "steem like" features
 			elif action == "set_post":
-				response Apps.set_appdata("pub",from_client["owner"],app,"post",from_client["title"],from_client["tags"],from_client["data"])
+				response = Apps.set_appdata("pub",from_client["owner"],app,"post",from_client["title"],from_client["tags"],from_client["data"])
 				
 			elif action == "get_post":
 				response = Apps.get_appdata("pub",from_client["owner"],app,"post",from_client["title"],from_client["tags"])
