@@ -40,15 +40,17 @@ def check_db(name,db):
 
 	
 	if db == "users":
-		search = "SELECT * FROM `user_tokens` WHERE `username` LIKE '"+str(name)+"'"
+		search = "SELECT * FROM `user_tokens` WHERE `username` = %s"
 	if db == "developers":
-		search = "SELECT * FROM `developers` WHERE `openseed` LIKE '"+str(name)+"'"
+		search = "SELECT * FROM `developers` WHERE `openseed` = %s"
 	if db == "applications":
-		search = "SELECT * FROM `applications` WHERE `appName` LIKE '"+str(name)+"'"
+		search = "SELECT * FROM `applications` WHERE `appName` = %s"
 	if db == "profiles":
-		search = "SELECT * FROM `profiles` WHERE `id` LIKE '"+str(name)+"'"
+		search = "SELECT * FROM `profiles` WHERE `id` = %s"
+	if db == "groups":
+		search = "SELECT * FROM `groups` WHERE `id` = %s"
 	sval = (str(name),)
-	mysearch.execute(search)
+	mysearch.execute(search,sval)
 	result = len(mysearch.fetchall())
 	mysearch.close()
 	openseed.close()
@@ -137,7 +139,10 @@ def user_from_id(theid):
 	mysearch.close()
 	openseed.close()
 	if len(result) == 1:
-		return_user = '{"user":"'+result[0][0].replace('\x00',"")+'","hive":"'+result[0][1].replace('\x00',"")+'"}'
+		if result[0][1] != None:
+			return_user = '{"user":"'+result[0][0].replace('\x00',"")+'","hive":"'+result[0][1].replace('\x00',"")+'"}'
+		else:
+			return_user = '{"user":"'+result[0][0].replace('\x00',"")+'","hive":""}'
 		
 	return return_user
 

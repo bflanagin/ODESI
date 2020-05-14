@@ -121,7 +121,7 @@ def profile(token):
 
 # Requests have three states 1 pending 2 accepted 0 denied. 
 
-def connection_request(token,requestee,response,appPub):
+def connection_request(token,requestee,thetype,response,appPub):
 	output = '{"request":"error"}'
 	theresponse = 1
 	openseed = mysql.connector.connect(
@@ -149,56 +149,48 @@ def connection_request(token,requestee,response,appPub):
 		exists_2 = request_search.fetchall()
 		
 		# Checks to see if the request is already accepted
-		if len(exists_1) == 1 and exists_1[0][3] == 2: 
+		if len(exists_1) == 1 and exists_1[0][4] == 2 and theresponse != 0: 
 			output = '{"request":"accepted","to":"'+requestee+'","from":"'+username+'"}'
-		elif len(exists_2) == 1 and exists_2[0][3] == 2:
+		elif len(exists_2) == 1 and exists_2[0][4] == 2 and theresponse != 0:
 			output = '{"request":"accepted","to":"'+requestee+'","from":"'+username+'"}'	
+			
 		# Checks to see if the request is already denied
-		elif len(exists_1) == 1 and exists_1[0][3] == 0: 
+		elif len(exists_1) == 1 and exists_1[0][4] == 0: 
 			output = '{"request":"denied","to":"'+requestee+'","from":"'+username+'"}'
-		elif len(exists_2) == 1 and exists_2[0][3] == 0:
+		elif len(exists_2) == 1 and exists_2[0][4] == 0:
 			output = '{"request":"denied","to":"'+requestee+'","from":"'+username+'"}'
 
 		# Checks to see if there is no request either direction
-		elif len(exists_1) != 1 and len(exists_2) !=1: 
+		elif len(exists_1) != 1 and len(exists_2) !=1 and theresponse != 0: 
 			insert = "INSERT INTO `connections` (`userid1`,`userid2`,`response`) VALUES  (%s,%s,%s)"
 			values = (username,requestee,theresponse)
 			request_search.execute(insert,values)
 			openseed.commit()
 			output = '{"request":"sent","to":"'+requestee+'","from":"'+username+'"}'
-
-		# checks to see if the second user has sent a request to the first
-		elif len(exists_2) == 1 and int(theresponse) != 1:
-  
-			update = "UPDATE `connections` SET `response` = %s WHERE userid1 LIKE %s AND userid2 LIKE %s"
-			values = (str(theresponse),requestee,username)
-			request_search.execute(update,values)
-			openseed.commit()
-			
-			chatroom = Chat.find_attendees(token,requestee+","+username,1,appPub)
-			output = '{"request":"accepted","room":'+chatroom+'}'
-		# same as above but auto connects users.
-		elif len(exists_2) == 1 and int(theresponse) == 1:
-
+		
+		# checks to see if the second user has sent a request to the first and auto connects users.
+		elif len(exists_2) == 1 and int(theresponse) == 1 and theresponse != 0:
 			update = "UPDATE `connections` SET `response` = %s WHERE userid1 LIKE %s AND userid2 LIKE %s"
 			values = ("2",requestee,username)
 			request_search.execute(update,values)
 			openseed.commit()
 			chatroom = Chat.find_attendees(token,requestee+","+username,1,appPub)
 			output = '{"request":"accepted","room":'+chatroom+'}'
+			
 		# disallows user from create a second request or updating their own request to others.
 		elif len(exists_1) == 1 and int(theresponse) != 0:
 			output = '{"request":"exists","to":"'+requestee+'","from":"'+username+'"}'
-			
+		
+		# Allow users to disconnect from others or cancel request.	
 		elif len(exists_1) == 1 and int(theresponse) == 0:
 			update = "UPDATE `connections` SET `response` = %s WHERE userid1 LIKE %s AND userid2 LIKE %s"
-			values = ("0",requestee,username)
+			values = ("0",username,requestee)
 			request_search.execute(update,values)
 			openseed.commit()
 			output = '{"request":"denied","to":"'+requestee+'","from":"'+username+'"}'
 			
 		elif len(exists_2) == 1 and int(theresponse) == 0:
-			update = "UPDATE `connections` SET `response` = %s WHERE userid2 LIKE %s AND userid1 LIKE %s"
+			update = "UPDATE `connections` SET `response` = %s WHERE userid1 LIKE %s AND userid2 LIKE %s"
 			values = ("0",requestee,username)
 			request_search.execute(update,values)
 			openseed.commit()
@@ -230,17 +222,23 @@ def get_requests(token,count):
 	if len(result) > 0:
 		for a in result:
 			theresponse = "pending"
-			if a[3] == 0:
+			thetype = "chat"
+			if a[4] == 0:
 				theresponse = "denied"
-			if a[3] == 1:
+			if a[4] == 1:
 				theresponse = "pending"
-			if a[3] == 2:
+			if a[4] == 2:
 				theresponse = "accepted"
+			
+			if a[3] == 1:
+				thetype = "chat"
+			if a[3] == 2:
+				thetype = "group"
 
 			if requests == "":
-				requests = '{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","response":"'+theresponse+'"}'
+				requests = '{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","type":"'+thetype+'","response":"'+theresponse+'"}'
 			else:
-				requests = requests+',{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","response":"'+theresponse+'"}'
+				requests = requests+',{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","type":"'+thetype+'","response":"'+theresponse+'"}'
 	else:
 		requests = '{"request":"none"}'
  
@@ -273,11 +271,11 @@ def request_status(token,account):
 	elif len(result2) == 1:
 		status = result2[0]
 	thestate = "pending"
-	if status[3] == 0:
+	if status[4] == 0:
 		thestate = "denied"
-	if status[3] == 1:
+	if status[4] == 1:
 		thestate = "pending"
-	if status[3] == 2:
+	if status[4] == 2:
 		thestate = "accepted"
 	
 	jsoned = '{"request":"'+thestate+'","account":"'+account+'"}'
