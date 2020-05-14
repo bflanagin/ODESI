@@ -23,10 +23,10 @@ def get_appdata(mode,owner,appID,thetype,tags):
 		password = settings["dbpassword"],
 		database = "openseed"
 		)
-		if mode == "priv":
-			table = "app_data_priv"
-		else:
-			table = "app_data_pub"		
+	if mode == "priv":
+		table = "app_data_priv"
+	else:
+		table = "app_data_pub"		
 	try:
 		json.loads(data)
 	except:
@@ -55,10 +55,10 @@ def set_appdata(mode,owner,appID,thetype,title,tags,data,allowed = "all",denied 
 		password = settings["dbpassword"],
 		database = "openseed"
 		)
-		if mode == "priv":
-			table = "app_data_priv"
-		else:
-			table = "app_data_pub"
+	if mode == "priv":
+		table = "app_data_priv"
+	else:
+		table = "app_data_pub"
 	try:
 		json.loads(data)
 	except:
