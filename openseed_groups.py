@@ -70,7 +70,7 @@ def create_group(token,title,allowed,denied,appPub):
 		for d in denied:
 			Connections.connection_request(uid,d,2,"denied",appPub)
 		
-		return '{"group":{"token":"'+uid+'","title":"'+name+'","allowed":"'+allowed+'","denied":"'+denied+'"}}'
+		return '{"group":{"token":"'+uid+'","title":"'+name+'","allowed":['+allowed+'],"denied":['+denied+']}}'
 	else:
 		return '{"group":{"title":"exists"}}'
 		
@@ -90,10 +90,10 @@ def group_list(token):
 	results = mycursor.fetchall()
 	for group in results:
 		if groups == "":
-			groups += '{"group":"title":"'+group[0]+'","allowed":"'+group[1]+'","denied":"'+group[2]+'"}'
+			groups += '{"group":"title":"'+group[0]+'","allowed":['+group[1]+'],"denied":['+group[2]+']}'
 		else:
-			groups += ',{"group":"title":"'+group[0]+'","allowed":"'+group[1]+'","denied":"'+group[2]+'"}'
-	response = '{"group_list":["'+groups+'"]}'
+			groups += ',{"group":"title":"'+group[0]+'","allowed":['+group[1]+'],"denied":['+group[2]+']}'
+	response = '{"group_list":['+groups+']}'
 	
 	openseed.commit()
 	mycursor.close()
@@ -116,7 +116,7 @@ def group_list_users(token,title):
 		mycursor.execute(find,vals)
 		results = mycursor.fetchall()
 		if len(results) == 1:
-			response = '{"user_list":"group":"'+results[0][0]+'","allowed":["'+results[0][1]+]'","denied":"'[+results[0][2]+]'"}'
+			response = '{"user_list":"group":"'+results[0][0]+'","allowed":['+results[0][1]+'],"denied":['+results[0][2]+']}'
 		
 	openseed.commit()
 	mycursor.close()
