@@ -92,20 +92,27 @@ def message(data):
 			#####################################################
 			
 			elif action == "create_group":
-				response = Groups.get_status(from_client["account"])
-			elif action == "group_check":
-				response = Groups.get_status(from_client["account"])
+				response = Groups.create_group(from_client["token"],from_client["title"],from_client["allowed"],from_client["denied"],app)
+			elif actoin == "delete_group":
+				response = Groups.delete_group(from_client["token"],from_client["title"])
+			elif action == "add_user_to_group":
+				response = Groups.get_status(from_client["token"],from_client["title"],from_client["user"])
+			elif action == "del_user_from_group":
+				response = Groups.get_status(from_client["token"],from_client["title"],from_client["user"])
+				
+			elif action == "get_groups":
+				response = Groups.group_list(from_client["token"])
+			elif action == "get_users_in_group:
+				response = Groups.group_list_users(from_client["token"],from_client["title"])
+				
+			# Still being worked on	
+			elif action == "check_user_roles":
+				response = Groups.get_status(from_client["token"],from_client["title"],from_client["user"])
+			elif action == "set_user_roles":
+				response = Groups.get_status(from_client["token"],from_client["title"],from_client["user"])
+				
 			elif action == "create_group_invite":
 				response = Groups.get_status(from_client["account"])
-			elif action == "add_user_to_group":
-				response = Groups.get_status(from_client["account"])
-			elif action == "del_user_from_group":
-				response = Groups.get_status(from_client["account"])
-			elif action == "check_user_roles":
-				response = Groups.get_status(from_client["account"])
-			elif action == "set_user_roles":
-				response = Groups.get_status(from_client["account"])
-
 			#####################################################
 			#
 			#  Hive Section
@@ -200,9 +207,9 @@ def message(data):
 			elif action == "get_requests":
 				response = Connections.get_requests(from_client["token"],from_client["count"])
 			elif action == "send_request":
-				response = Connections.connection_request(from_client["token"],from_client["account"],"request",app)
+				response = Connections.connection_request(from_client["token"],from_client["account"],1,"request",app)
 			elif action == "set_request":
-				response = Connections.connection_request(from_client["token"],from_client["account"],from_client["response"],app)
+				response = Connections.connection_request(from_client["token"],from_client["account"],1,from_client["response"],app)
 			elif action == "get_request_status":
 				response = Connections.request_status(from_client["token"],from_client["account"])
 

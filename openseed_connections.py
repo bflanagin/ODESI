@@ -121,7 +121,7 @@ def profile(token):
 
 # Requests have three states 1 pending 2 accepted 0 denied. 
 
-def connection_request(token,requestee,response,appPub):
+def connection_request(token,requestee,thetype,response,appPub):
 	output = '{"request":"error"}'
 	theresponse = 1
 	openseed = mysql.connector.connect(
@@ -149,15 +149,15 @@ def connection_request(token,requestee,response,appPub):
 		exists_2 = request_search.fetchall()
 		
 		# Checks to see if the request is already accepted
-		if len(exists_1) == 1 and exists_1[0][3] == 2 and theresponse != 0: 
+		if len(exists_1) == 1 and exists_1[0][4] == 2 and theresponse != 0: 
 			output = '{"request":"accepted","to":"'+requestee+'","from":"'+username+'"}'
-		elif len(exists_2) == 1 and exists_2[0][3] == 2 and theresponse != 0:
+		elif len(exists_2) == 1 and exists_2[0][4] == 2 and theresponse != 0:
 			output = '{"request":"accepted","to":"'+requestee+'","from":"'+username+'"}'	
 			
 		# Checks to see if the request is already denied
-		elif len(exists_1) == 1 and exists_1[0][3] == 0: 
+		elif len(exists_1) == 1 and exists_1[0][4] == 0: 
 			output = '{"request":"denied","to":"'+requestee+'","from":"'+username+'"}'
-		elif len(exists_2) == 1 and exists_2[0][3] == 0:
+		elif len(exists_2) == 1 and exists_2[0][4] == 0:
 			output = '{"request":"denied","to":"'+requestee+'","from":"'+username+'"}'
 
 		# Checks to see if there is no request either direction
@@ -222,17 +222,23 @@ def get_requests(token,count):
 	if len(result) > 0:
 		for a in result:
 			theresponse = "pending"
-			if a[3] == 0:
+			thetype = "chat"
+			if a[4] == 0:
 				theresponse = "denied"
-			if a[3] == 1:
+			if a[4] == 1:
 				theresponse = "pending"
-			if a[3] == 2:
+			if a[4] == 2:
 				theresponse = "accepted"
+			
+			if a[3] == 1:
+				thetype = "chat"
+			if a[3] == 2:
+				thetype = "group"
 
 			if requests == "":
-				requests = '{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","response":"'+theresponse+'"}'
+				requests = '{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","type":"'+thetype+'","response":"'+theresponse+'"}'
 			else:
-				requests = requests+',{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","response":"'+theresponse+'"}'
+				requests = requests+',{"request":"'+str(a[0])+'","from":"'+str(a[1])+'","type":"'+thetype+'","response":"'+theresponse+'"}'
 	else:
 		requests = '{"request":"none"}'
  
@@ -265,11 +271,11 @@ def request_status(token,account):
 	elif len(result2) == 1:
 		status = result2[0]
 	thestate = "pending"
-	if status[3] == 0:
+	if status[4] == 0:
 		thestate = "denied"
-	if status[3] == 1:
+	if status[4] == 1:
 		thestate = "pending"
-	if status[3] == 2:
+	if status[4] == 2:
 		thestate = "accepted"
 	
 	jsoned = '{"request":"'+thestate+'","account":"'+account+'"}'
