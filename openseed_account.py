@@ -235,7 +235,7 @@ def create_account(username,passphrase,email):
 		pfile = create_default_profile(uid,username,email)
 		return '{"account":{"token":"'+uid+'","username":"'+username+'","profile":'+pfile+'}}'
 	else:
-		return '{"account":{"username":"exists"}}'
+		return '{"account":{"token":"denied","username":"exists"}}'
 
 
 # External users bypass the password and username section of the login, and requires a trust relationship between the providers and OpenSeed
