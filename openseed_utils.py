@@ -119,6 +119,7 @@ def oggify_and_share(thehash):
 	openseed.close()
 
 def get_image(direct,source,source_type,size):
+	print(source," ",source_type)
 	image_url = "No_Image_found"
 	openseed = mysql.connector.connect(
 		host = "localhost",
@@ -175,6 +176,7 @@ def get_image(direct,source,source_type,size):
 		else:
 			return image_url
 	else:
+		print(image_url)
 		return '{"image":{"hash":"'+image_url+'","source":"'+source+'","quality":"'+size+'"}}'
 
 def png_and_pin(url):

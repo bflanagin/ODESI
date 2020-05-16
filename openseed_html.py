@@ -28,7 +28,7 @@ def index():
 		#decrypted = Seed.simp_decrypt(key,message)
 		print("From: "+decrypted)
 		response = Core.message(decrypted)
-		encrypt = Seed.simp_crypt(key,response)	
+		encrypt = Seed.simp_crypt(key,response)
 		#print("Returning: "+Seed.simp_decrypt(key,encrypt))
 		return encrypt
 	else:
