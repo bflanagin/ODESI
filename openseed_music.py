@@ -65,7 +65,7 @@ def get_artist_tracks(artist):
 	music.close()
 	openseed.close()
 
-	return '{"author":"'+artists+'","tracks":['+json.dumps(output)+']}'
+	return '{"author":"'+artist+'","tracks":['+json.dumps(output)+']}'
 
 def get_new_artists():
 	openseed = mysql.connector.connect(
