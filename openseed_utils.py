@@ -440,4 +440,39 @@ def ipfs_pin_request(thehash,thetype,reference):
 		database = "openseed"
 	)
 
+def openseed_search(data):
+	users = ""
+	searchlist = ""
+	openseed = mysql.connector.connect(
+		host = "localhost",
+		user = settings["dbuser"],
+		password = settings["dbpassword"],
+		database = "openseed"
+		)
+	no_use_list = ["email",":","name","profession","company"]
+	if username not in no_use_list:
+		mysearch = openseed.cursor()
+		hivesearch = "SELECT userid FROM `users` WHERE hive LIKE %s"
+		val = ("%"+data+"%",)
+		mysearch.execute(hivesearch,val)
+		hive = mysearch.fetchall()
+		usersearch = "SELECT id,data1,data5 FROM `profiles` WHERE data1 LIKE %s"
+		mysearch.execute(usersearch,val)
+		users = mysearch.fetchall()
+		for u in users:
+			if len(u[0]) > 4:
+				userid = u[0]
+				accountname = user_from_id(userid)
+				userProfile = u[1]
+				hiveProfile = '{}'
+				if len(u[2]) > 2:
+					hiveProfile = u[2]
+				if searchlist == "":
+					searchlist = '{"account":"'+accountname+'","profile":'+userProfile+',"hive":'+hiveProfile+'}'
+				else:
+					searchlist = searchlist+',{"account":"'+accountname+'","profile":'+userProfile+',"hive":'+hiveProfile+'}'
+		mysearch.close()
+		openseed.close()
+	
+	return '{"search":['+searchlist+']}'
 
