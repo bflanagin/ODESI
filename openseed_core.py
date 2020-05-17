@@ -297,7 +297,7 @@ def message(data):
 			elif action == "gps":
 				response = Account.gps_search(from_client["username"],from_client["cords"])
 			elif action == "search":
-				response = Account.openseed_search(from_client["username"])
+				response = Utils.openseed_search(from_client["username"])
 			elif action == "upload":
 				response = Utils.upload(from_client["filename"],from_client["type"],from_client["md5sum"],from_client["data"])
 			elif action == "ipfs_pin_request":
