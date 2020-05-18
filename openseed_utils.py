@@ -455,11 +455,11 @@ def openseed_search(data,category = "user",count = 20):
 	if data not in no_use_list:
 		if category == "user":
 			search_return_template = 'user_search'
-			hivesearch = "SELECT userid FROM `users` WHERE hive LIKE %s LIMIT ",int(count)
+			hivesearch = "SELECT userid FROM `users` WHERE hive LIKE %s"
 			val = ("%"+data+"%",)
 			mysearch.execute(hivesearch,val)
 			hive = mysearch.fetchall()
-			usersearch = "SELECT id,data1,data5 FROM `profiles` WHERE data1 LIKE %s LIMIT ",int(count)
+			usersearch = "SELECT id,data1,data5 FROM `profiles` WHERE data1 LIKE %s"
 			mysearch.execute(usersearch,val)
 			users = mysearch.fetchall()
 			for u in users:
@@ -476,11 +476,11 @@ def openseed_search(data,category = "user",count = 20):
 						searchlist = searchlist+',{"account":"'+accountname+'","profile":'+userProfile+',"hive":'+hiveProfile+'}'
 		if category == "app":
 			search_return_template = 'app_search'
-			appssearch = "SELECT * FROM `applications` WHERE appName LIKE %s LIMIT %s"
-			val = ("%"+data+"%",str(count),)
+			appssearch = "SELECT * FROM `applications` WHERE appName LIKE %s"
+			val = ("%"+data+"%",)
 			mysearch.execute(hivesearch,val)
 			apps = mysearch.fetchall()
-			profilesearch = "SELECT id,data1,data5 FROM `profiles` WHERE data1 LIKE %s LIMIT %s"
+			profilesearch = "SELECT id,data1,data5 FROM `profiles` WHERE data1 LIKE %s"
 			mysearch.execute(usersearch,val)
 			appprofile = mysearch.fetchall()
 			for u in appprofile:
