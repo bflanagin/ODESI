@@ -455,11 +455,11 @@ def openseed_search(data,category = "user",count = 20):
 	if data not in no_use_list:
 		if category == "user":
 			search_return_template = 'user_search'
-			hivesearch = "SELECT userid FROM `users` WHERE hive LIKE %s LIMIT %s"
-			val = ("%"+data+"%",str(count),)
+			hivesearch = "SELECT userid FROM `users` WHERE hive LIKE %s LIMIT ",int(count)
+			val = ("%"+data+"%",)
 			mysearch.execute(hivesearch,val)
 			hive = mysearch.fetchall()
-			usersearch = "SELECT id,data1,data5 FROM `profiles` WHERE data1 LIKE %s LIMIT %s"
+			usersearch = "SELECT id,data1,data5 FROM `profiles` WHERE data1 LIKE %s LIMIT ",int(count)
 			mysearch.execute(usersearch,val)
 			users = mysearch.fetchall()
 			for u in users:
