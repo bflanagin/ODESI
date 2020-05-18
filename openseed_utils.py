@@ -471,9 +471,9 @@ def openseed_search(data,category = "user",count = 20):
 					if len(u[2]) > 2:
 						hiveProfile = u[2]
 					if searchlist == "":
-						searchlist = '{"account":"'+accountname+'","profile":'+userProfile+',"hive":'+hiveProfile+'}'
+						searchlist = '{"account":'+accountname+',"profile":'+userProfile+',"hive":'+hiveProfile+'}'
 					else:
-						searchlist = searchlist+',{"account":"'+accountname+'","profile":'+userProfile+',"hive":'+hiveProfile+'}'
+						searchlist = searchlist+',{"account":'+accountname+',"profile":'+userProfile+',"hive":'+hiveProfile+'}'
 		if category == "app":
 			search_return_template = 'app_search'
 			appssearch = "SELECT * FROM `applications` WHERE appName LIKE %s LIMIT %s"
@@ -488,9 +488,9 @@ def openseed_search(data,category = "user",count = 20):
 					appid = u[0]
 					appProfile = u[1]
 					if searchlist == "":
-						searchlist = '{"app":"'+accountname+'","profile":'+appProfile+'}'
+						searchlist = '{"app":'+accountname+',"profile":'+appProfile+'}'
 					else:
-						searchlist = searchlist+',{"app":"'+accountname+'","profile":'+appProfile+'}'
+						searchlist = searchlist+',{"app":'+accountname+',"profile":'+appProfile+'}'
 		
 	
 	mysearch.close()
