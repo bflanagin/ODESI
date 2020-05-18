@@ -465,7 +465,7 @@ def openseed_search(data,category = "user",count = 20):
 			for u in users:
 				if len(u[0]) > 4:
 					userid = u[0]
-					accountname = user_from_id(userid)
+					accountname = Account.user_from_id(userid)
 					userProfile = u[1]
 					hiveProfile = '{}'
 					if len(u[2]) > 2:
