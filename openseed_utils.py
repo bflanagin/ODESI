@@ -440,39 +440,61 @@ def ipfs_pin_request(thehash,thetype,reference):
 		database = "openseed"
 	)
 
-def openseed_search(data):
+def openseed_search(data,category = "user",count = 20):
 	users = ""
 	searchlist = ""
+	search_return_template = '"search":'
 	openseed = mysql.connector.connect(
 		host = "localhost",
 		user = settings["dbuser"],
 		password = settings["dbpassword"],
 		database = "openseed"
 		)
+	mysearch = openseed.cursor()	
 	no_use_list = ["email",":","name","profession","company"]
-	if username not in no_use_list:
-		mysearch = openseed.cursor()
-		hivesearch = "SELECT userid FROM `users` WHERE hive LIKE %s"
-		val = ("%"+data+"%",)
-		mysearch.execute(hivesearch,val)
-		hive = mysearch.fetchall()
-		usersearch = "SELECT id,data1,data5 FROM `profiles` WHERE data1 LIKE %s"
-		mysearch.execute(usersearch,val)
-		users = mysearch.fetchall()
-		for u in users:
-			if len(u[0]) > 4:
-				userid = u[0]
-				accountname = user_from_id(userid)
-				userProfile = u[1]
-				hiveProfile = '{}'
-				if len(u[2]) > 2:
-					hiveProfile = u[2]
-				if searchlist == "":
-					searchlist = '{"account":"'+accountname+'","profile":'+userProfile+',"hive":'+hiveProfile+'}'
-				else:
-					searchlist = searchlist+',{"account":"'+accountname+'","profile":'+userProfile+',"hive":'+hiveProfile+'}'
-		mysearch.close()
-		openseed.close()
+	if data not in no_use_list:
+		if category == "user":
+			search_return_template = 'user_search'
+			hivesearch = "SELECT userid FROM `users` WHERE hive LIKE %s LIMIT %s"
+			val = ("%"+data+"%",str(count),)
+			mysearch.execute(hivesearch,val)
+			hive = mysearch.fetchall()
+			usersearch = "SELECT id,data1,data5 FROM `profiles` WHERE data1 LIKE %s LIMIT %s"
+			mysearch.execute(usersearch,val)
+			users = mysearch.fetchall()
+			for u in users:
+				if len(u[0]) > 4:
+					userid = u[0]
+					accountname = user_from_id(userid)
+					userProfile = u[1]
+					hiveProfile = '{}'
+					if len(u[2]) > 2:
+						hiveProfile = u[2]
+					if searchlist == "":
+						searchlist = '{"account":"'+accountname+'","profile":'+userProfile+',"hive":'+hiveProfile+'}'
+					else:
+						searchlist = searchlist+',{"account":"'+accountname+'","profile":'+userProfile+',"hive":'+hiveProfile+'}'
+		if category == "app":
+			search_return_template = 'app_search'
+			appssearch = "SELECT * FROM `applications` WHERE appName LIKE %s LIMIT %s"
+			val = ("%"+data+"%",str(count),)
+			mysearch.execute(hivesearch,val)
+			apps = mysearch.fetchall()
+			profilesearch = "SELECT id,data1,data5 FROM `profiles` WHERE data1 LIKE %s LIMIT %s"
+			mysearch.execute(usersearch,val)
+			appprofile = mysearch.fetchall()
+			for u in appprofile:
+				if len(u[0]) > 4:
+					appid = u[0]
+					appProfile = u[1]
+					if searchlist == "":
+						searchlist = '{"app":"'+accountname+'","profile":'+appProfile+'}'
+					else:
+						searchlist = searchlist+',{"app":"'+accountname+'","profile":'+appProfile+'}'
+		
 	
-	return '{"search":['+searchlist+']}'
+	mysearch.close()
+	openseed.close()
+	
+	return '{"'+search_return_template+'":['+searchlist+']}'
 
